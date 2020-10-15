@@ -1,13 +1,17 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import MenuIcon from '@material-ui/icons/Menu';
 
 export default class Navbar extends Component {
 
   render() {
     return (
-      <nav className="navbar navbar-dark bg-dark navbar-expand-lg">
-        <Link to="/" className="navbar-brand">Estate Wiz</Link>
-        <div className="collpase navbar-collapse">
+      <div>
+      <AppBar position="static">
+        <Toolbar>
+            <Typography variant="h6">HDB</Typography>
+        </Toolbar>
         <ul className="navbar-nav mr-auto">
           <li className="navbar-item">
           <Link to="/" className="nav-link">View Reports</Link>
@@ -19,8 +23,8 @@ export default class Navbar extends Component {
           <Link to="/user" className="nav-link">Create User</Link>
           </li>
         </ul>
-        </div>
-      </nav>
+      </AppBar>
+    </div>
     );
   }
 }
