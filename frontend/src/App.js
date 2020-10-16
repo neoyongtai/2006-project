@@ -9,7 +9,8 @@ import CreateUser from "./components/create-user.js";
 import Footer from "./components/footer.js";
 import PostList from "./components/postlist";
 import CreatePost from "./components/create-post";
-import EditPost from "./components/edit-post"
+import EditPost from "./components/edit-post";
+import ViewPost from "./components/post";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
         <Route path ="/create" exact component = {CreateReport} />
         <Route path ="/user" exact component = {CreateUser} />
         <Route path ="/forum" exact component = {PostList} />
-        <Route path ="/forum/createpost" exact component = {CreatePost} />
+        <Route path ="/forum/create" exact component = {CreatePost} />
+        <Route path ="/forum/:id" exact component = {ViewPost} />
         <Route path ="/forum/edit/:id" exact component = {EditPost} />
       </Router>
       <Footer />

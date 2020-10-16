@@ -102,7 +102,7 @@ export default class EditPost extends Component
 
         console.log(post)
 
-        axios.post('http://localhost:5000/post/update'+ this.props.match.params.id, post)
+        axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
         .then(res =>console.log(res.data))
 
         //Take back to the home pages.
