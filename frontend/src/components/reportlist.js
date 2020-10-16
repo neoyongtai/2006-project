@@ -19,11 +19,11 @@ const Report = props => (
 
 
 export default class ReportList extends Component
-{   
+{
 
     constructor(props) {
         super(props)
-        
+
         this.deleteReport = this.deleteReport.bind(this);
         this.state = { report : []}
     }
@@ -55,7 +55,7 @@ export default class ReportList extends Component
           return <Report report={currentreport} deleteReport={this.deleteReport} key={currentreport._id}/>;
         })
       }
-    
+
     render()
     {
         return (
