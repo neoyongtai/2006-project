@@ -16,11 +16,7 @@ export default class ViewPost extends Component {
         super(props)
 
         //Bind the event handlers
-        this.onChangeTitle = this.onChangeTitle.bind(this)
-        this.onChangeUsername = this.onChangeUsername.bind(this)
-        this.onChangeDescription = this.onChangeDescription.bind(this)
-        this.onChangeNumberOfComments = this.onChangeNumberOfComments.bind(this)
-        this.onChangeNumberOfUpvotes = this.onChangeNumberOfUpvotes.bind(this)
+        this.onCLickUpvoteHandler = this.onCLickUpvoteHandler.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
 
@@ -54,41 +50,10 @@ export default class ViewPost extends Component {
     })
 
     }
-
-    onChangeTitle(e)
-    {
-        this.setState({
-            title: e.target.value
-        })
-    }
-
-    //use a calendar
-    onChangeUsername(e)
-    {
-        this.setState({
-            username: e.target.value
-        })
-    }
-
-    onChangeDescription(e)
-    {
-        this.setState({
-            description: e.target.value
-        })
-    }
-
-    onChangeNumberOfComments(e)
-    {
-        this.setState({
-            no_of_comments: e.target.value
-        })
-    }
-
-    onChangeNumberOfUpvotes(e)
-    {
-        this.setState({
-            no_of_upvotes: e.target.value
-        })
+    onCLickUpvoteHandler() {
+      this.setState({
+          no_of_upvotes: this.state.no_of_upvotes + 1
+      })
     }
 
     onSubmit(e)
@@ -135,11 +100,23 @@ export default class ViewPost extends Component {
               </Grid>
               <Grid item xs={1}>
                 <Grid item xs={12}>
+                  <Button
+                  onClick={this.onCLickUpvoteHandler}>
                   <ArrowUpwardIcon /> <span>{this.state.no_of_upvotes}</span>
+                   </Button>
                 </Grid>
                 <Grid item xs={12}>
                   <ChatBubbleRoundedIcon /> <span>{this.state.no_of_comments}</span>
                 </Grid>
+                <div className="form-group">
+                  <label>firstname: </label>
+                  <input  type="text"
+                      required
+                      className="form-control"
+                      value={this.state.firstname}
+                      onChange={this.onChangeFirstname}
+                      />
+                </div>
               </Grid>
             </Grid>
           </div>
