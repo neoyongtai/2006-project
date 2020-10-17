@@ -8,11 +8,11 @@ const Post = props => (
       <td>{props.post.post_id}</td>
       <td>{props.post.username}</td>
       <td>{props.post.title}</td>
-      <td>{props.post.description}</td>
+      <td>{props.post.description.substring(0,50)}</td>
       <td>{props.post.no_of_comments}</td>
       <td>{props.post.no_of_upvotes}</td>
       <td>
-        <Link to={"/forum/"+props.post._id}>go to post</Link> | <Link to={"/forum/edit/"+props.post._id}>edit</Link> | <a href="#" onClick={() => { props.deletePost(props.post._id) }}>delete</a>
+        <Link to={"/forum/view/"+props.post._id}>go to post</Link> | <Link to={"/forum/edit/"+props.post._id}>edit</Link> | <a href="#" onClick={() => { props.deletePost(props.post._id) }}>delete</a>
       </td>
     </tr>
   )

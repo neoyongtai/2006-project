@@ -22,7 +22,7 @@ export default class CreatePost extends Component
 
            //Create the same fields as the MongoDB Schema
         this.state = {
-            post_id: 100 ,
+            post_id: 0,
             title: " ",
             username: " ",
             description: "",
@@ -30,14 +30,6 @@ export default class CreatePost extends Component
             no_of_upvotes: ""
         }
     }
-
-    //Lifecycle React Method
-   /* componentDidMount(){
-       this.setState({
-        users: ['test user'],
-        username: 'test user'
-       })
-    }*/
 
     onChangeTitle(e)
     {

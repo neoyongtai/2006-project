@@ -8,7 +8,12 @@ import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
+import IconButton from '@material-ui/core/IconButton';
+import TimeAgo from 'javascript-time-ago';
+import en from 'javascript-time-ago/locale/en';
+import ReactTimeAgo from 'react-time-ago';
 import axios from  'axios';
+TimeAgo.addDefaultLocale(en);
 
 export default class ViewPost extends Component {
 
@@ -16,7 +21,7 @@ export default class ViewPost extends Component {
         super(props)
 
         //Bind the event handlers
-        this.onCLickUpvoteHandler = this.onCLickUpvoteHandler.bind(this)
+        this.onClickUpvoteHandler = this.onClickUpvoteHandler.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
 
@@ -27,7 +32,8 @@ export default class ViewPost extends Component {
                username: " ",
                description: "",
                no_of_comments: "",
-               no_of_upvotes: ""
+               no_of_upvotes: "",
+               createdAt: new Date()
            }
     }
 
@@ -42,7 +48,7 @@ export default class ViewPost extends Component {
         description: response.data.description,
         no_of_comments: response.data.no_of_comments,
         no_of_upvotes: response.data.no_of_upvotes,
-
+        createdAt: response.data.createdAt
       })
     })
     .catch(function (error) {
@@ -50,10 +56,29 @@ export default class ViewPost extends Component {
     })
 
     }
-    onCLickUpvoteHandler() {
+
+    onClickUpvoteHandler() {
       this.setState({
-          no_of_upvotes: this.state.no_of_upvotes + 1
+        no_of_upvotes: this.state.no_of_upvotes + 1,
+
       })
+
+      const post = {
+          post_id: this.state.post_id,
+          title: this.state.title,
+          username: this.state.username,
+          description: this.state.description,
+          no_of_comments: this.state.no_of_comments,
+          no_of_upvotes: this.state.no_of_upvotes + 1
+      }
+
+      console.log(post)
+
+      axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
+      .then(res =>console.log(res.data))
+
+      //Take back to the home pages.
+     // window.location = '/';
     }
 
     onSubmit(e)
@@ -71,52 +96,48 @@ export default class ViewPost extends Component {
 
         console.log(post)
 
-        axios.post('http://localhost:5000/post/'+ this.props.match.params.id, post)
+        axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
         .then(res =>console.log(res.data))
 
         //Take back to the home pages.
        // window.location = '/';
     }
+
     render()
     {
         return (
           <div>
+          <p/>
             <Grid container spacing={3}>
-              <Grid item xs={11}>
+            <Grid item xs={1} />
+              <Grid item xs={9}>
                 <Card >
                   <CardContent>
-                    <Typography  color="textSecondary" gutterBottom>
+                    <Typography variant="h5" gutterBottom>
                       {this.state.title}
                     </Typography>
-                    <Typography variant="h5" component="h2">
+                    <Typography variant="body2" component="h2">
                       {this.state.description}
                     </Typography>
                   </CardContent>
                   <CardActions>
                     <PersonIcon />{this.state.username}
-                    <p style={{ fontSize: 12 }}>(posted 1 hour ago)</p>
+                    <p style={{ fontSize: 12 }}>(posted <ReactTimeAgo date={this.state.createdAt} locale="en-US" timeStyle="round-minute"/> )</p>
                   </CardActions>
                 </Card>
               </Grid>
-              <Grid item xs={1}>
+              <Grid item xs={2}>
                 <Grid item xs={12}>
-                  <Button
-                  onClick={this.onCLickUpvoteHandler}>
-                  <ArrowUpwardIcon /> <span>{this.state.no_of_upvotes}</span>
-                   </Button>
+                  <IconButton size="small"
+                  onClick={this.onClickUpvoteHandler}>
+                  <ArrowUpwardIcon />
+                   </IconButton><span>{this.state.no_of_upvotes}</span>
                 </Grid>
                 <Grid item xs={12}>
-                  <ChatBubbleRoundedIcon /> <span>{this.state.no_of_comments}</span>
+                <IconButton disabled size="small">
+                  <ChatBubbleRoundedIcon />
+                  </IconButton><span>{this.state.no_of_comments}</span>
                 </Grid>
-                <div className="form-group">
-                  <label>firstname: </label>
-                  <input  type="text"
-                      required
-                      className="form-control"
-                      value={this.state.firstname}
-                      onChange={this.onChangeFirstname}
-                      />
-                </div>
               </Grid>
             </Grid>
           </div>

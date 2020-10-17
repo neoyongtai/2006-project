@@ -23,7 +23,7 @@ function App() {
         <Route path ="/user" exact component = {CreateUser} />
         <Route path ="/forum" exact component = {PostList} />
         <Route path ="/forum/create" exact component = {CreatePost} />
-        <Route path ="/forum/:id" exact component = {ViewPost} />
+        <Route path ="/forum/view/:id" exact component = {ViewPost} />
         <Route path ="/forum/edit/:id" exact component = {EditPost} />
       </Router>
       <Footer />

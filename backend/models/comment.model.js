@@ -3,6 +3,10 @@ const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 
 const commentSchema = new Schema({
+  post_id:{
+      type: Number,
+      required:true
+  },
   comment_id:{
       type: Number,
       required:true,
@@ -22,6 +26,6 @@ const commentSchema = new Schema({
         timestamps: true,
 });
 
-const User = mongoose.model('user', userSchema);
+const Comment = mongoose.model('comment', userSchema);
 
-module.exports = User;
+module.exports = Comment;
