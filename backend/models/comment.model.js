@@ -4,8 +4,9 @@ const Schema = mongoose.Schema
 
 const commentSchema = new Schema({
   post_id:{
-      type: Number,
-      required:true
+    type: Number,
+    required:true,
+    unique: true
   },
   comment_id:{
       type: Number,
@@ -26,6 +27,6 @@ const commentSchema = new Schema({
         timestamps: true,
 });
 
-const Comment = mongoose.model('comment', userSchema);
+const Comment = mongoose.model('comment', commentSchema);
 
 module.exports = Comment;

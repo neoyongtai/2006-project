@@ -30,10 +30,12 @@ app.use(express.json())
 const reportRouter = require('./routes/report')
 const usersRouter = require('./routes/users')
 const postRouter = require('./routes/post')
+const commentRouter = require('./routes/comment')
 
 app.use('/report', reportRouter);
 app.use('/users',usersRouter);
 app.use('/post', postRouter);
+app.use('/comment', commentRouter);
 
 
 //start the server

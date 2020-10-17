@@ -13,7 +13,10 @@ import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import ReactTimeAgo from 'react-time-ago';
 import axios from  'axios';
+import CommentList from "../components/commentlist";
+import CreateComment from "../components/create-comment";
 TimeAgo.addDefaultLocale(en);
+
 
 export default class ViewPost extends Component {
 
@@ -140,6 +143,8 @@ export default class ViewPost extends Component {
                 </Grid>
               </Grid>
             </Grid>
+            <CreateComment />
+            <CommentList />
           </div>
         )
     }
