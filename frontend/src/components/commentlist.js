@@ -1,18 +1,37 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
-
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const Comment = props => (
-    <tr>
-      <td>{props.comment.comment_id}</td>
-      <td>{props.comment.username}</td>
-      <td>{props.comment.description.substring(0,50)}</td>
-      <td>
-        <Link to={"/forum/comments/edit/"+props.comment._id}>edit</Link> |
-        <a href="#" onClick={() => { props.deleteComment(props.comment._id) }}>delete</a>
-      </td>
-    </tr>
+    <TableRow key={props.comment.comment_id}>
+      <TableCell>{props.comment.comment_id}</TableCell>
+      <TableCell>{props.comment.username}</TableCell>
+      <TableCell>{props.comment.description.substring(0,50)}</TableCell>
+      <TableCell>
+      <Link to={"/forum/comment/edit/" + props.comment._id}>
+        <IconButton aria-label="Edit Comment">
+          <EditIcon />
+        </IconButton>
+      </Link>
+      </TableCell>
+      <TableCell>
+        <Link onClick={() => { props.deleteComment(props.comment._id) }}>
+          <IconButton aria-label="Delete Post">
+            <DeleteIcon />
+          </IconButton>
+        </Link>
+      </TableCell>
+    </TableRow>
   )
 
 
@@ -23,27 +42,42 @@ export default class CommentList extends Component
         super(props)
 
         this.deleteComment = this.deleteComment.bind(this);
-        this.state = { comment : []}
+        this.state = { comment : [], post_id: " "}
     }
 
-    componentDidMount()
+    componentDidUpdate(prevProps, prevState){
+   if(prevState.post_id !== this.props.id){
+       this.setState({
+            post_id: this.props.id
+       })
+   }
+}
+
+    componentDidUpdate(prevProps, prevState)
     {
-        axios.get('http://localhost:5000/comment/')
+      if(prevState.post_id !== this.props.id){
+        this.setState({
+          post_id: this.props.id
+        })
+      }
+      else {
+        axios.get("http://localhost:5000/comment/get/" + this.state.post_id)
         .then(response => {
             this.setState({comment : response.data})
         })
         .catch((error) => {
             console.log(error);
         })
+      }
     }
 
     deleteComment(id)
     {
-        axios.delete('http://localhost:5000/post/' + id)
+        axios.delete('http://localhost:5000/comment/' + id)
         .then(res =>console.log(res.data));
         this.setState({
             //delete the post from the UI.
-            post: this.state.post.filter(el => el._id !== id)
+            comment: this.state.comment.filter(el => el._id !== id)
         })
     }
 
@@ -57,21 +91,22 @@ export default class CommentList extends Component
     render()
     {
         return (
-            <div>
-            <h3>Get all Comments</h3>
-            <table className="table">
-              <thead className="thead-light">
-                <tr>
-                  <th>Comment Id</th>
-                  <th>Username</th>
-                  <th>Description</th>
-                </tr>
-              </thead>
-              <tbody>
+            <TableContainer component={Paper}>
+              <Table aria-label="all posts table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell>Comment Id</TableCell>
+                    <TableCell>Username</TableCell>
+                    <TableCell>Description</TableCell>
+                    <TableCell>Edit</TableCell>
+                    <TableCell>Delete</TableCell>
+                  </TableRow>
+                </TableHead>
+              <TableBody>
                 { this.commentList() }
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+            </Table>
+          </TableContainer>
         )
     }
 }

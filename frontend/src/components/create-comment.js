@@ -1,5 +1,10 @@
 import React, {Component} from 'react';
 import axios from  'axios';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 
 export default class CreateComment extends Component
 {
@@ -12,15 +17,21 @@ export default class CreateComment extends Component
         this.onChangeDescription = this.onChangeDescription.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
-
         //Create the same fields as the MongoDB Schema
         this.state = {
-          post_id: 101,
-          comment_id: 2,
-          username: "",
-          description: ""
+          post_id: " ",
+          username: " ",
+          description: " "
         }
     }
+
+    componentDidUpdate(prevProps, prevState){
+   if(prevState.post_id !== this.props.id){
+       this.setState({
+            post_id: this.props.id
+       })
+   }
+}
 
     onChangeUsername(e)
     {
@@ -41,50 +52,48 @@ export default class CreateComment extends Component
 
         const comment = {
           post_id: this.state.post_id,
-          comment_id: this.state.comment_id,
           username: this.state.username,
           description: this.state.description
         }
 
-        console.log(comment)
-
-        //Send user data to backend.
-        axios.post('http://localhost:5000/comment/add',comment)
+        axios.post("http://localhost:5000/comment/add" , comment)
         .then(res =>console.log(res.data))
-
-        //Take back to the home pages.
     }
 
     render()
     {
         return (
-            <div>
+          <div>
             <h3>Create New Comment</h3>
             <form onSubmit={this.onSubmit}>
 
-              <div className="form-group">
-                <label>Username: </label>
-                <input  type="text"
+            <Grid container spacing={3}>
+                <Grid item xs={4}>
+                  <TextField
+                  label="Username" variant="outlined"
                     required
-                    className="form-control"
+                    fullWidth
                     value={this.state.username}
                     onChange={this.onChangeUsername}
                     />
-              </div>
-
-              <div className="form-group">
-                <label>Comment: </label>
-                <input  type="text"
+                  </Grid>
+                  <Grid item xs={4}>
+                    <TextField
+                    label="Comment" variant="outlined"
                     required
-                    className="form-control"
+                    fullWidth
                     value={this.state.description}
                     onChange={this.onChangeDescription}
                     />
-              </div>
+                  </Grid>
 
-              <div className="form-group">
-                <input type="submit" value="Create Comment" className="btn btn-primary" />
-              </div>
+                  <Grid item xs={4}>
+                    <Button variant="contained" color="primary" type="submit" fullWidth>
+                      Create Comment
+                    </Button>
+                  </Grid>
+
+                </Grid>
             </form>
           </div>
         )

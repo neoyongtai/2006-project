@@ -1,20 +1,41 @@
 import axios from 'axios';
 import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableHead from '@material-ui/core/TableHead';
+import TableRow from '@material-ui/core/TableRow';
+import Paper from '@material-ui/core/Paper';
+import IconButton from '@material-ui/core/IconButton';
+import EditIcon from '@material-ui/icons/Edit';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 
 const Post = props => (
-    <tr>
-      <td>{props.post.post_id}</td>
-      <td>{props.post.username}</td>
-      <td>{props.post.title}</td>
-      <td>{props.post.description.substring(0,50)}</td>
-      <td>{props.post.no_of_comments}</td>
-      <td>{props.post.no_of_upvotes}</td>
-      <td>
-        <Link to={"/forum/view/"+props.post._id}>go to post</Link> | <Link to={"/forum/edit/"+props.post._id}>edit</Link> | <a href="#" onClick={() => { props.deletePost(props.post._id) }}>delete</a>
-      </td>
-    </tr>
+    <TableRow key={props.post.post_id} component={Link} to={"/forum/view/" + props.post._id}>
+      <TableCell>{props.post.post_id}</TableCell>
+      <TableCell>{props.post.username}</TableCell>
+      <TableCell>{props.post.title}</TableCell>
+      <TableCell>{props.post.description.substring(0,50)}</TableCell>
+      <TableCell>{props.post.no_of_comments}</TableCell>
+      <TableCell>{props.post.no_of_upvotes}</TableCell>
+      <TableCell>
+        <Link to={"/forum/edit/"+props.post._id}>
+          <IconButton aria-label="Edit Post">
+            <EditIcon />
+          </IconButton>
+        </Link>
+      </TableCell>
+      <TableCell>
+        <Link onClick={() => { props.deletePost(props.post._id) }}>
+          <IconButton aria-label="Delete Post">
+            <DeleteIcon />
+          </IconButton>
+        </Link>
+      </TableCell>
+    </TableRow>
   )
 
 
@@ -59,24 +80,25 @@ export default class PostList extends Component
     render()
     {
         return (
-            <div>
-            <h3>Get all Posts</h3>
-            <table className="table">
-              <thead className="thead-light">
-                <tr>
-                  <th>Post Id</th>
-                  <th>Title</th>
-                  <th>Username</th>
-                  <th>Description</th>
-                  <th>Number of Comments</th>
-                  <th>Number of Upvotes</th>
-                </tr>
-              </thead>
-              <tbody>
+          <TableContainer component={Paper}>
+            <Table aria-label="all posts table">
+              <TableHead>
+                <TableRow>
+                  <TableCell>Post Id</TableCell>
+                  <TableCell>Title</TableCell>
+                  <TableCell>Username</TableCell>
+                  <TableCell>Description</TableCell>
+                  <TableCell>Number of Comments</TableCell>
+                  <TableCell>Number of Upvotes</TableCell>
+                  <TableCell>Edit</TableCell>
+                  <TableCell>Delete</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
                 { this.postList() }
-              </tbody>
-            </table>
-          </div>
+              </TableBody>
+            </Table>
+          </TableContainer>
         )
     }
 }

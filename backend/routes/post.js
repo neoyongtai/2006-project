@@ -9,7 +9,6 @@ router.route('/').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  const post_id = Number(req.body.post_id);
   const title = req.body.title;
   const username = req.body.username;
   const description = req.body.description;
@@ -17,12 +16,12 @@ router.route('/add').post((req, res) => {
   const no_of_upvotes = req.body.no_of_upvotes;
 
 
-  const newPost = new Post({post_id,title,username,description,no_of_comments,no_of_upvotes});
+  const newPost = new Post({title,username,description,no_of_comments,no_of_upvotes});
 
   //Save to database
   newPost.save()
     .then(() => res.json('Post added!'))
-    .catch(err => res.status(400).json('Error: ' + err + newPost.post_id));
+    .catch(err => res.status(400).json('Error: ' + err));
 });
 
 router.route('/:id').get((req, res) =>
@@ -49,8 +48,8 @@ router.route('/update/:id').post((req, res) =>
     post.title = req.body.title
     post.username = req.body.username
     post.description = req.body.description
-    post.no_of_comments = req.body.no_of_comments
     post.no_of_upvotes = req.body.no_of_upvotes
+    post.no_of_comments = req.body.no_of_comments
 
     post.save()
     .then(()=> res.json('Post Updated!'))
