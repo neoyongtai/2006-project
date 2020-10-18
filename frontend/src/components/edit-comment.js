@@ -19,9 +19,8 @@ export default class EditComment extends Component
 
            //Create the same fields as the MongoDB Schema
            this.state = {
-               comment_id: 100 ,
-               username: " ",
-               description: ""
+             username: " ",
+             description: ""
            }
     }
 
@@ -30,7 +29,6 @@ export default class EditComment extends Component
     axios.get('http://localhost:5000/comment/'+ this.props.match.params.id)
     .then(response => {
       this.setState({
-        comment_id: response.data.post_id,
         username: response.data.username,
         description: response.data.description
       })
@@ -61,7 +59,6 @@ export default class EditComment extends Component
         e.preventDefault();
 
         const comment = {
-            comment_id: this.state.comment_id,
             username: this.state.username,
             description: this.state.description
         }

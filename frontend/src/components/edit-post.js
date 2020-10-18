@@ -2,12 +2,15 @@ import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from  'axios';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 
 
 export default class EditPost extends Component
 {
-
-
     constructor(props) {
         super(props)
 
@@ -16,19 +19,15 @@ export default class EditPost extends Component
         this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangeDescription = this.onChangeDescription.bind(this)
         this.onChangeNumberOfComments = this.onChangeNumberOfComments.bind(this)
-        this.onChangeNumberOfUpvotes = this.onChangeNumberOfUpvotes.bind(this)
+        this.onChangeNumberofUpvotes = this.onChangeNumberofUpvotes.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
-
-           //Create the same fields as the MongoDB Schema
-           this.state = {
-               post_id: 100 ,
-               title: " ",
-               username: " ",
-               description: "",
-               no_of_comments: "",
-               no_of_upvotes: ""
-           }
+        this.state = {
+            post_id: " ",
+            username: " ",
+            title: " ",
+            description: " "
+          }
     }
 
     //Lifecycle React Method
@@ -41,8 +40,7 @@ export default class EditPost extends Component
         username: response.data.username,
         description: response.data.description,
         no_of_comments: response.data.no_of_comments,
-        no_of_upvotes: response.data.no_of_upvotes,
-
+        no_of_upvotes: response.data.no_of_upvotes
       })
     })
     .catch(function (error) {
@@ -58,7 +56,6 @@ export default class EditPost extends Component
         })
     }
 
-    //use a calendar
     onChangeUsername(e)
     {
         this.setState({
@@ -73,17 +70,17 @@ export default class EditPost extends Component
         })
     }
 
-    onChangeNumberOfComments(e)
+    onChangeNumberOfComments(count)
     {
         this.setState({
-            no_of_comments: e.target.value
+            no_of_comments: count
         })
     }
 
-    onChangeNumberOfUpvotes(e)
+    onChangeNumberofUpvotes(count)
     {
         this.setState({
-            no_of_upvotes: e.target.value
+            no_of_upvotes: count
         })
     }
 
@@ -104,76 +101,52 @@ export default class EditPost extends Component
 
         axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
         .then(res =>console.log(res.data))
-
-        //Take back to the home pages.
-       // window.location = '/';
     }
     render()
     {
         return (
-            <div>
+          <Container maxWidth="sm">
             <h3>Edit Post</h3>
             <form onSubmit={this.onSubmit}>
 
+            <Grid container spacing={3}>
+                <Grid item xs={12}>
+                  <TextField
+                  label="Title" variant="outlined"
+                  fullWidth
+                  required
+                  value={this.state.title}
+                  onChange={this.onChangeTitle}
+                  />
+                </Grid>
 
-              <div className="form-group">
-                <label>Title: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.title}
-                    onChange={this.onChangeTitle}
-                    />
-              </div>
+                <Grid item xs={12}>
+                  <TextField
+                  label="Username" variant="outlined"
+                  fullWidth
+                  value={this.state.username}
+                  onChange={this.onChangeUsername}
+                  />
+                </Grid>
 
-              <div className="form-group">
-                <label>Username: </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    />
-              </div>
+                <Grid item xs={12}>
+                  <TextField
+                  label="Description" variant="outlined"
+                  fullWidth
+                  required
+                  value={this.state.description}
+                  onChange={this.onChangeDescription}
+                  />
+                </Grid>
 
-              <div className="form-group">
-                <label>Description: </label>
-                <div>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.description}
-                    onChange={this.onChangeDescription}
-                    />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>No of Comments: </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.no_of_comments}
-                    onChange={this.onChangeNumberOfComments}
-                    />
-              </div>
-
-
-              <div className="form-group">
-                <label>No of Upvotes: </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.no_of_upvotes}
-                    onChange={this.onChangeNumberOfUpvotes}
-                    />
-              </div>
-
-              <div className="form-group">
-                <input type="submit" value="Edit Post" className="btn btn-primary" />
-              </div>
+                <Grid item xs={12}>
+                  <Button variant="contained" color="primary" type="submit" fullWidth>
+                    Edit Post
+                  </Button>
+                </Grid>
+              </Grid>
             </form>
-          </div>
+          </Container>
         )
     }
 }

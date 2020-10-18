@@ -9,12 +9,15 @@ import PersonIcon from '@material-ui/icons/Person';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
 import IconButton from '@material-ui/core/IconButton';
+import Container from '@material-ui/core/Container';
 import TimeAgo from 'javascript-time-ago';
 import en from 'javascript-time-ago/locale/en';
 import ReactTimeAgo from 'react-time-ago';
 import axios from  'axios';
 import CommentList from "../components/commentlist";
 import CreateComment from "../components/create-comment";
+
+
 TimeAgo.addDefaultLocale(en);
 
 
@@ -25,17 +28,16 @@ export default class ViewPost extends Component {
 
         //Bind the event handlers
         this.onClickUpvoteHandler = this.onClickUpvoteHandler.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
 
 
            //Create the same fields as the MongoDB Schema
            this.state = {
-               post_id: 100 ,
+               post_id: " ",
                title: " ",
                username: " ",
-               description: "",
-               no_of_comments: "",
-               no_of_upvotes: "",
+               description: " ",
+               no_of_comments: " ",
+               no_of_upvotes: " ",
                createdAt: new Date()
            }
     }
@@ -60,57 +62,33 @@ export default class ViewPost extends Component {
 
     }
 
-    onClickUpvoteHandler() {
-      this.setState({
-        no_of_upvotes: this.state.no_of_upvotes + 1,
-
-      })
-
+    updatePost(upVote) {
       const post = {
           post_id: this.state.post_id,
           title: this.state.title,
           username: this.state.username,
           description: this.state.description,
           no_of_comments: this.state.no_of_comments,
-          no_of_upvotes: this.state.no_of_upvotes + 1
+          no_of_upvotes: (this.state.no_of_upvotes + 1)
       }
 
       console.log(post)
 
       axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
       .then(res =>console.log(res.data))
-
-      //Take back to the home pages.
-     // window.location = '/';
     }
 
-    onSubmit(e)
-    {
-        e.preventDefault();
-
-        const post = {
-            post_id: this.state.post_id,
-            title: this.state.title,
-            username: this.state.username,
-            description: this.state.description,
-            no_of_comments: this.state.no_of_comments,
-            no_of_upvotes: this.state.no_of_upvotes
-        }
-
-        console.log(post)
-
-        axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
-        .then(res =>console.log(res.data))
-
-        //Take back to the home pages.
-       // window.location = '/';
+    onClickUpvoteHandler() {
+      this.setState({
+        no_of_upvotes: this.state.no_of_upvotes + 1,
+      })
+      this.updatePost();
     }
 
     render()
     {
         return (
           <div>
-          <p/>
             <Grid container spacing={3}>
             <Grid item xs={1} />
               <Grid item xs={9}>
@@ -143,8 +121,11 @@ export default class ViewPost extends Component {
                 </Grid>
               </Grid>
             </Grid>
-            <CreateComment />
-            <CommentList />
+            <CreateComment
+            id={this.state.post_id}
+            object_id={this.props.match.params.id}
+            comment_count={this.state.no_of_comments}/>
+            <CommentList id={this.state.post_id}/>
           </div>
         )
     }

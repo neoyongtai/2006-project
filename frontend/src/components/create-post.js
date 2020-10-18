@@ -2,12 +2,14 @@ import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from  'axios';
-
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
 
 export default class CreatePost extends Component
 {
-
-
     constructor(props) {
         super(props)
 
@@ -15,19 +17,16 @@ export default class CreatePost extends Component
         this.onChangeTitle = this.onChangeTitle.bind(this)
         this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangeDescription = this.onChangeDescription.bind(this)
-        this.onChangeNumberOfComments = this.onChangeNumberOfComments.bind(this)
-        this.onChangeNumberOfUpvotes = this.onChangeNumberOfUpvotes.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
 
            //Create the same fields as the MongoDB Schema
         this.state = {
-            post_id: 0,
             title: " ",
             username: " ",
-            description: "",
-            no_of_comments: "",
-            no_of_upvotes: ""
+            description: " ",
+            no_of_comments: 0,
+            no_of_upvotes: 0
         }
     }
 
@@ -38,7 +37,6 @@ export default class CreatePost extends Component
         })
     }
 
-    //use a calendar
     onChangeUsername(e)
     {
         this.setState({
@@ -53,26 +51,11 @@ export default class CreatePost extends Component
         })
     }
 
-    onChangeNumberOfComments(e)
-    {
-        this.setState({
-            no_of_comments: e.target.value
-        })
-    }
-
-    onChangeNumberOfUpvotes(e)
-    {
-        this.setState({
-            no_of_upvotes: e.target.value
-        })
-    }
-
     onSubmit(e)
     {
         e.preventDefault();
 
         const post = {
-            post_id: this.state.post_id,
             title: this.state.title,
             username: this.state.username,
             description: this.state.description,
@@ -85,75 +68,49 @@ export default class CreatePost extends Component
         axios.post('http://localhost:5000/post/add',post)
         .then(res =>console.log(res.data))
 
-        //Take back to the home pages.
-       // window.location = '/';
     }
     render()
     {
         return (
-            <div>
-            <h3>Generate a new Post</h3>
-            <form onSubmit={this.onSubmit}>
+            <Container maxWidth="sm">
+              <h3>Create New Post</h3>
+              <form onSubmit={this.onSubmit}>
 
-
-              <div className="form-group">
-                <label>Title: </label>
-                <input  type="text"
+              <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                    <TextField
+                    label="Title" variant="outlined"
                     required
-                    className="form-control"
+                    fullWidth
                     value={this.state.title}
                     onChange={this.onChangeTitle}
                     />
-              </div>
-
-              <div className="form-group">
-                <label>Username: </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    />
-              </div>
-
-              <div className="form-group">
-                <label>Description: </label>
-                <div>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.description}
-                    onChange={this.onChangeDescription}
-                    />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <label>No of Comments: </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.no_of_comments}
-                    onChange={this.onChangeNumberOfComments}
-                    />
-              </div>
-
-
-              <div className="form-group">
-                <label>No of Upvotes: </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.no_of_upvotes}
-                    onChange={this.onChangeNumberOfUpvotes}
-                    />
-              </div>
-
-              <div className="form-group">
-                <input type="submit" value="Create Post" className="btn btn-primary" />
-              </div>
-            </form>
-          </div>
+                  </Grid>
+                  <Grid item xs={12}>
+                  <TextField
+                  label="Username" variant="outlined"
+                  fullWidth
+                  value={this.state.username}
+                  onChange={this.onChangeUsername}
+                  />
+                  </Grid>
+                  <Grid item xs={12}>
+                  <TextField
+                  label="Description" variant="outlined"
+                  required
+                  fullWidth
+                  value={this.state.description}
+                  onChange={this.onChangeDescription}
+                  />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <Button variant="contained" color="primary" type="submit" fullWidth>
+                      Create Post
+                    </Button>
+                  </Grid>
+                </Grid>
+              </form>
+          </Container>
         )
     }
 }
