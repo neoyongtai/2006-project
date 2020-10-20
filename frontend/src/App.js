@@ -12,15 +12,19 @@ import CreatePost from "./components/create-post";
 import EditPost from "./components/edit-post";
 import ViewPost from "./components/post";
 import EditComment from "./components/edit-comment";
+import HomePage from "./components/home-page";
+import ReportSum from "./components/report-sum"
 
 function App() {
   return (
     <div>
       <Router>
         <Navbar />
-        <Route path ="/" exact component = {ReportList} />
-        <Route path ="/edit/:id" exact component = {EditReport} />
-        <Route path ="/create" exact component = {CreateReport} />
+        <Route path = "/" exact component= {HomePage}/>
+        <Route path ="/report" exact component = {ReportList} />
+        <Route path = "/report/sum" exact component = {ReportSum}/>
+        <Route path ="/report/edit/:id" exact component = {EditReport} />
+        <Route path ="/report/create" exact component = {CreateReport} />
         <Route path ="/user" exact component = {CreateUser} />
         <Route path ="/forum" exact component = {PostList} />
         <Route path ="/forum/create" exact component = {CreatePost} />

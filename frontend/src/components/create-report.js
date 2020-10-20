@@ -2,9 +2,19 @@ import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from  'axios';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import Select from '@material-ui/core/Select';
+import { withRouter } from 'react-router-dom';
 
 
-export default class CreateReport extends Component
+
+class CreateReport extends Component
 {
   
     
@@ -17,17 +27,22 @@ export default class CreateReport extends Component
         this.onChangeReport_type = this.onChangeReport_type.bind(this)
         this.onChangeResidential_Area = this.onChangeResidential_Area.bind(this)
         this.onChangeType_Of_House = this.onChangeType_Of_House.bind(this)
+        this.onChangeRegion = this.onChangeRegion.bind(this)
+
+
         this.onSubmit = this.onSubmit.bind(this)
 
 
            //Create the same fields as the MongoDB Schema
         this.state = {
-            report_id: 3 ,
             report_type: " ",
             expected_date: new Date(),
             type_of_house: "",
+            region: "",
             residential_area: "",
-            description: ""
+            description: "",
+            user_id : 1,
+            date_generated: new Date()
                 }
     }
 
@@ -50,7 +65,7 @@ export default class CreateReport extends Component
     onChangeExpected_date(date)
     {
         this.setState({
-            expected_date: date
+            expected_date: date.target.value
         })
     }
 
@@ -75,17 +90,28 @@ export default class CreateReport extends Component
         })
     }
 
+        
+    onChangeRegion(e)
+    {
+        this.setState({
+            region: e.target.value
+        })
+    }
+
+
     onSubmit(e)
     {
         e.preventDefault();
 
         const report = {
-            report_id: this.state.report_id,
             report_type: this.state.report_type,
             expected_date: this.state.expected_date,
             type_of_house: this.state.type_of_house,
+            region: this.state.region,
             residential_area: this.state.residential_area,
-            description: this.state.description
+            description: this.state.description,
+            date_generated: this.state.date_generated,
+            user_id: this.state.user_id
         }
 
         console.log(report)
@@ -93,72 +119,124 @@ export default class CreateReport extends Component
         axios.post('http://localhost:5000/report/add',report)
         .then(res =>console.log(res.data))
 
-        //Take back to the home pages.
-       // window.location = '/';
+        //Redirect after submit to report summary page.
+        this.props.history.push('/report/sum')
+
     }
     render()
     {
         return (
-            <div>
-            <h3>Generate a new Report</h3>
+            <Container maxWidth="sm">
+            <h3>Generate Report</h3>
             <form onSubmit={this.onSubmit}>
 
-             
-              <div className="form-group"> 
-                <label>Report Type: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.onChangeReport_type}
-                    onChange={this.onChangeReport_type}
-                    />
-              </div>
+            <Grid container spacing={3}>
+
+
+                <Grid item xs={12}>
+        <InputLabel id="simple-Category-label">Category</InputLabel>
+        <Select
+          labelId="Category"
+          id="Category-simple-select-outlined"
+          value={this.state.report_type}
+          required
+          fullWidth
+          onChange={this.onChangeReport_type}
+          label="Region">
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={`Buy`}>Buy</MenuItem>
+          <MenuItem value={`Sell`}>Sell</MenuItem>
+          <MenuItem value={`Rental`}>Rental</MenuItem>
+        </Select>
+        </Grid>
+
+
+                <Grid item xs={12}>
+                <TextField
+                label="Expected Date" variant="outlined"
+                fullWidth
+                type= 'date'
+                InputLabelProps={{shrink:true}}
+                value={this.state.expected_date}
+                onChange={this.onChangeExpected_date}
+                />
+                </Grid>
+
+
+                <Grid item xs={12}>
+                <TextField
+                label="Type of house" variant="outlined"
+                required
+                fullWidth
+                InputLabelProps={{shrink:true}}
+                value={this.state.type_of_house}
+                onChange={this.onChangeType_Of_House}
+                />
+                </Grid>
+
+
+        
+        <Grid item xs={12}>
+        <InputLabel id="simple-outlined-label">Region</InputLabel>
+        <Select
+          labelId="simple-outlined-label"
+          id="demo-simple-select-outlined"
+          value={this.state.region}
+          required
+          fullWidth
+          onChange={this.onChangeRegion}
+          label="Region">
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={`Central Region`}>Central Region</MenuItem>
+          <MenuItem value={`East Region`}>East Region</MenuItem>
+          <MenuItem value={`North Region`}>North Region</MenuItem>
+          <MenuItem value={`North-East Region`}>North-East Region</MenuItem>
+          <MenuItem value={`West Region`}>West Region</MenuItem>
+        </Select>
+        </Grid>
+
+
             
-              <div className="form-group">
-                <label>Expected Date: </label>
-                <div>
-                  <DatePicker
-                    selected={this.state.expected_date}
-                    onChange={this.onChangeExpected_date}
-                  />
-                </div>
-              </div>
+        <Grid item xs={12}>
+                <TextField
+                label="Residential Area" variant="outlined"
+                required
+                fullWidth
+                InputLabelProps={{shrink:true}}
+                value={this.state.residential_area}
+                onChange={this.onChangeResidential_Area}
+                />
+                </Grid>
 
-              <div className="form-group">
-                <label>Type of House: </label>
-                <input 
-                    type="text" 
-                    className="form-control"
-                    value={this.state.type_of_house}
-                    onChange={this.onChangeType_Of_House}
-                    />
-              </div>
-              <div className="form-group">
-                <label>Residential Area: </label>
-                <input 
-                    type="text" 
-                    className="form-control"
-                    value={this.state.residential_area}
-                    onChange={this.onChangeResidential_Area}
-                    />
-              </div>
 
-              
-              <div className="form-group">
-                <label>Description: </label>
-                <input 
-                    type="text" 
-                    className="form-control"
-                    value={this.state.description}
-                    onChange={this.onChangeDescription}
-                    />
-              </div>
-      
-              <div className="form-group">
-                <input type="submit" value="Create Report" className="btn btn-primary" />
-              </div>
+                
+            
+                 <Grid item xs={12}>
+                <TextField
+                label="Description" variant="outlined"
+                required
+                fullWidth
+                InputLabelProps={{shrink:true}}
+                value={this.state.description}
+                onChange={this.onChangeDescription}
+                />
+                </Grid>
+
+                <Grid item xs={12}>
+                  <Button variant="contained" color="primary" type="submit" fullWidth>
+                    Generate Report
+                  </Button>
+                </Grid>
+              </Grid>
             </form>
-          </div>
+        </Container>
+
         )
     }
 }
+
+export default withRouter(CreateReport)

@@ -1,26 +1,53 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import { AppBar, Toolbar, IconButton, Typography, Button } from '@material-ui/core';
+import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
 import AddIcon from '@material-ui/icons/Add';
+import {makeStyles} from '@material-ui/core/styles'
 
-export default class Navbar extends Component {
 
-  render() {
+
+const useStyles = makeStyles((theme) => ({
+
+
+  
+  appbar:{
+    background: 'none',
+    fontFamily: 'Nunito',
+  },
+  appbarWrapper: {
+    width: '80%',
+    margin: '0 auto'
+  },
+  appbarTitle: {
+    flexGrow: '1'
+    
+  },
+
+
+
+}));
+
+function Navbar()  {
+
+    const classes = useStyles();
+
     return (
       <div>
-        <AppBar position="static">
-          <Toolbar>
-            <Typography variant="h6">
-              HDB
-            </Typography>
-            <Link to={"/forum/create"}>
-              <IconButton aria-label="Create Post">
-                <AddIcon />
-              </IconButton>
-            </Link>
+        <AppBar className = {classes.appbar} elevation={0} >
+          <Toolbar className = {classes.appbarWrapper}>
+            <Typography variant="h5" className={classes.appbarTitle}>
+              EstateWiz
+            </Typography> 
+            <div>
+            <Button component={Link} to={'/forum/create'} color ="primary"> Add Post </Button>
+            <Button component={Link} to = {'/report/create'} color ="primary"> Forum</Button>
+            <Button color ="primary" > Login</Button>
+              </div>
           </Toolbar>
         </AppBar>
+
       </div>
     );
   }
-}
+
+export default Navbar
