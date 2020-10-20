@@ -103,6 +103,7 @@ class CreateReport extends Component
     {
         e.preventDefault();
 
+
         const report = {
             report_type: this.state.report_type,
             expected_date: this.state.expected_date,
@@ -117,10 +118,17 @@ class CreateReport extends Component
         console.log(report)
 
         axios.post('http://localhost:5000/report/add',report)
-        .then(res =>console.log(res.data))
+        .then(res => {
+          console.log("This is the response")
+          console.log(res.data) 
+          const report_id = res.data._id
+          this.props.history.push('/report/sum/'+report_id)
 
+        }  )
+
+        //console.log(report_id)
         //Redirect after submit to report summary page.
-        this.props.history.push('/report/sum')
+       // this.props.history.push('/report/sum/'+report_id)
 
     }
     render()
@@ -141,6 +149,7 @@ class CreateReport extends Component
           value={this.state.report_type}
           required
           fullWidth
+          variant ="outlined"
           onChange={this.onChangeReport_type}
           label="Region">
           <MenuItem value="">
@@ -165,17 +174,35 @@ class CreateReport extends Component
                 </Grid>
 
 
-                <Grid item xs={12}>
-                <TextField
-                label="Type of house" variant="outlined"
-                required
-                fullWidth
-                InputLabelProps={{shrink:true}}
-                value={this.state.type_of_house}
-                onChange={this.onChangeType_Of_House}
-                />
-                </Grid>
 
+
+
+                <Grid item xs={12}>
+        <InputLabel id="simple-type-label">Type of House</InputLabel>
+        <Select
+          labelId="Type"
+          id="Type-simple-select-outlined"
+          value={this.state.type_of_house}
+          required
+          fullWidth
+          variant="outlined"
+          onChange={this.onChangeType_Of_House}
+          label="Type">
+          <MenuItem value="">
+            <em>None</em>
+          </MenuItem>
+          <MenuItem value={`Two-Room-Flexi`}>Two-Room-Flexi</MenuItem>
+          <MenuItem value={`Three-Room`}>Three-Room</MenuItem>
+          <MenuItem value={`Four-Room`}>Four-Room</MenuItem>
+          <MenuItem value={`Five-Room`}>Five-Room</MenuItem>
+          <MenuItem value={`3Gen`}>3Gen</MenuItem>
+          <MenuItem value={`Executive Flat`}>Executive Flat</MenuItem>
+          <MenuItem value={`DBSS`}>DBSS</MenuItem>
+
+
+
+        </Select>
+        </Grid>
 
         
         <Grid item xs={12}>
@@ -187,7 +214,9 @@ class CreateReport extends Component
           required
           fullWidth
           onChange={this.onChangeRegion}
+          variant="outlined"
           label="Region">
+          
           <MenuItem value="">
             <em>None</em>
           </MenuItem>

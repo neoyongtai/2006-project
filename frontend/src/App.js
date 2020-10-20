@@ -22,7 +22,7 @@ function App() {
         <Navbar />
         <Route path = "/" exact component= {HomePage}/>
         <Route path ="/report" exact component = {ReportList} />
-        <Route path = "/report/sum" exact component = {ReportSum}/>
+        <Route path = "/report/sum/:id" exact component = {ReportSum}/>
         <Route path ="/report/edit/:id" exact component = {EditReport} />
         <Route path ="/report/create" exact component = {CreateReport} />
         <Route path ="/user" exact component = {CreateUser} />

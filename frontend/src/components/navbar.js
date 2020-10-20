@@ -11,17 +11,20 @@ const useStyles = makeStyles((theme) => ({
 
   
   appbar:{
-    background: 'none',
+    background: 'Aero',
     fontFamily: 'Nunito',
+    position: 'fixed',
   },
   appbarWrapper: {
     width: '80%',
     margin: '0 auto'
   },
   appbarTitle: {
+    color: 'black',
     flexGrow: '1'
     
   },
+  offset:theme.mixins.toolbar
 
 
 
@@ -32,19 +35,20 @@ function Navbar()  {
     const classes = useStyles();
 
     return (
-      <div>
+      <div >
         <AppBar className = {classes.appbar} elevation={0} >
           <Toolbar className = {classes.appbarWrapper}>
-            <Typography variant="h5" className={classes.appbarTitle}>
-              EstateWiz
+            <Typography component={Link} to= {'/'} variant="h6" className={classes.appbarTitle} style={{textDecoration: 'none'}}>
+                  EstateWiz
             </Typography> 
             <div>
-            <Button component={Link} to={'/forum/create'} color ="primary"> Add Post </Button>
-            <Button component={Link} to = {'/report/create'} color ="primary"> Forum</Button>
-            <Button color ="primary" > Login</Button>
+            <Button component={Link} to={'/forum/create'} > Add Post </Button>
+            <Button component={Link} to = {'/report/create'}> Analaysis</Button>
+            <Button component={Link} to ={'/user'} > Login</Button>
               </div>
           </Toolbar>
         </AppBar>
+        <div className={classes.offset}/>
 
       </div>
     );

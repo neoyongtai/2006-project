@@ -22,12 +22,14 @@ router.route('/add').post((req, res) => {
   const date_generated = Date.now()
   const user_id = req.body.user_id
 
+ const estimated_price = 500000
+ const estimated_tax = 40000
 
-  const newReport = new Report({report_type,expected_date,type_of_house,region,residential_area,description,date_generated,user_id});
+  const newReport = new Report({report_type,expected_date,type_of_house,region,residential_area,description,estimated_price,estimated_tax,date_generated,user_id});
 
   //Save to database
   newReport.save()
-    .then(() => res.json('Report added!'))
+    .then(() => res.json(newReport))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 

@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import { Link } from 'react-router-dom';
 
 
+//This is another component. Total have 2 components in this file.
+//This is a functional reeact component
 const Report = props => (
     <tr>
       <td>{props.report.report_id}</td>
@@ -45,13 +47,16 @@ export default class ReportList extends Component
         .then(res =>console.log(res.data));
         this.setState({
             //delete the report from the UI.
+            //el is element. So return element that the _id is not equal to the id being deleted.
             report: this.state.report.filter(el => el._id !== id)
         })
     }
 
 
     reportList() {
+
         return this.state.report.map(currentreport => {
+          // report, deleteReport, key are the props.
           return <Report report={currentreport} deleteReport={this.deleteReport} key={currentreport._id}/>;
         })
       }
