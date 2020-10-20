@@ -11,8 +11,6 @@ export default class CreateUser extends Component
         //Bind the event handlers
         this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangePassword = this.onChangePassword.bind(this)
-        this.onChangeFirstname = this.onChangeFirstname.bind(this)
-        this.onChangeLastname = this.onChangeLastname.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
 
@@ -20,8 +18,6 @@ export default class CreateUser extends Component
         this.state = {
             username: "",
             password: "",
-            firstname: "",
-            lastname: "",
         }
     }
 
@@ -32,28 +28,15 @@ export default class CreateUser extends Component
         })
     }
 
+    
     onChangePassword(e)
     {
         this.setState({
-            pasword: e.target.value
+            password: e.target.value
         })
     }
 
     
-    onChangeFirstname(e)
-    {
-        this.setState({
-            firstname: e.target.value
-        })
-    }
-
-    
-    onChangeLastname(e)
-    {
-        this.setState({
-            lastname: e.target.value
-        })
-    }
     onSubmit(e)
     {
         e.preventDefault();
@@ -61,8 +44,6 @@ export default class CreateUser extends Component
         const user = {
             username: this.state.username,
             password: this.state.password,
-            firstname: this.state.firstname,
-            lastname: this.state.lastname,
         }
 
         //Send user data to backend.
@@ -74,9 +55,7 @@ export default class CreateUser extends Component
         //Take back to the home pages.
         this.setState({
             username: "",
-            password: "",
-            firstname: "",
-            lastname: ""
+            firstname: ""
         
         })
            
@@ -108,27 +87,9 @@ export default class CreateUser extends Component
                         onChange={this.onChangePassword}
                         />
                     </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                        label='First Name' variant='outlined'
-                        required
-                        fullWidth
-                        value={this.state.firstname}
-                        onChange={this.onChangeFirstname}
-                        />
-                    </Grid>
-                    <Grid item xs={6}>
-                        <TextField
-                        label='Last Name' variant='outlined'
-                        required
-                        fullWidth
-                        value={this.state.lastname}
-                        onChange={this.onChangeLastname}
-                        />
-                    </Grid>
                     <Grid item xs={12}>
                         <Button variant='contained' color='primary' type='submit' fullWidth>
-                            Create User
+                            Login
                         </Button>
                     </Grid>
                 </Grid>
