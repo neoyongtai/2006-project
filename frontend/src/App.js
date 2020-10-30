@@ -12,6 +12,7 @@ import CreatePost from "./components/create-post";
 import EditPost from "./components/edit-post";
 import ViewPost from "./components/post";
 import EditComment from "./components/edit-comment";
+import SignIn from "./components/login";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path ="/edit/:id" exact component = {EditReport} />
         <Route path ="/create" exact component = {CreateReport} />
         <Route path ="/user" exact component = {CreateUser} />
+        <Route path ="/login" exact component = {SignIn} />
         <Route path ="/forum" exact component = {PostList} />
         <Route path ="/forum/create" exact component = {CreatePost} />
         <Route path ="/forum/edit/:id" exact component = {EditPost} />
