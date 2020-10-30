@@ -8,17 +8,24 @@ const reportSchema = new Schema({
         type:String,
         required: true,
     },
-    expected_date :{
-        type: Date, required: true
+    hdb_type: {
+        type:String
     },
-    type_of_house: {
+    hdb_category: {
         type:String, required: true
     },
     region:{
         type:String, required: true
     },
-    residential_area: {
+    hdb_estate: {
         type:String, required: true
+    },
+    ammenties:
+    {
+            type:Array, required: true
+    },
+    expected_date :{
+        type: Date, required: true
     },
     estimated_price: {
         type: Number

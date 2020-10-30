@@ -24,7 +24,7 @@ class CreateReport extends Component
         //Bind the event handlers
         this.onChangeDescription = this.onChangeDescription.bind(this)
         this.onChangeExpected_date = this.onChangeExpected_date.bind(this)
-        this.onChangeReport_type = this.onChangeReport_type.bind(this)
+        this.onChangeCategory = this.onChangeCategory.bind(this)
         this.onChangeResidential_Area = this.onChangeResidential_Area.bind(this)
         this.onChangeType_Of_House = this.onChangeType_Of_House.bind(this)
         this.onChangeRegion = this.onChangeRegion.bind(this)
@@ -35,7 +35,7 @@ class CreateReport extends Component
 
            //Create the same fields as the MongoDB Schema
         this.state = {
-            report_type: " ",
+            category: " ",
             expected_date: new Date(),
             type_of_house: "",
             region: "",
@@ -54,10 +54,10 @@ class CreateReport extends Component
        }) 
     }*/
 
-    onChangeReport_type(e)
+    onChangeCategory(e)
     {
         this.setState({
-            report_type: e.target.value
+          category: e.target.value
         })
     }
 
@@ -105,7 +105,7 @@ class CreateReport extends Component
 
 
         const report = {
-            report_type: this.state.report_type,
+            category: this.state.category,
             expected_date: this.state.expected_date,
             type_of_house: this.state.type_of_house,
             region: this.state.region,
@@ -146,11 +146,11 @@ class CreateReport extends Component
         <Select
           labelId="Category"
           id="Category-simple-select-outlined"
-          value={this.state.report_type}
+          value={this.state.category}
           required
           fullWidth
           variant ="outlined"
-          onChange={this.onChangeReport_type}
+          onChange={this.onChangeCategory}
           label="Region">
           <MenuItem value="">
             <em>None</em>

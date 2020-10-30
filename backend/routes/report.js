@@ -14,18 +14,18 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
 
   const report_type = req.body.report_type;
-  const expected_date = Date.parse(req.body.expected_date)
-  const type_of_house = req.body.type_of_house
+  const hdb_type = req.body.hdb_type
+  const hdb_category = req.body.hdb_category
   const region = req.body.region
-  const residential_area = req.body.residential_area
-  const description = req.body.description
+  const hdb_estate = req.body.hdb_estate
+  const ammenties = req.body.ammenties
   const date_generated = Date.now()
   const user_id = req.body.user_id
-
+  const expected_date = Date.parse(req.body.expected_date)
  const estimated_price = 500000
  const estimated_tax = 40000
-
-  const newReport = new Report({report_type,expected_date,type_of_house,region,residential_area,description,estimated_price,estimated_tax,date_generated,user_id});
+const description = "this is the description"
+  const newReport = new Report({report_type,hdb_type,hdb_category,region,hdb_estate,ammenties,description,expected_date,estimated_price,estimated_tax,date_generated,user_id});
 
   //Save to database
   newReport.save()

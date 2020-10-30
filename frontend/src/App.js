@@ -14,6 +14,8 @@ import ViewPost from "./components/post";
 import EditComment from "./components/edit-comment";
 import HomePage from "./components/home-page";
 import ReportSum from "./components/report-sum"
+import ReportPage from "./components/reportpage"
+import ReportView from"./components/report-view"
 
 function App() {
   return (
@@ -22,9 +24,9 @@ function App() {
         <Navbar />
         <Route path = "/" exact component= {HomePage}/>
         <Route path ="/report" exact component = {ReportList} />
-        <Route path = "/report/sum/:id" exact component = {ReportSum}/>
+        <Route path = "/report/sum/:id" exact component = {ReportView}/>
         <Route path ="/report/edit/:id" exact component = {EditReport} />
-        <Route path ="/report/create" exact component = {CreateReport} />
+        <Route path ="/report/create" exact component = {ReportPage} />
         <Route path ="/user" exact component = {CreateUser} />
         <Route path ="/forum" exact component = {PostList} />
         <Route path ="/forum/create" exact component = {CreatePost} />
