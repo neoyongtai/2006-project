@@ -1,25 +1,39 @@
 import React, {Component} from 'react';
 import axios from  'axios';
-import { TextField, Button, Grid, Container } from '@material-ui/core';
+import { createBrowserHistory } from "history";
 
-export default class CreateUser extends Component
+
+const history = createBrowserHistory({forceRefresh: true});
+
+export default class Login extends Component
 {
-
     constructor(props) {
         super(props)
 
         //Bind the event handlers
         this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangePassword = this.onChangePassword.bind(this)
-        this.onSubmit = this.onSubmit.bind(this)
+        this.onSignIn = this.onSignIn.bind(this)
+        this.onSignOut = this.onSignOut.bind(this)
 
 
         //Create the same fields as the MongoDB Schema
         this.state = {
             username: "",
             password: "",
+            token: localStorage.getItem("SESSIONTOKEN"),
+            userId: localStorage.getItem("USERID"),
+            user: localStorage.getItem("USERNAME")
         }
     }
+
+    // componentDidMount()
+    // {
+    //   if(localStorage.getItem("SESSIONTOKEN") !== null) {
+    //       history.push('/forum')
+    //     }
+    // }
+
 
     onChangeUsername(e)
     {
@@ -28,7 +42,7 @@ export default class CreateUser extends Component
         })
     }
 
-    
+
     onChangePassword(e)
     {
         this.setState({
@@ -36,7 +50,7 @@ export default class CreateUser extends Component
         })
     }
 
-    
+
     onSubmit(e)
     {
         e.preventDefault();
@@ -47,54 +61,80 @@ export default class CreateUser extends Component
         }
 
         //Send user data to backend.
-        axios.post('http://localhost:5000/users/add',user)
+        axios.post('http://localhost:5000/users/login', user)
+        .then(res => {
+            localStorage.setItem('SESSIONTOKEN', res.data.token);
+            localStorage.setItem('USERID', res.data.userId);
+            this.setState (
+              {
+                token: localStorage.getItem('SESSIONTOKEN'),
+                userId: localStorage.getItem('USERID')
+              }
+            )
+            axios.get('http://localhost:5000/users/get?userId=' + this.state.userId)
+            .then(res => {
+              localStorage.setItem('USERNAME', res.data.user.username);
+              this.setState ({user: localStorage.getItem('USERNAME')})
+              console.log(this.state.user)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            history.push('/forum')
+          })
+          .catch((error) => {
+              console.log(error);
+          })
+    }
+
+    onSignOut(e)
+    {
+        e.preventDefault();
+
+        axios.get('http://localhost:5000/users/logout?token=' + this.state.token)
         .then(res =>console.log(res.data))
 
-        console.log(user)
+        localStorage.removeItem("SESSIONTOKEN")
 
-        //Take back to the home pages.
-        this.setState({
-            username: "",
-            firstname: ""
-        
-        })
-           
     }
 
     render()
     {
         return (
-            <Container maxWidth='sm'>
-                <h3>Create New User</h3>
-                <form onSubmit={this.onSubmit}>
+            <div>
+            <h3>Sign In / Sign Out</h3>
+            <form onSubmit={this.onSignIn}>
 
-                <Grid container spacing={3}>
-                    <Grid item xs={12}>
-                        <TextField
-                        label='Username' variant='outlined'
-                        required
-                        fullWidth
-                        value={this.state.username}
-                        onChange={this.onChangeUsername}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <TextField
-                        label='Password' variant='outlined'
-                        required
-                        fullWidth
-                        value={this.state.password}
-                        onChange={this.onChangePassword}
-                        />
-                    </Grid>
-                    <Grid item xs={12}>
-                        <Button variant='contained' color='primary' type='submit' fullWidth>
-                            Login
-                        </Button>
-                    </Grid>
-                </Grid>
-              </form>
-            </Container>
+              <div className="form-group">
+                <label>Username: </label>
+                <input  type="text"
+                    required
+                    className="form-control"
+                    value={this.state.username}
+                    onChange={this.onChangeUsername}
+                    />
+              </div>
+
+              <div className="form-group">
+                <label>Password: </label>
+                <input  type="text"
+                    required
+                    className="form-control"
+                    value={this.state.password}
+                    onChange={this.onChangePassword}
+                    />
+              </div>
+
+              <div className="form-group">
+                <input type="submit" value="Login" className="btn btn-primary" />
+              </div>
+            </form>
+            <form onSubmit={this.onSignOut}>
+              <div className="form-group">
+                <input type="submit" value="Logout" className="btn btn-primary" />
+              </div>
+            </form>
+          </div>
         )
     }
 }

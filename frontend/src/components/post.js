@@ -38,12 +38,14 @@ export default class ViewPost extends Component {
                description: " ",
                no_of_comments: " ",
                no_of_upvotes: " ",
-               createdAt: new Date()
+               createdAt: new Date(),
+               token: ""
            }
     }
 
     //Lifecycle React Method
    componentDidMount(){
+
     axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
     .then(response => {
       this.setState({

@@ -1,6 +1,8 @@
 const router = require('express').Router();
 let Post = require('../models/post.model');
-const { route } = require('./users');
+const UserSession = require('../models/usersession.model');
+const User = require('../models/user.model');
+
 
 router.route('/').get((req, res) => {
     Post.find() //Mongoose method

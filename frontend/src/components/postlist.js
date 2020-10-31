@@ -46,18 +46,32 @@ export default class PostList extends Component
         super(props)
 
         this.deletePost = this.deletePost.bind(this);
-        this.state = { post : []}
+        this.state = { post : [],
+          token : localStorage.getItem('SESSIONTOKEN'),
+          userId: localStorage.getItem('USERID'),
+          user: localStorage.getItem('USERNAME')
+        }
     }
 
     componentDidMount()
     {
-        axios.get('http://localhost:5000/post/')
+        axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
         .then(response => {
-            this.setState({post : response.data})
+          console.log("TOKEN " + this.state.token)
+          console.log("USER ID " + this.state.userId)
+          console.log("USERNAME " + this.state.user)
+          axios.get('http://localhost:5000/post/')
+          .then(response => {
+              this.setState({post : response.data})
+          })
+          .catch((error) => {
+              console.log(error);
+          })
         })
         .catch((error) => {
             console.log(error);
         })
+
     }
 
     deletePost(id)

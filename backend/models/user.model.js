@@ -1,56 +1,69 @@
-const mongoose = require('mongoose')
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
 
 const Schema = mongoose.Schema
 const AutoIncrement = require('mongoose-sequence')(mongoose);
 
-const userSchema = new Schema({
-    _id:Number,
-
-    username:{
+const UserSchema = new Schema({
+    isBanned: {
+      type:Boolean,
+      default: false
+    },
+    isAdmin: {
+      type:Boolean,
+      default: false
+    },
+    no_of_comments: {
+      type: Number,
+      default: 0
+    },
+    no_of_posts: {
+      type: Number,
+      default: 0
+    },
+    username: {
         type:String,
         required: true,
         unique: true,
-        trim: true
+        trim: true,
+        minlength : 3,
+        default: ''
     },
     password: {
-        type:String, required: true
+        type:String,
+        required: true,
+        minlength : 6,
+        default: ''
     },
-    firstname :{
-        type:String, required: true
+    firstname: {
+        type:String,
+        required: true,
+        default: ''
     },
     lastname: {
-        type:String, required: true
+        type:String,
+        required: true,
+        default: ''
     },
     email: {
-        type:String , required: true
+        type:String,
+        required: true,
+        default: ''
     },
-    ban_status: {
-        type:Boolean, default: false
-    },
-    admin_status: {
-        type:Boolean, default: false
-    },
-    no_of_comments:
-    {
-        type:Number, default: 0
-    },
-    no_of_posts :
-    {
-        type:Number, default: 0
-    },
-    
-}, {    _id: false,
+    isDeleted: {
+        type:Boolean,
+        default: false
+    }
+}, {
         timestamps: true,
 });
 
-userSchema.plugin(AutoIncrement)
-const User = mongoose.model('user', userSchema);
+UserSchema.methods.generateHash = function(password) {
+  return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
+};
 
+UserSchema.methods.validPassword = function (password) {
+  return bcrypt.compareSync(password, this.password);
+}
 
-// To reset the _id counter.
-/*User.counterReset('_id', function(err) {
-console.log(err);
-})*/
-
-
-module.exports = User;
+module.exports = mongoose.model('User', UserSchema);

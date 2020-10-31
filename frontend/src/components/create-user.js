@@ -13,6 +13,7 @@ export default class CreateUser extends Component
         this.onChangePassword = this.onChangePassword.bind(this)
         this.onChangeFirstname = this.onChangeFirstname.bind(this)
         this.onChangeLastname = this.onChangeLastname.bind(this)
+        this.onChangeEmail = this.onChangeEmail.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
 
@@ -22,6 +23,7 @@ export default class CreateUser extends Component
             password: "",
             firstname: "",
             lastname: "",
+            email: "",
         }
     }
 
@@ -35,11 +37,10 @@ export default class CreateUser extends Component
     onChangePassword(e)
     {
         this.setState({
-            pasword: e.target.value
+            password: e.target.value
         })
     }
 
-    
     onChangeFirstname(e)
     {
         this.setState({
@@ -47,13 +48,20 @@ export default class CreateUser extends Component
         })
     }
 
-    
     onChangeLastname(e)
     {
         this.setState({
             lastname: e.target.value
         })
     }
+
+    onChangeEmail(e)
+    {
+        this.setState({
+            email: e.target.value
+        })
+    }
+
     onSubmit(e)
     {
         e.preventDefault();
@@ -63,6 +71,7 @@ export default class CreateUser extends Component
             password: this.state.password,
             firstname: this.state.firstname,
             lastname: this.state.lastname,
+            email: this.state.email,
         }
 
         //Send user data to backend.
@@ -76,10 +85,9 @@ export default class CreateUser extends Component
             username: "",
             password: "",
             firstname: "",
-            lastname: ""
-        
+            lastname: "",
+            email: ""
         })
-           
     }
 
     render()

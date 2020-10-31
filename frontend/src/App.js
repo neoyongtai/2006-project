@@ -16,6 +16,7 @@ import HomePage from "./components/home-page";
 import ReportSum from "./components/report-sum"
 
 function App() {
+
   return (
     <div>
       <Router>
@@ -26,6 +27,7 @@ function App() {
         <Route path ="/report/edit/:id" exact component = {EditReport} />
         <Route path ="/report/create" exact component = {CreateReport} />
         <Route path ="/user" exact component = {CreateUser} />
+        <Route path ="/login" exact component = {SignIn} />
         <Route path ="/forum" exact component = {PostList} />
         <Route path ="/forum/create" exact component = {CreatePost} />
         <Route path ="/forum/edit/:id" exact component = {EditPost} />
