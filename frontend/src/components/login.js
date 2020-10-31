@@ -1,9 +1,12 @@
 import React, {Component} from 'react';
 import axios from  'axios';
+import { createBrowserHistory } from "history";
+
+
+const history = createBrowserHistory({forceRefresh: true});
 
 export default class Login extends Component
 {
-
     constructor(props) {
         super(props)
 
@@ -18,8 +21,19 @@ export default class Login extends Component
         this.state = {
             username: "",
             password: "",
+            token: localStorage.getItem("SESSIONTOKEN"),
+            userId: localStorage.getItem("USERID"),
+            user: localStorage.getItem("USERNAME")
         }
     }
+
+    // componentDidMount()
+    // {
+    //   if(localStorage.getItem("SESSIONTOKEN") !== null) {
+    //       history.push('/forum')
+    //     }
+    // }
+
 
     onChangeUsername(e)
     {
@@ -46,23 +60,39 @@ export default class Login extends Component
 
         //Send user data to backend.
         axios.post('http://localhost:5000/users/login', user)
-        .then(res =>console.log(res.data))
-
-        console.log(user)
-
-        //Take back to the home pages.
-        this.setState({
-            username: "",
-            password: "",
-        })
+        .then(res => {
+            localStorage.setItem('SESSIONTOKEN', res.data.token);
+            localStorage.setItem('USERID', res.data.userId);
+            this.setState (
+              {
+                token: localStorage.getItem('SESSIONTOKEN'),
+                userId: localStorage.getItem('USERID')
+              }
+            )
+            axios.get('http://localhost:5000/users/get?userId=' + this.state.userId)
+            .then(res => {
+              localStorage.setItem('USERNAME', res.data.user.username);
+              this.setState ({user: localStorage.getItem('USERNAME')})
+              console.log(this.state.user)
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+            history.push('/forum')
+          })
+          .catch((error) => {
+              console.log(error);
+          })
     }
 
     onSignOut(e)
     {
         e.preventDefault();
 
-        axios.get('http://localhost:5000/users/logout?token=5f9bf81c254ad80b1cf04b07')
+        axios.get('http://localhost:5000/users/logout?token=' + this.state.token)
         .then(res =>console.log(res.data))
+
+        localStorage.removeItem("SESSIONTOKEN")
 
     }
 

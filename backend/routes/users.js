@@ -1,4 +1,5 @@
 const router = require('express').Router();
+let Post = require('../models/post.model');
 const User = require('../models/user.model');
 const UserSession = require('../models/usersession.model');
 
@@ -6,6 +7,27 @@ router.route('/').get((req, res) => {
   User.find() //Mongoose method
     .then(users => res.json(users))
     .catch(err => res.status(400).json('Error: ' + err));
+});
+
+router.route('/get').get((req, res) => {
+  const { query } = req;
+  const { userId } = query;
+
+  User.findOne({
+    _id: userId
+  }, (err, user) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Invalid User'
+      });
+    }
+      return res.send({
+        success: true,
+        message: 'Valid User',
+        user: user
+    })
+  })
 });
 
 router.route('/add').post((req, res, next) => {
@@ -142,7 +164,8 @@ router.route('/login').post((req, res, next) => {
         return res.send({
             success: true,
             message: 'Signed in',
-            token: doc._id
+            token: doc._id,
+            userId: userSession.userId
         });
       });
     });
@@ -151,6 +174,7 @@ router.route('/login').post((req, res, next) => {
 router.route('/verify').get((req, res, next) => {
     const { query } = req;
     const { token } = query;
+
 
     UserSession.find({
       _id: token,
