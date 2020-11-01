@@ -135,6 +135,15 @@ export default class CreateUser extends Component
                         />
                     </Grid>
                     <Grid item xs={12}>
+                        <TextField
+                        label='Email' variant='outlined'
+                        required
+                        fullWidth
+                        value={this.state.email}
+                        onChange={this.onChangeEmail}
+                        />
+                    </Grid>
+                    <Grid item xs={12}>
                         <Button variant='contained' color='primary' type='submit' fullWidth>
                             Create User
                         </Button>

@@ -36,8 +36,8 @@ function Navbar()  {
 
     const classes = useStyles();
     //const [values, setValues] = useState(formvalues);
- 
-    const handleInputChange = e => { 
+
+    const handleInputChange = e => {
      // e.preventDefault();
 
       axios.get('http://localhost:5000/users/logout?token=' + localStorage.getItem('SESSIONTOKEN'))
@@ -51,7 +51,7 @@ function Navbar()  {
       })
   }
 
-  
+
     return (
       <div >
         <AppBar className = {classes.appbar} elevation={0} >
@@ -61,13 +61,13 @@ function Navbar()  {
             </Typography>
             <div>
             <Button component={Link} to={'/forum/create'} > Add Post </Button>
-            <Button component={Link} to = {'/report/create'}> Analaysis</Button>
-            <Button component={Link} to ={'/user'} > Login</Button>
+            <Button component={Link} to = {'/report/create'}> Analysis</Button>
+            <Button component={Link} to ={'/login'} > Login</Button>
               </div>
           </Toolbar>
           <form onSubmit={handleInputChange}>
             <div className="form-group">
-              <input type="submit" value="Logout" className="btn btn-primary" 
+              <input type="submit" value="Logout" className="btn btn-primary"
               disabled={localStorage.getItem('SESSIONTOKEN') === null ? "disabled" : ""} />
             </div>
           </form>
