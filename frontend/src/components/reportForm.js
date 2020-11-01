@@ -25,7 +25,7 @@ const formvalues = {
     hdb_category: "",
     region: "",
     hdb_estate: "",
-    ammenties: {shop: false , mrt: false, hospital: false, school:false, food:false}, 
+    ammenties: {shop: false , mrt: false, school:false, food:false}, 
     expected_date: new Date(),
     user_id : 1,
     date_generated: new Date()
@@ -149,13 +149,12 @@ function ReportForm (props){
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={`Two-Room-Flexi`}>Two-Room-Flexi</MenuItem>
-          <MenuItem value={`Three-Room`}>Three-Room</MenuItem>
-          <MenuItem value={`Four-Room`}>Four-Room</MenuItem>
-          <MenuItem value={`Five-Room`}>Five-Room</MenuItem>
-          <MenuItem value={`3Gen`}>3Gen</MenuItem>
-          <MenuItem value={`Executive Flat`}>Executive Flat</MenuItem>
-          <MenuItem value={`DBSS`}>DBSS</MenuItem>
+          <MenuItem value={`OneRoom`}>1-Room </MenuItem>
+          <MenuItem value={`TwoRoom`}>2-Room </MenuItem>
+          <MenuItem value={`ThreeRoom`}>3-Room</MenuItem>
+          <MenuItem value={`FourRoom`}>4-Room</MenuItem>
+          <MenuItem value={`FiveRoom`}>5-Room</MenuItem>
+          <MenuItem value={`Executive`}>Executive Flat</MenuItem>
         </Select>
             </Grid>
 
@@ -199,32 +198,31 @@ function ReportForm (props){
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={`Ang Mo Kio`}>Ang Mo Kio</MenuItem>
-          <MenuItem value={`Bukit Batok`}>Bukit Batok</MenuItem>
-          <MenuItem value={`Bukit Timah`}>Bukit Timah</MenuItem>
-          <MenuItem value={`Bukit Panjang`}>Bukit Panjang</MenuItem>
-          <MenuItem value={`Bukit Merah`}>Bukit Merah</MenuItem>
-          <MenuItem value={`Bedok`}>Bedok</MenuItem>
-          <MenuItem value={`Bishan`}>Bishan</MenuItem>
+          <MenuItem value={`ANG_MOK_KIO`}>Ang Mo Kio</MenuItem>
+          <MenuItem value={`BUKIT_TIMAH`}>Bukit Timah</MenuItem>
+          <MenuItem value={`BUKIT_PANJANG`}>Bukit Panjang</MenuItem>
+          <MenuItem value={`BUKIT_MERAH`}>Bukit Merah</MenuItem>
+          <MenuItem value={`BEDOK`}>Bedok</MenuItem>
+          <MenuItem value={`BISHAN`}>Bishan</MenuItem>
           <MenuItem value={`Clementi`}>Clementi</MenuItem>
-          <MenuItem value={`Central Area`}>Central Area</MenuItem>
-          <MenuItem value={`Choa Chu Kang`}>Choa Chu Kang</MenuItem>
-          <MenuItem value={`Geylang`}>Geylang</MenuItem>
-          <MenuItem value={`Hougang`}>Hougang</MenuItem>
-          <MenuItem value={`Jurong East`}>Jurong East</MenuItem>
-          <MenuItem value={`Jurong West`}>Jurong West</MenuItem>
-          <MenuItem value={`Kallang`}>Kallang</MenuItem>
-          <MenuItem value={`Marine Parade`}>Marine Parade</MenuItem>
-          <MenuItem value={`Pasir Ris`}>Pasir Ris</MenuItem>
-          <MenuItem value={`Punggol`}>Punggol</MenuItem>
-          <MenuItem value={`Queenstown`}>Queenstown</MenuItem>
-          <MenuItem value={`Sembawang`}>Sembawang</MenuItem>
-          <MenuItem value={`Sengkang`}>Sengkang</MenuItem>
-          <MenuItem value={`Serangoon`}>Serangoon</MenuItem>
-          <MenuItem value={`Tampines`}>Tampines</MenuItem>
-          <MenuItem value={`Toa Payoh`}>Toa Payoh</MenuItem>
-          <MenuItem value={`Woodlands`}>Woodlands</MenuItem>
-          <MenuItem value={`Yishun`}>Yishun</MenuItem>
+          <MenuItem value={`CENTRAL`}>Central Area</MenuItem>
+          <MenuItem value={`CHOA_CHU_KANG`}>Choa Chu Kang</MenuItem>
+          <MenuItem value={`GEYLANG`}>Geylang</MenuItem>
+          <MenuItem value={`HOUGANG`}>Hougang</MenuItem>
+          <MenuItem value={`JURONG_EAST`}>Jurong East</MenuItem>
+          <MenuItem value={`JURONG_WEST`}>Jurong West</MenuItem>
+          <MenuItem value={`KALLANG`}>Kallang</MenuItem>
+          <MenuItem value={`MARINE_PARADE`}>Marine Parade</MenuItem>
+          <MenuItem value={`PASIR_RIS`}>Pasir Ris</MenuItem>
+          <MenuItem value={`PUNGGOL`}>Punggol</MenuItem>
+          <MenuItem value={`QUEENSTOWN`}>Queenstown</MenuItem>
+          <MenuItem value={`SEMBAWANG`}>Sembawang</MenuItem>
+          <MenuItem value={`SENGKANG`}>Sengkang</MenuItem>
+          <MenuItem value={`SERANGOON`}>Serangoon</MenuItem>
+          <MenuItem value={`TAMPINES`}>Tampines</MenuItem>
+          <MenuItem value={`TOA_PAYOH`}>Toa Payoh</MenuItem>
+          <MenuItem value={`WOODLANDS`}>Woodlands</MenuItem>
+          <MenuItem value={`YISHUN`}>Yishun</MenuItem>
         </Select>
         </Grid>
 
@@ -256,12 +254,6 @@ function ReportForm (props){
             control={<Checkbox checked={values.ammenties.mrt} onChange={handlecheckBox} name="mrt"  color="primary" />}
             label="Near Mrt"
           />
-
-          <FormControlLabel
-            control={<Checkbox checked={values.ammenties.hospital} onChange={handlecheckBox} name="hospital"  color="primary" />}
-            label="Near Hospital "
-          />
-
           <FormControlLabel
             control={<Checkbox checked={values.ammenties.school} onChange={handlecheckBox} name="school"  color="primary" />}
             label="Near School"

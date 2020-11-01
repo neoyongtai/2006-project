@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import axios from  'axios';
 import { withRouter } from 'react-router-dom';
 import {Grid, makeStyles, Container,Typography, TextField, InputLabel, Select, MenuItem, FormHelperText, FormLabel, FormGroup,FormControlLabel, Checkbox, Button } from '@material-ui/core';
-
+import ReportMaps from "./report-maps"
 
 const useStyles = makeStyles(theme => ({
 
@@ -36,15 +36,15 @@ const formvalues = {
 }
 
 
-
 function ReportSum(props) {
 
-  const [report, setReport] = useState(formvalues);
 
+  const [report, setReport] = useState(formvalues);
   useEffect(() => {
      axios.get('http://localhost:5000/report/'+props.match.params.id)
     .then(response => {
       setReport(response.data);
+     
     })
     .catch(function (error) {
       console.log(error);
@@ -52,7 +52,8 @@ function ReportSum(props) {
   },[])
 
 
-
+  console.log("This is from summary")
+  console.log(report)
 
 
 
@@ -100,12 +101,12 @@ function ReportSum(props) {
                    </Grid>
 
                    <Grid item xs={12}>
-                   <Typography variant ="h6">Estaimted Price: {report.estimated_price} </Typography> 
+                   <Typography variant ="h6">Estaimted Price: ${report.estimated_price} </Typography> 
                    </Grid>
 
                     
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Estimated Tax: {report.estimated_tax} </Typography> 
+                   <Typography variant ="h6"> Estimated Tax: ${report.estimated_tax} </Typography> 
                    </Grid>
                     
                    <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth>
@@ -115,7 +116,12 @@ function ReportSum(props) {
                     Publish Report </Button> 
                     
                     </Grid>
+                    <Grid item xs={12}>
+                       <ReportMaps estate =  "BEDOK"></ReportMaps>
+                       <Typography variant ="h6"> Cord: </Typography> 
+                       
 
+                    </Grid>
 
                     </Grid>
                     </Container>
