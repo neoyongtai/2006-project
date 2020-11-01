@@ -1,13 +1,140 @@
-import React, { Component } from 'react'
+import React, { useState, useEffect } from 'react'
 import axios from  'axios';
-import Typography from '@material-ui/core/Typography';
-import Grid from '@material-ui/core/Grid';
-import Container from '@material-ui/core/Container';
-import Button from '@material-ui/core/Button'
+import { withRouter } from 'react-router-dom';
+import {Grid, makeStyles, Container,Typography, TextField, InputLabel, Select, MenuItem, FormHelperText, FormLabel, FormGroup,FormControlLabel, Checkbox, Button } from '@material-ui/core';
+import ReportMaps from "./report-maps"
+
+const useStyles = makeStyles(theme => ({
+
+  root:{
+          //Select the class that enclosed the everything within the form.
+      '& .MuiGrid-root': {
+          width: '100%',
+          margin: theme.spacing(1),
+      },
+   title:{
+       display: 'flex',
+      justifyContent: 'center'
+      }
+  }
+}))
 
 
 
-export class reportSum extends Component {
+const formvalues = {
+  report_type: "",
+  hdb_type: "",
+  hdb_category: "",
+  region: "",
+  hdb_estate: "",
+  ammenties: {shop: false , mrt: false, hospital: false, school:false, food:false}, 
+  expected_date: new Date(),
+  user_id : 1,
+  estimated_price:"",
+  estimated_tax:"",
+  date_generated: new Date()
+}
+
+
+function ReportSum(props) {
+
+
+  const [report, setReport] = useState(formvalues);
+  useEffect(() => {
+     axios.get('http://localhost:5000/report/'+props.match.params.id)
+    .then(response => {
+      setReport(response.data);
+     
+    })
+    .catch(function (error) {
+      console.log(error);
+    })     
+  },[])
+
+
+  console.log("This is from summary")
+  console.log(report)
+
+
+
+  return (
+    <div>
+
+            <div >
+            <h1  style={{textAlign: "center"}}>Report Analaysis </h1>
+            </div>
+              
+              <Container maxWidth="sm">
+
+                 <Grid container spacing={3}>
+                 <Grid item xs={12}>
+                   <Typography variant ="h6">Report Type: {report.report_type} </Typography> 
+                   </Grid>
+
+                   
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> HDB Type: {report.hdb_type} </Typography> 
+                   </Grid>
+
+                  
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> HDB Category: {report.hdb_category}  </Typography> 
+                   </Grid>
+
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Region : {report.region} </Typography> 
+                   </Grid>
+
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> HDB Estate: {report.hdb_estate} </Typography> 
+                   </Grid>
+                    
+                    
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Expected Date: {JSON.stringify(report.date_generated)}  </Typography> 
+                   </Grid>
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Method:  {JSON.stringify(report.ammenties)} </Typography> 
+                   </Grid>
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6">Estaimted Price: ${report.estimated_price} </Typography> 
+                   </Grid>
+
+                    
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Estimated Tax: ${report.estimated_tax} </Typography> 
+                   </Grid>
+                    
+                   <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth>
+                    Save Report
+                  </Button></Grid>
+                   <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth>
+                    Publish Report </Button> 
+                    
+                    </Grid>
+                    <Grid item xs={12}>
+                       <ReportMaps estate =  "BEDOK"></ReportMaps>
+                       <Typography variant ="h6"> Cord: </Typography> 
+                       
+
+                    </Grid>
+
+                    </Grid>
+                    </Container>
+    </div>
+  )
+}
+
+
+export default withRouter(ReportSum)
+
+
+ 
+/* export class reportSum extends Component {
 
     constructor(props) {
         super(props)
@@ -98,5 +225,5 @@ export class reportSum extends Component {
         )
     }
 }
-
-export default reportSum
+ */
+//export default reportSum
