@@ -17,6 +17,7 @@ import ReportSum from "./components/report-sum"
 import ReportPage from "./components/reportpage"
 import ReportView from"./components/report-view"
 import ReportMaps from "./components/report-maps"
+import SignIn from "./components/login"
 
 function App() {
 

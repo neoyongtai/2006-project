@@ -44,6 +44,45 @@ export default class Login extends Component
         })
     }
 
+    onSignIn(e)
+    {
+        e.preventDefault();
+
+        const user = {
+            username: this.state.username,
+            password: this.state.password,
+        }
+
+        //Send user data to backend.
+        axios.post('http://localhost:5000/users/login', user)
+        .then(res => {
+            localStorage.setItem('SESSIONTOKEN', res.data.token);
+            localStorage.setItem('USERID', res.data.userId);
+            this.setState (
+              {
+                token: localStorage.getItem('SESSIONTOKEN'),
+                userId: localStorage.getItem('USERID')
+              }
+            )
+            axios.get('http://localhost:5000/users/get?userId=' + this.state.userId)
+            .then(res => {
+              localStorage.setItem('USERNAME', res.data.user.username);
+              this.setState ({user: localStorage.getItem('USERNAME')})
+              console.log(this.state.token)
+              console.log(this.state.userId)
+              console.log(this.state.user)
+              this.props.history.push('/forum')
+            })
+            .catch((error) => {
+                console.log(error);
+            })
+          })
+          .catch((error) => {
+              console.log(error);
+          })
+    }
+
+
 
     onSubmit(e)
     {

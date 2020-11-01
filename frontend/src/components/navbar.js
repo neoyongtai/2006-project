@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from  'axios';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
@@ -35,15 +35,10 @@ const useStyles = makeStyles((theme) => ({
 function Navbar()  {
 
     const classes = useStyles();
-
-  constructor(props) {
-      super(props)
-      this.onSignOut = this.onSignOut.bind(this)
-  }
-
-  onSignOut(e)
-  {
-      e.preventDefault();
+    //const [values, setValues] = useState(formvalues);
+ 
+    const handleInputChange = e => { 
+     // e.preventDefault();
 
       axios.get('http://localhost:5000/users/logout?token=' + localStorage.getItem('SESSIONTOKEN'))
       .then(res => {
@@ -56,7 +51,7 @@ function Navbar()  {
       })
   }
 
-  render() {
+  
     return (
       <div >
         <AppBar className = {classes.appbar} elevation={0} >
@@ -70,9 +65,9 @@ function Navbar()  {
             <Button component={Link} to ={'/user'} > Login</Button>
               </div>
           </Toolbar>
-          <form onSubmit={this.onSignOut}>
+          <form onSubmit={handleInputChange}>
             <div className="form-group">
-              <input type="submit" value="Logout" className="btn btn-primary"
+              <input type="submit" value="Logout" className="btn btn-primary" 
               disabled={localStorage.getItem('SESSIONTOKEN') === null ? "disabled" : ""} />
             </div>
           </form>
@@ -81,6 +76,6 @@ function Navbar()  {
 
       </div>
     );
-  }
 
+}
 export default Navbar
