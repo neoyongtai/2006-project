@@ -16,7 +16,6 @@ export default class EditPost extends Component
 
         //Bind the event handlers
         this.onChangeTitle = this.onChangeTitle.bind(this)
-        this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangeDescription = this.onChangeDescription.bind(this)
         this.onChangeNumberOfComments = this.onChangeNumberOfComments.bind(this)
         this.onChangeNumberofUpvotes = this.onChangeNumberofUpvotes.bind(this)
@@ -32,6 +31,9 @@ export default class EditPost extends Component
 
     //Lifecycle React Method
    componentDidMount(){
+     if(localStorage.getItem("SESSIONTOKEN") === null) {
+         this.props.history.push('/login')
+       }
     axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
     .then(response => {
       this.setState({
@@ -53,13 +55,6 @@ export default class EditPost extends Component
     {
         this.setState({
             title: e.target.value
-        })
-    }
-
-    onChangeUsername(e)
-    {
-        this.setState({
-            username: e.target.value
         })
     }
 
@@ -117,15 +112,6 @@ export default class EditPost extends Component
                   required
                   value={this.state.title}
                   onChange={this.onChangeTitle}
-                  />
-                </Grid>
-
-                <Grid item xs={12}>
-                  <TextField
-                  label="Username" variant="outlined"
-                  fullWidth
-                  value={this.state.username}
-                  onChange={this.onChangeUsername}
                   />
                 </Grid>
 

@@ -4,7 +4,15 @@ const Schema = mongoose.Schema
 
 const commentSchema = new Schema({
 
-    comment: {
+  post_id: Number,
+  comment_id: Number,
+    username:{
+        type:String,
+        required: true,
+        trim: true,
+        minlength : 3
+    },
+    description: {
         type:String, required: true
     },
     no_of_upvotes:

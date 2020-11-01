@@ -4,7 +4,13 @@ const Schema = mongoose.Schema
 
 const postSchema = new Schema({
 
-
+  post_id:{
+      type: Number
+  },
+    username:{
+        type:String,
+        required: true
+    },
     title: {
         type:String, required: true
     },
