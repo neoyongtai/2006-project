@@ -29,49 +29,62 @@ export default class ViewPost extends Component {
         //Bind the event handlers
         this.onClickUpvoteHandler = this.onClickUpvoteHandler.bind(this)
 
-
            //Create the same fields as the MongoDB Schema
            this.state = {
                post_id: " ",
                title: " ",
-               username: " ",
                description: " ",
                no_of_comments: " ",
                no_of_upvotes: " ",
                createdAt: new Date(),
-               token: ""
+               token : localStorage.getItem('SESSIONTOKEN'),
+               userId: localStorage.getItem('USERID'),
+               username: localStorage.getItem('USERNAME')
            }
     }
 
     //Lifecycle React Method
    componentDidMount(){
 
-    axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
-    .then(response => {
-      this.setState({
-        post_id: response.data.post_id,
-        title: response.data.title,
-        username: response.data.username,
-        description: response.data.description,
-        no_of_comments: response.data.no_of_comments,
-        no_of_upvotes: response.data.no_of_upvotes,
-        createdAt: response.data.createdAt
-      })
-    })
-    .catch(function (error) {
-      console.log(error);
-    })
+     if(localStorage.getItem("SESSIONTOKEN") === null) {
+         this.props.history.push('/login')
+       }
 
+     axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
+     .then((res) => {
+       console.log(this.state.token)
+       console.log(this.state.userId)
+       console.log(this.state.username)
+       console.log(res.data)
+       axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
+       .then(response => {
+         this.setState({
+           post_id: response.data.post_id,
+           title: response.data.title,
+           username: response.data.username,
+           description: response.data.description,
+           no_of_comments: response.data.no_of_comments,
+           no_of_upvotes: response.data.no_of_upvotes,
+           createdAt: response.data.createdAt
+         })
+       })
+       .catch(function (error) {
+         console.log(error);
+       })
+     })
+     .catch((error) => {
+         console.log(error);
+     })
     }
 
-    updatePost(upVote) {
+    updatePost() {
       const post = {
           post_id: this.state.post_id,
           title: this.state.title,
           username: this.state.username,
           description: this.state.description,
           no_of_comments: this.state.no_of_comments,
-          no_of_upvotes: (this.state.no_of_upvotes + 1)
+          no_of_upvotes: this.state.no_of_upvotes + 1
       }
 
       console.log(post)
@@ -82,7 +95,7 @@ export default class ViewPost extends Component {
 
     onClickUpvoteHandler() {
       this.setState({
-        no_of_upvotes: this.state.no_of_upvotes + 1,
+        no_of_upvotes: this.state.no_of_upvotes + 1
       })
       this.updatePost();
     }
@@ -112,7 +125,8 @@ export default class ViewPost extends Component {
               <Grid item xs={2}>
                 <Grid item xs={12}>
                   <IconButton size="small"
-                  onClick={this.onClickUpvoteHandler}>
+                  onClick={this.onClickUpvoteHandler}
+                  disabled={this.state.upVoted ? "disabled" : ""}>
                   <ArrowUpwardIcon />
                    </IconButton><span>{this.state.no_of_upvotes}</span>
                 </Grid>

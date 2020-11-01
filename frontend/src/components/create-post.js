@@ -15,7 +15,6 @@ export default class CreatePost extends Component
 
         //Bind the event handlers
         this.onChangeTitle = this.onChangeTitle.bind(this)
-        this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangeDescription = this.onChangeDescription.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
@@ -23,24 +22,23 @@ export default class CreatePost extends Component
            //Create the same fields as the MongoDB Schema
         this.state = {
             title: " ",
-            username: " ",
+            username: localStorage.getItem('USERNAME'),
             description: " ",
             no_of_comments: 0,
             no_of_upvotes: 0
         }
     }
 
+    componentDidMount() {
+      if(localStorage.getItem("SESSIONTOKEN") === null) {
+          this.props.history.push('/login')
+        }
+    }
+    
     onChangeTitle(e)
     {
         this.setState({
             title: e.target.value
-        })
-    }
-
-    onChangeUsername(e)
-    {
-        this.setState({
-            username: e.target.value
         })
     }
 
@@ -63,10 +61,11 @@ export default class CreatePost extends Component
             no_of_upvotes: this.state.no_of_upvotes
         }
 
-        console.log(post)
-
         axios.post('http://localhost:5000/post/add',post)
         .then(res =>console.log(res.data))
+        .catch((error) => {
+            console.log(error);
+        })
 
     }
     render()
@@ -85,14 +84,6 @@ export default class CreatePost extends Component
                     value={this.state.title}
                     onChange={this.onChangeTitle}
                     />
-                  </Grid>
-                  <Grid item xs={12}>
-                  <TextField
-                  label="Username" variant="outlined"
-                  fullWidth
-                  value={this.state.username}
-                  onChange={this.onChangeUsername}
-                  />
                   </Grid>
                   <Grid item xs={12}>
                   <TextField

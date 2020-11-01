@@ -5,9 +5,36 @@ const User = require('../models/user.model');
 
 
 router.route('/').get((req, res) => {
-    Post.find() //Mongoose method
-    .then(post => res.json(post))//Return the post
-    .catch(err => res.status(400).json('Error: ' + err));
+    const { query } = req;
+    const { username } = query;
+
+      Post.find((err, posts) => {
+        if (err) {
+          return res.send({
+            success: false,
+            message: 'Cannot get posts'
+          })
+        }
+          return res.send({
+            success: true,
+            message: 'Retrieved All Posts',
+            posts: posts
+      })
+    })
+
+  //   Post.find({ username: username }, (err, posts) => {
+  //     if (err) {
+  //       return res.send({
+  //         success: false,
+  //         message: 'Cannot get posts'
+  //       })
+  //     }
+  //       return res.send({
+  //         success: true,
+  //         message: 'Retrieved Own Posts',
+  //         posts: posts
+  //   })
+  // })
 });
 
 router.route('/add').post((req, res) => {

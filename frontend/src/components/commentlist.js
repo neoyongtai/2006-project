@@ -18,15 +18,21 @@ const Comment = props => (
       <TableCell>{props.comment.username}</TableCell>
       <TableCell>{props.comment.description.substring(0,50)}</TableCell>
       <TableCell>
-      <Link to={"/forum/comment/edit/" + props.comment._id}>
-        <IconButton aria-label="Edit Comment">
+      <Link to={props.comment.username !== localStorage.getItem('USERNAME')
+    ? "#" : "/forum/comment/edit/" + props.comment._id}>
+        <IconButton aria-label="Edit Comment" disabled=
+        {props.comment.username !== localStorage.getItem('USERNAME')
+      ? "disabled" : ""}>
           <EditIcon />
         </IconButton>
       </Link>
       </TableCell>
       <TableCell>
-        <Link onClick={() => { props.deleteComment(props.comment._id) }}>
-          <IconButton aria-label="Delete Post">
+        <Link onClick={() => { props.comment.username !== localStorage.getItem('USERNAME')
+      ? console.log("NO") : props.deleteComment(props.comment._id) }}>
+          <IconButton aria-label="Delete Post" disabled=
+          {props.comment.username !== localStorage.getItem('USERNAME')
+        ? "disabled" : ""}>
             <DeleteIcon />
           </IconButton>
         </Link>

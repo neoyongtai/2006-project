@@ -13,14 +13,13 @@ export default class CreateComment extends Component
         super(props)
 
         //Bind the event handlers
-        this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangeDescription = this.onChangeDescription.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
         //Create the same fields as the MongoDB Schema
         this.state = {
           post_id: " ",
-          username: " ",
+          username: localStorage.getItem('USERNAME'),
           description: " "
         }
     }
@@ -32,13 +31,6 @@ export default class CreateComment extends Component
        })
    }
 }
-
-    onChangeUsername(e)
-    {
-        this.setState({
-            username: e.target.value
-        })
-    }
 
     onChangeDescription(e)
     {
@@ -68,16 +60,7 @@ export default class CreateComment extends Component
             <form onSubmit={this.onSubmit}>
 
             <Grid container spacing={3}>
-                <Grid item xs={4}>
-                  <TextField
-                  label="Username" variant="outlined"
-                    required
-                    fullWidth
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    />
-                  </Grid>
-                  <Grid item xs={4}>
+                  <Grid item xs={8}>
                     <TextField
                     label="Comment" variant="outlined"
                     required

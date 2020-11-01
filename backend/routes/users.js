@@ -13,9 +13,7 @@ router.route('/get').get((req, res) => {
   const { query } = req;
   const { userId } = query;
 
-  User.findOne({
-    _id: userId
-  }, (err, user) => {
+  User.findOne({ _id: userId }, (err, user) => {
     if (err) {
       return res.send({
         success: false,

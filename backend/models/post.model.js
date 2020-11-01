@@ -10,10 +10,7 @@ const postSchema = new Schema({
   },
     username:{
         type:String,
-        required: true,
-        unique: true,
-        trim: true,
-        minlength : 3
+        required: true
     },
     title: {
         type:String, required: true

@@ -22,15 +22,21 @@ const Post = props => (
       <TableCell>{props.post.no_of_comments}</TableCell>
       <TableCell>{props.post.no_of_upvotes}</TableCell>
       <TableCell>
-        <Link to={"/forum/edit/"+props.post._id}>
-          <IconButton aria-label="Edit Post">
+        <Link to={props.post.username !== localStorage.getItem('USERNAME')
+      ? "#" : '/forum/edit/'+props.post._id}>
+          <IconButton aria-label="Edit Post" disabled=
+          {props.post.username !== localStorage.getItem('USERNAME')
+        ? "disabled" : ""}>
             <EditIcon />
           </IconButton>
         </Link>
       </TableCell>
       <TableCell>
-        <Link onClick={() => { props.deletePost(props.post._id) }}>
-          <IconButton aria-label="Delete Post">
+        <Link onClick={() => { props.post.username !== localStorage.getItem('USERNAME')
+      ? console.log("NO") : props.deletePost(props.post._id) }}>
+          <IconButton aria-label="Delete Post" disabled=
+          {props.post.username !== localStorage.getItem('USERNAME')
+        ? "disabled" : ""}>
             <DeleteIcon />
           </IconButton>
         </Link>
@@ -46,23 +52,31 @@ export default class PostList extends Component
         super(props)
 
         this.deletePost = this.deletePost.bind(this);
-        this.state = { post : [],
+        this.state = {
+          post : [],
           token : localStorage.getItem('SESSIONTOKEN'),
           userId: localStorage.getItem('USERID'),
-          user: localStorage.getItem('USERNAME')
+          username: localStorage.getItem('USERNAME')
         }
     }
 
     componentDidMount()
     {
+      if(localStorage.getItem("SESSIONTOKEN") === null) {
+          this.props.history.push('/login')
+        }
+
         axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
-        .then(response => {
-          console.log("TOKEN " + this.state.token)
-          console.log("USER ID " + this.state.userId)
-          console.log("USERNAME " + this.state.user)
-          axios.get('http://localhost:5000/post/')
+        .then((res) => {
+          console.log(this.state.token)
+          console.log(this.state.userId)
+          console.log(this.state.username)
+          console.log(res.data)
+          //axios.get('http://localhost:5000/post?username=' + this.state.username) // get for own posts
+          axios.get('http://localhost:5000/post')
           .then(response => {
-              this.setState({post : response.data})
+              this.setState({post : response.data.posts})
+              console.log(response.data.posts)
           })
           .catch((error) => {
               console.log(error);
@@ -87,7 +101,9 @@ export default class PostList extends Component
 
     postList() {
         return this.state.post.map(currentpost => {
-          return <Post post={currentpost} deletePost={this.deletePost} key={currentpost._id} />
+          return <Post post={currentpost}
+          deletePost={this.deletePost}
+          key={currentpost._id} />
         })
       }
 
@@ -99,8 +115,8 @@ export default class PostList extends Component
               <TableHead>
                 <TableRow>
                   <TableCell>Post Id</TableCell>
-                  <TableCell>Title</TableCell>
                   <TableCell>Username</TableCell>
+                  <TableCell>Title</TableCell>
                   <TableCell>Description</TableCell>
                   <TableCell>Number of Comments</TableCell>
                   <TableCell>Number of Upvotes</TableCell>
@@ -109,7 +125,7 @@ export default class PostList extends Component
                 </TableRow>
               </TableHead>
               <TableBody>
-                { this.postList() }
+                {this.postList()}
               </TableBody>
             </Table>
           </TableContainer>

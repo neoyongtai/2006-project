@@ -1,9 +1,5 @@
 import React, {Component} from 'react';
 import axios from  'axios';
-import { createBrowserHistory } from "history";
-
-
-const history = createBrowserHistory({forceRefresh: true});
 
 export default class Login extends Component
 {
@@ -14,7 +10,6 @@ export default class Login extends Component
         this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangePassword = this.onChangePassword.bind(this)
         this.onSignIn = this.onSignIn.bind(this)
-        this.onSignOut = this.onSignOut.bind(this)
 
 
         //Create the same fields as the MongoDB Schema
@@ -27,13 +22,12 @@ export default class Login extends Component
         }
     }
 
-    // componentDidMount()
-    // {
-    //   if(localStorage.getItem("SESSIONTOKEN") !== null) {
-    //       history.push('/forum')
-    //     }
-    // }
-
+    componentDidMount()
+    {
+      if(localStorage.getItem("SESSIONTOKEN") !== null) {
+          this.props.history.push('/forum')
+        }
+    }
 
     onChangeUsername(e)
     {
@@ -73,27 +67,18 @@ export default class Login extends Component
             .then(res => {
               localStorage.setItem('USERNAME', res.data.user.username);
               this.setState ({user: localStorage.getItem('USERNAME')})
+              console.log(this.state.token)
+              console.log(this.state.userId)
               console.log(this.state.user)
+              this.props.history.push('/forum')
             })
             .catch((error) => {
                 console.log(error);
             })
-            history.push('/forum')
           })
           .catch((error) => {
               console.log(error);
           })
-    }
-
-    onSignOut(e)
-    {
-        e.preventDefault();
-
-        axios.get('http://localhost:5000/users/logout?token=' + this.state.token)
-        .then(res =>console.log(res.data))
-
-        localStorage.removeItem("SESSIONTOKEN")
-
     }
 
     render()
@@ -125,11 +110,6 @@ export default class Login extends Component
 
               <div className="form-group">
                 <input type="submit" value="Login" className="btn btn-primary" />
-              </div>
-            </form>
-            <form onSubmit={this.onSignOut}>
-              <div className="form-group">
-                <input type="submit" value="Logout" className="btn btn-primary" />
               </div>
             </form>
           </div>

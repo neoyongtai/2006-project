@@ -12,7 +12,6 @@ export default class EditComment extends Component
         super(props)
 
         //Bind the event handlers
-        this.onChangeUsername = this.onChangeUsername.bind(this)
         this.onChangeDescription = this.onChangeDescription.bind(this)
         this.onSubmit = this.onSubmit.bind(this)
 
@@ -26,6 +25,9 @@ export default class EditComment extends Component
 
     //Lifecycle React Method
    componentDidMount(){
+     if(localStorage.getItem("SESSIONTOKEN") === null) {
+         this.props.history.push('/login')
+       }
     axios.get('http://localhost:5000/comment/'+ this.props.match.params.id)
     .then(response => {
       this.setState({
@@ -37,14 +39,6 @@ export default class EditComment extends Component
       console.log(error);
     })
 
-    }
-
-    //use a calendar
-    onChangeUsername(e)
-    {
-        this.setState({
-            username: e.target.value
-        })
     }
 
     onChangeDescription(e)
@@ -77,16 +71,6 @@ export default class EditComment extends Component
             <div>
             <h3>Edit Comment</h3>
             <form onSubmit={this.onSubmit}>
-
-              <div className="form-group">
-                <label>Username: </label>
-                <input
-                    type="text"
-                    className="form-control"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    />
-              </div>
 
               <div className="form-group">
                 <label>Description: </label>
