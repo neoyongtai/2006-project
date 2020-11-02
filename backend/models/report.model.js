@@ -36,7 +36,8 @@ const reportSchema = new Schema({
     description: {
         type:String, required: true
     },
-    user_id:{type:Number, ref:'user', required:true},
+    user_id:{type: Schema.Types.ObjectId, ref:'user', default:null}
+    ,
     date_generated: {
         type:Date
     },
@@ -44,7 +45,7 @@ const reportSchema = new Schema({
 },
 {
         timestamps: true,
-
+        minimize: false
 });
 
 const Report = mongoose.model('report', reportSchema);

@@ -32,6 +32,7 @@ export default class ViewPost extends Component {
            //Create the same fields as the MongoDB Schema
            this.state = {
                post_id: " ",
+               report_id: " ",
                title: " ",
                description: " ",
                no_of_comments: " ",
@@ -39,7 +40,17 @@ export default class ViewPost extends Component {
                createdAt: new Date(),
                token : localStorage.getItem('SESSIONTOKEN'),
                userId: localStorage.getItem('USERID'),
-               username: localStorage.getItem('USERNAME')
+               username: localStorage.getItem('USERNAME'),
+               report_type:" ",
+               hdb_type: " ",
+               hdb_category: " ",
+               region: " ",
+               hdb_estate: " ",
+               date_generated: new Date(),
+               ammenties : [],
+               estimated_price: 0,
+               estimated_tax : 0
+
            }
     }
 
@@ -65,7 +76,24 @@ export default class ViewPost extends Component {
            description: response.data.description,
            no_of_comments: response.data.no_of_comments,
            no_of_upvotes: response.data.no_of_upvotes,
-           createdAt: response.data.createdAt
+           createdAt: response.data.createdAt,
+           report_id: response.data.report_id
+         })
+         axios.get('http://localhost:5000/report/'+this.state.report_id)
+         .then(response => {
+            this.setState({
+              report_type:response.data.report_type,
+              hdb_type: response.data.hdb_type,
+              hdb_category:response.data.hdb_category,
+              region: response.data.region,
+              hdb_estate: response.data.hdb_estate,
+              date_generated: response.data.date_generated,
+              ammenties : response.data.ammenties,
+              estimated_price: response.data.estimated_price,
+              estimated_tax :response.data.estimated_tax
+
+            })
+
          })
        })
        .catch(function (error) {
@@ -115,6 +143,52 @@ export default class ViewPost extends Component {
                     <Typography variant="body2" component="h2">
                       {this.state.description}
                     </Typography>
+
+                    <Grid item xs={12}>
+                   <Typography variant ="h6">Report Type: {this.state.report_type} </Typography> 
+                   </Grid>
+
+                   
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> HDB Type: {this.state.hdb_type} </Typography> 
+                   </Grid>
+
+                  
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> HDB Category: {this.state.hdb_category}  </Typography> 
+                   </Grid>
+
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Region : {this.state.region} </Typography> 
+                   </Grid>
+
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> HDB Estate: {this.state.hdb_estate} </Typography> 
+                   </Grid>
+                    
+                    
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Expected Date: {JSON.stringify(this.state.date_generated)}  </Typography> 
+                   </Grid>
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Method:  {JSON.stringify(this.state.ammenties)} </Typography> 
+                   </Grid>
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6">Estaimted Price: ${this.state.estimated_price} </Typography> 
+                   </Grid>
+
+                    
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Estimated Tax: ${this.state.estimated_tax} </Typography> 
+                       </Grid>
+
+
+
+
                   </CardContent>
                   <CardActions>
                     <PersonIcon />{this.state.username}

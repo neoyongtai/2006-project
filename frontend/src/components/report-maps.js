@@ -21,17 +21,55 @@ fillOpacity:0}}>
 //In order to correct load Google Maps JavaScript API v3, need to wrap it with withScriptjs HOC
 
 
+
 function ReportMaps(props) {
 
-    //const cord = props.cord
     const [cord, setCord] = useState([]);
-    const [count, setCount] = useState(0);
-
+    const [estate, setEstate] = useState("")
     let obj = [];
     let i, latv,lngv
-    console.log("This is props")
+    console.log("This is from Map estate")
     console.log(props.estate)
-    useEffect(() => {
+
+useEffect(()=> {
+    console.log("useEffect 1")
+        setEstate(props.estate)
+        if(!(props.estate === "\"\""))
+        {
+            console.log("Fire Away")
+            axios.get("http://localhost:5000/report/map/"+props.estate).then(response=> {
+                //setCord(response.data)
+                for(i =0;i<response.data.length;i++)
+                {
+                    lngv =  (response.data[i][0])
+                    latv =  (response.data[i][1])
+                    try{
+                        obj.push({
+                            lat: latv,
+                            lng: lngv
+                      })
+                    }catch(err)
+                    {
+                        console.log(err)
+                    }
+                   
+                }
+    
+                console.log("Inside ReportMaps")
+                console.log(obj)
+                setCord([obj])    
+    
+              })
+      }
+
+
+
+},[estate])
+
+
+
+
+    /*useEffect(() => {
         console.log("Inisde UseEffect")
 
         if(!(props.estate === "\"\"") && count == 1)
@@ -59,14 +97,11 @@ function ReportMaps(props) {
                 console.log(obj)
                 setCord([obj])    
     
-                //console.log(response.data[0])
-               // console.log(cord.coordinates)
               })
       }
-      setCount(1)
 
-    }, [count]) //If enter [] then means run once.
-
+    }, []) //If enter [] then means run once.
+*/
  
 console.log(cord)
 const WrappedMap = withScriptjs(withGoogleMap(Map))

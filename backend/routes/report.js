@@ -63,10 +63,9 @@ router.route('/map/:id').get(async (req,res)=>
   const hdb_estate = req.body.hdb_estate
   const ammenties = req.body.ammenties
   const date_generated = Date.now()
-  const user_id = req.body.user_id
   const expected_date = Date.parse(req.body.expected_date)
   const description = "this is the description"
-  const newReport = new Report({report_type,hdb_type,hdb_category,region,hdb_estate,ammenties,description,expected_date,estimated_price,estimated_tax,date_generated,user_id});
+  const newReport = new Report({report_type,hdb_type,hdb_category,region,hdb_estate,ammenties,description,expected_date,estimated_price,estimated_tax,date_generated});
   console.log(newReport)
 
   //Save to database
@@ -109,5 +108,24 @@ router.route('/update/:id').post((req, res) =>
     .catch(err => res.status(400).json('Error: '+ err));
 });
 
+
+// Save or publish post
+router.route('/save').post((req, res) => 
+{
+    console.log("ID is")
+    console.log(req.body._id)
+    console.log(req.body.user_id)
+    Report.findById(req.body._id)
+    .then(report => {
+    console.log(report)
+    report.user_id = req.body.user_id
+   
+    report.save()
+    .then(()=> res.json(report))
+    .catch(err => res.status(400).json('Error: ' +err));
+
+    })
+    .catch(err => res.status(400).json('Error: '+ err));
+});
 
 module.exports = router;

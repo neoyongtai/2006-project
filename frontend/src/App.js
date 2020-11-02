@@ -13,7 +13,6 @@ import EditPost from "./components/edit-post";
 import ViewPost from "./components/post";
 import EditComment from "./components/edit-comment";
 import HomePage from "./components/home-page";
-import ReportSum from "./components/report-sum"
 import ReportPage from "./components/reportpage"
 import ReportView from"./components/report-view"
 import ReportMaps from "./components/report-maps"
@@ -34,7 +33,7 @@ function App() {
         <Route path ="/user" exact component = {CreateUser} />
         <Route path ="/login" exact component = {SignIn} />
         <Route path ="/forum" exact component = {PostList} />
-        <Route path ="/forum/create" exact component = {CreatePost} />
+        <Route path ="/forum/create/:id" exact component = {CreatePost} />
         <Route path ="/forum/edit/:id" exact component = {EditPost} />
         <Route path ="/forum/view/:id" exact component = {ViewPost} />
         <Route path ="/forum/comment/edit/:id" exact component = {EditComment} />

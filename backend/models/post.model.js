@@ -17,9 +17,9 @@ const postSchema = new Schema({
     description: {
         type:String, required: true
     },
-    no_of_comments: { type: Number
+    no_of_comments: { type: Number, default: 0
     },
-    no_of_upvotes: { type: Number
+    no_of_upvotes: { type: Number, default : 0
     },
     images: {
         type:Buffer

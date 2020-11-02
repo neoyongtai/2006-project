@@ -17,19 +17,10 @@ function getKML(estate)
     else
     {
         console.log("Inside GETKML")
-        console.log(estate)
         const data = fs.readFileSync(__dirname + '/../data/EstateId.json',"utf8")     
-        console.log(data)
         const estate_id = JSON.parse(data)
-        console.log("This is Estate_id")
-        console.log(estate_id)
-        const kml_id =  estate_id[estate]        //Here is the problem
-        console.log(kml_id)
-        //console.log(converted)
-        console.log("This is the return")
-        console.log(converted.features[kml_id.Id].geometry.coordinates[0])
-        console.log(kml_id.Id)
-        console.log(converted.features[kml_id.Id].geometry.coordinates[0][0])
+        estate = estate.replace(/[""]+/g, '')// Need to remove the double quotes. If not it will not work!!
+        const kml_id = estate_id[estate]        //Here is the problem
         return (converted.features[kml_id.Id].geometry.coordinates[0])
 
 

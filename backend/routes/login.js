@@ -18,25 +18,25 @@ router.route('/add').post((req, res, next) => {
 
   if (!username){
     return res.send({
-      success: false
+      success: false,
       message: 'Username cannot be blank.'
     });
   }
   if (!firstname){
     return res.send({
-      success: false
+      success: false,
       message: 'First name cannot be blank.'
     });
   }
   if (!lastname){
     return res.send({
-      success: false
+      success: false,
       message: 'Last name cannot be blank.'
     });
   }
   if (!password){
     return res.send({
-      success: false
+      success: false,
       message: 'Password cannot be blank.'
     });
   }
@@ -75,5 +75,5 @@ router.route('/add').post((req, res, next) => {
       });
     });
   });
-
-module.exports = router;
+}
+//module.exports = router;

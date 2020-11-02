@@ -22,6 +22,7 @@ const useStyles = makeStyles(theme => ({
 
 
 const formvalues = {
+  _id:0,
   report_type: "",
   hdb_type: "",
   hdb_category: "",
@@ -29,7 +30,7 @@ const formvalues = {
   hdb_estate: "",
   ammenties: {shop: false , mrt: false, hospital: false, school:false, food:false}, 
   expected_date: new Date(),
-  user_id : 1,
+  user_id : 0,
   estimated_price:"",
   estimated_tax:"",
   date_generated: new Date()
@@ -40,23 +41,62 @@ function ReportSum(props) {
 
 
   const [report, setReport] = useState(formvalues);
+  const [isLoading, setLoading] = useState(true);
+
+
   useEffect(() => {
+    console.log("This Set Report")
      axios.get('http://localhost:5000/report/'+props.match.params.id)
     .then(response => {
       setReport(response.data);
-     
-    })
-    .catch(function (error) {
+      setLoading(false)
+    }).catch(function (error) {
       console.log(error);
-    })     
+    })  
+
   },[])
 
 
+  useEffect(()=>{
+    console.log("Set Userrrr")
+    setReport({...report, user_id :localStorage.getItem('USERID')})
+  },[report.user_id])
+
+
+
+
+  /*useEffect(()=>{
+    console.log("Update Estate")
+
+
+
+  },[report.hdb_estate])*/
+
+  
   console.log("This is from summary")
   console.log(report)
 
 
+ const onpublish = (e) => 
+ {
+  if(localStorage.getItem("SESSIONTOKEN") === null) {
+    props.history.push('/login')
+  }
+  else
+  {
+    axios.post('http://localhost:5000/report/save',report)
+    .then(res => {
+      const report_id = res.data._id
+      props.history.push('/forum/create/'+report_id)
 
+    }  )
+ }
+}
+
+if(isLoading)
+{
+  return <div><Typography variant ="h6"> Cord: </Typography></div>
+}
   return (
     <div>
 
@@ -112,13 +152,16 @@ function ReportSum(props) {
                    <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth>
                     Save Report
                   </Button></Grid>
-                   <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth>
+                   <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth onClick={onpublish}>
                     Publish Report </Button> 
                     
                     </Grid>
                     <Grid item xs={12}>
-                       <ReportMaps estate =  "BEDOK"></ReportMaps>
-                       <Typography variant ="h6"> Cord: </Typography> 
+                    <ReportMaps estate = {JSON.stringify(report.hdb_estate)}></ReportMaps>
+                      {/* {(report.hdb_estate === "\"\"") ? 
+                       (<ReportMaps estate = {JSON.stringify(report.hdb_estate)}></ReportMaps>):<Typography variant ="h6"> Cord: </Typography> 
+                                                  } */}
+  
                        
 
                     </Grid>
@@ -127,7 +170,7 @@ function ReportSum(props) {
                     </Container>
     </div>
   )
-}
+  }
 
 
 export default withRouter(ReportSum)

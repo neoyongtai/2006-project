@@ -27,7 +27,6 @@ const formvalues = {
     hdb_estate: "",
     ammenties: {shop: false , mrt: false, school:false, food:false}, 
     expected_date: new Date(),
-    user_id : 1,
     date_generated: new Date()
 }
 

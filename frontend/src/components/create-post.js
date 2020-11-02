@@ -24,8 +24,10 @@ export default class CreatePost extends Component
             title: " ",
             username: localStorage.getItem('USERNAME'),
             description: " ",
-            no_of_comments: 0,
-            no_of_upvotes: 0
+            user_id:localStorage.getItem('USERID'),
+            report_id:props.match.params.id
+            //no_of_comments: 0,
+            //no_of_upvotes: 0
         }
     }
 
@@ -52,17 +54,23 @@ export default class CreatePost extends Component
     onSubmit(e)
     {
         e.preventDefault();
-
+        
         const post = {
             title: this.state.title,
             username: this.state.username,
             description: this.state.description,
-            no_of_comments: this.state.no_of_comments,
-            no_of_upvotes: this.state.no_of_upvotes
+            user_id:this.state.user_id,
+            report_id: this.state.report_id
+           // no_of_comments: this.state.no_of_comments,
+            //no_of_upvotes: this.state.no_of_upvotes
         }
 
         axios.post('http://localhost:5000/post/add',post)
-        .then(res =>console.log(res.data))
+        .then(res =>{
+            console.log(res.data)
+            this.props.history.push('/forum')
+
+        })
         .catch((error) => {
             console.log(error);
         })

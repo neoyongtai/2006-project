@@ -40,12 +40,17 @@ router.route('/').get((req, res) => {
 router.route('/add').post((req, res) => {
   const title = req.body.title;
   const username = req.body.username;
+
+  const user_id = req.body.user_id
+  const report_id = req.body.report_id
+  const date_posted = Date.now()
   const description = req.body.description;
-  const no_of_comments = req.body.no_of_comments;
-  const no_of_upvotes = req.body.no_of_upvotes;
+
+  //const no_of_comments = req.body.no_of_comments;
+  //const no_of_upvotes = req.body.no_of_upvotes;
 
 
-  const newPost = new Post({title,username,description,no_of_comments,no_of_upvotes});
+  const newPost = new Post({title,username,description,user_id,report_id,date_posted});
 
   //Save to database
   newPost.save()
