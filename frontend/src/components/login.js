@@ -1,5 +1,7 @@
 import React, {Component} from 'react';
 import axios from  'axios';
+import { TextField, Button, Grid, Container } from '@material-ui/core';
+import { Link } from 'react-router-dom';
 
 export default class Login extends Component
 {
@@ -50,7 +52,7 @@ export default class Login extends Component
 
         const user = {
             username: this.state.username,
-            password: this.state.password,
+            password: this.state.password
         }
 
         //Send user data to backend.
@@ -82,78 +84,48 @@ export default class Login extends Component
           })
     }
 
-
-
-    onSubmit(e)
-    {
-        e.preventDefault();
-
-        const user = {
-            username: this.state.username,
-            password: this.state.password,
-        }
-
-        //Send user data to backend.
-        axios.post('http://localhost:5000/users/login', user)
-        .then(res => {
-            localStorage.setItem('SESSIONTOKEN', res.data.token);
-            localStorage.setItem('USERID', res.data.userId);
-            this.setState (
-              {
-                token: localStorage.getItem('SESSIONTOKEN'),
-                userId: localStorage.getItem('USERID')
-              }
-            )
-            axios.get('http://localhost:5000/users/get?userId=' + this.state.userId)
-            .then(res => {
-              localStorage.setItem('USERNAME', res.data.user.username);
-              this.setState ({user: localStorage.getItem('USERNAME')})
-              console.log(this.state.token)
-              console.log(this.state.userId)
-              console.log(this.state.user)
-              this.props.history.push('/forum')
-            })
-            .catch((error) => {
-                console.log(error);
-            })
-          })
-          .catch((error) => {
-              console.log(error);
-          })
-    }
 
     render()
     {
-        return (
-            <div>
-            <h3>Sign In / Sign Out</h3>
-            <form onSubmit={this.onSignIn}>
+      return (
+          <Container maxWidth='sm'>
+              <h3>Sign In</h3>
+              <form onSubmit={this.onSignIn}>
 
-              <div className="form-group">
-                <label>Username: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.username}
-                    onChange={this.onChangeUsername}
-                    />
-              </div>
-
-              <div className="form-group">
-                <label>Password: </label>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.password}
-                    onChange={this.onChangePassword}
-                    />
-              </div>
-
-              <div className="form-group">
-                <input type="submit" value="Login" className="btn btn-primary" />
-              </div>
+              <Grid container spacing={3}>
+                  <Grid item xs={12}>
+                      <TextField
+                      label='Username' variant='outlined'
+                      required
+                      fullWidth
+                      value={this.state.username}
+                      onChange={this.onChangeUsername}
+                      />
+                  </Grid>
+                  <Grid item xs={12}>
+                      <TextField
+                      label='Password' variant='outlined'
+                      required
+                      fullWidth
+                      value={this.state.password}
+                      onChange={this.onChangePassword}
+                      />
+                  </Grid>
+                  <Grid item xs={12}>
+                      <Button variant='contained' color='primary' type='submit' fullWidth>
+                          Login
+                      </Button>
+                  </Grid>
+              </Grid>
             </form>
-          </div>
-        )
+            <br />
+            <Grid item xs={12}>
+                <Button variant='contained' color='primary' fullWidth
+                component={Link} to ={'/user'}>
+                    Sign Up
+                </Button>
+            </Grid>
+          </Container>
+      )
     }
 }

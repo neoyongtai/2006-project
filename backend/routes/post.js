@@ -8,6 +8,8 @@ router.route('/').get((req, res) => {
     const { query } = req;
     const { username } = query;
 
+    if(!username)
+    {
       Post.find((err, posts) => {
         if (err) {
           return res.send({
@@ -19,23 +21,26 @@ router.route('/').get((req, res) => {
             success: true,
             message: 'Retrieved All Posts',
             posts: posts
-      })
-    })
-
-  //   Post.find({ username: username }, (err, posts) => {
-  //     if (err) {
-  //       return res.send({
-  //         success: false,
-  //         message: 'Cannot get posts'
-  //       })
-  //     }
-  //       return res.send({
-  //         success: true,
-  //         message: 'Retrieved Own Posts',
-  //         posts: posts
-  //   })
-  // })
-});
+          })
+        })
+      }
+      else
+      {
+        Post.find({ username: username }, (err, posts) => {
+          if (err) {
+            return res.send({
+              success: false,
+              message: 'Cannot get posts'
+            })
+          }
+            return res.send({
+              success: true,
+              message: 'Retrieved Own Posts',
+              posts: posts
+            })
+          })
+        }
+      });
 
 router.route('/add').post((req, res) => {
   const title = req.body.title;

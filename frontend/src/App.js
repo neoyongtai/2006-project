@@ -17,20 +17,26 @@ import ReportPage from "./components/reportpage"
 import ReportView from"./components/report-view"
 import ReportMaps from "./components/report-maps"
 import SignIn from "./components/login"
+import ReportPage from "./components/reportpage";
+import ReportView from"./components/report-view";
+import ReportMaps from "./components/report-maps";
+import SignIn from "./components/login";
+import Profile from "./components/profile";
 
 function App() {
 
   return (
     <div>
       <Router>
-        <Navbar />
-        <Route path = "/" exact component= {HomePage}/>
+        <Route exact component= {Navbar} />
+        <Route path ="/" exact component= {HomePage}/>
         <Route path ="/report" exact component = {ReportList} />
         <Route path = "/report/sum/:id" exact component = {ReportView}/>
         <Route path ="/report/edit/:id" exact component = {EditReport} />
         <Route path ="/report/create" exact component = {ReportPage} />
         <Route path ="/report/map" exact component = {ReportMaps} />
         <Route path ="/user" exact component = {CreateUser} />
+        <Route path ="/user/:id" exact component = {Profile} />
         <Route path ="/login" exact component = {SignIn} />
         <Route path ="/forum" exact component = {PostList} />
         <Route path ="/forum/create/:id" exact component = {CreatePost} />
