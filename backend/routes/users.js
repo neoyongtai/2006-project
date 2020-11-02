@@ -28,6 +28,28 @@ router.route('/get').get((req, res) => {
   })
 });
 
+router.route('/update/:id').post((req, res, next) => {
+
+    User.findById(req.params.id)
+    .then(user => {
+
+    user.username = req.body.username
+    if(req.body.password != "")
+      user.password = user.generateHash(req.body.password)
+    else
+      user.password = user.password
+    user.firstname = req.body.firstname
+    user.lastname = req.body.lastname
+    user.email = req.body.email
+
+    user.save()
+    .then(()=> res.json('User Updated!'))
+    .catch(err => res.status(400).json('Error: ' +err));
+
+    })
+    .catch(err => res.status(400).json('Error: '+ err));
+});
+
 router.route('/add').post((req, res, next) => {
   const { body } = req;
   const {

@@ -11,6 +11,9 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import FilterListIcon from '@material-ui/icons/FilterList';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 
 const Post = props => (
@@ -56,9 +59,13 @@ export default class PostList extends Component
           post : [],
           token : localStorage.getItem('SESSIONTOKEN'),
           userId: localStorage.getItem('USERID'),
-          username: localStorage.getItem('USERNAME')
+          username: localStorage.getItem('USERNAME'),
+          anchorEl: null
         }
     }
+
+    openMenu = event => this.setState({ anchorEl: event.currentTarget })
+    closeMenu = () => this.setState({ anchorEl: null })
 
     componentDidMount()
     {
@@ -66,26 +73,7 @@ export default class PostList extends Component
           this.props.history.push('/login')
         }
 
-        axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
-        .then((res) => {
-          console.log(this.state.token)
-          console.log(this.state.userId)
-          console.log(this.state.username)
-          console.log(res.data)
-          //axios.get('http://localhost:5000/post?username=' + this.state.username) // get for own posts
-          axios.get('http://localhost:5000/post')
-          .then(response => {
-              this.setState({post : response.data.posts})
-              console.log(response.data.posts)
-          })
-          .catch((error) => {
-              console.log(error);
-          })
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-
+        this.getAllPosts();
     }
 
     deletePost(id)
@@ -98,6 +86,39 @@ export default class PostList extends Component
         })
     }
 
+    getAllPosts()
+    {
+      axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
+      .then((res) => {
+        console.log(this.state.token)
+        console.log(this.state.userId)
+        console.log(this.state.username)
+        console.log(res.data)
+        axios.get('http://localhost:5000/post')
+        .then(response => {
+            this.setState({post : response.data.posts})
+            console.log(response.data.posts)
+        })
+        .catch((error) => {
+            console.log(error);
+        })
+      })
+      .catch((error) => {
+          console.log(error);
+      })
+    }
+
+    getOwnPosts(username)
+    {
+      axios.get('http://localhost:5000/post?username=' + username)
+      .then(response => {
+          this.setState({post : response.data.posts})
+          console.log(response.data.posts)
+      })
+      .catch((error) => {
+          console.log(error);
+      })
+    }
 
     postList() {
         return this.state.post.map(currentpost => {
@@ -113,6 +134,36 @@ export default class PostList extends Component
           <TableContainer component={Paper}>
             <Table aria-label="all posts table">
               <TableHead>
+                <TableRow>
+                  <TableCell>Posts</TableCell>
+                  <TableCell>
+                    <Link
+                    aria-controls="filter"
+                    aria-haspopup="true"
+                    onClick={this.openMenu}>
+                      <IconButton aria-label="Filter">
+                        <FilterListIcon />
+                      </IconButton>
+                    </Link>
+                    <Menu
+                    id="filter"
+                    anchorEl={this.state.anchorEl}
+                    keepMounted
+                    open={Boolean(this.state.anchorEl)}
+                    onClose={this.closeMenu}>
+                    <MenuItem
+                    onClick={() => {
+                      this.getAllPosts()
+                      this.closeMenu()
+                    }}>All</MenuItem>
+                    <MenuItem
+                    onClick={() => {
+                      this.getOwnPosts(this.state.username)
+                      this.closeMenu()
+                    }}>Own</MenuItem>
+                    </Menu>
+                  </TableCell>
+                </TableRow>
                 <TableRow>
                   <TableCell>Post Id</TableCell>
                   <TableCell>Username</TableCell>

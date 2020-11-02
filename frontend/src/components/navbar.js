@@ -35,10 +35,10 @@ const useStyles = makeStyles((theme) => ({
 function Navbar()  {
 
     const classes = useStyles();
-    //const [values, setValues] = useState(formvalues);
+    const sessionToken = localStorage.getItem('SESSIONTOKEN');
+    const userId = localStorage.getItem('USERID');
 
     const handleInputChange = e => {
-     // e.preventDefault();
 
       axios.get('http://localhost:5000/users/logout?token=' + localStorage.getItem('SESSIONTOKEN'))
       .then(res => {
@@ -46,8 +46,8 @@ function Navbar()  {
         console.log(res.data);
         history.push('/login');
       })
-      .catch((error) => {
-          console.log(error);
+      .catch((e) => {
+          console.log(e);
       })
   }
 
@@ -60,17 +60,18 @@ function Navbar()  {
                   EstateWiz
             </Typography>
             <div>
-            <Button component={Link} to={'/forum/create'} > Add Post </Button>
+            <Button component={Link}
+            to={sessionToken === null
+            ? '/forum/create' : '/forum'} > {sessionToken === null ? 'Add Post' : 'Posts'} </Button>
             <Button component={Link} to = {'/report/create'}> Analysis</Button>
-            <Button component={Link} to ={'/login'} > Login</Button>
+            {sessionToken ? <Button component={Link} to = {'/user/' + userId}> Profile</Button> : ""}
+            <Button component={Link} to ={'/login'}
+            disabled={sessionToken ? "disabled" : ""} > Login</Button>
+            <Button onClick={handleInputChange}
+            disabled={sessionToken === null ? "disabled" : ""}>
+            Logout</Button>
               </div>
           </Toolbar>
-          <form onSubmit={handleInputChange}>
-            <div className="form-group">
-              <input type="submit" value="Logout" className="btn btn-primary"
-              disabled={localStorage.getItem('SESSIONTOKEN') === null ? "disabled" : ""} />
-            </div>
-          </form>
         </AppBar>
         <div className={classes.offset}/>
 

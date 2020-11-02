@@ -24,12 +24,12 @@ export default class Login extends Component
         }
     }
 
-    // componentDidMount()
-    // {
-    //   if(localStorage.getItem("SESSIONTOKEN") !== null) {
-    //       this.props.history.push('/forum')
-    //     }
-    // }
+    componentDidMount()
+    {
+      if(localStorage.getItem("SESSIONTOKEN") !== null) {
+          this.props.history.push('/forum')
+        }
+    }
 
     onChangeUsername(e)
     {

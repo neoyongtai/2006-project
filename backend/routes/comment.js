@@ -5,9 +5,11 @@ router.route('/add').post((req, res) => {
   const post_id = Number(req.body.post_id);
   const username = req.body.username;
   const description = req.body.description;
+  const userId = req.body.userId;
 
 
   const newComment = new Comment({post_id,username,description});
+  newComment.user_id = userId;
 
   //Save to database
   newComment.save()

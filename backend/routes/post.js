@@ -8,6 +8,8 @@ router.route('/').get((req, res) => {
     const { query } = req;
     const { username } = query;
 
+    if(!username)
+    {
       Post.find((err, posts) => {
         if (err) {
           return res.send({
@@ -19,23 +21,26 @@ router.route('/').get((req, res) => {
             success: true,
             message: 'Retrieved All Posts',
             posts: posts
-      })
-    })
-
-  //   Post.find({ username: username }, (err, posts) => {
-  //     if (err) {
-  //       return res.send({
-  //         success: false,
-  //         message: 'Cannot get posts'
-  //       })
-  //     }
-  //       return res.send({
-  //         success: true,
-  //         message: 'Retrieved Own Posts',
-  //         posts: posts
-  //   })
-  // })
-});
+          })
+        })
+      }
+      else
+      {
+        Post.find({ username: username }, (err, posts) => {
+          if (err) {
+            return res.send({
+              success: false,
+              message: 'Cannot get posts'
+            })
+          }
+            return res.send({
+              success: true,
+              message: 'Retrieved Own Posts',
+              posts: posts
+            })
+          })
+        }
+      });
 
 router.route('/add').post((req, res) => {
   const title = req.body.title;
@@ -43,9 +48,12 @@ router.route('/add').post((req, res) => {
   const description = req.body.description;
   const no_of_comments = req.body.no_of_comments;
   const no_of_upvotes = req.body.no_of_upvotes;
-
+  const userId = req.body.userId;
+  const reportId = req.body.reportId;
 
   const newPost = new Post({title,username,description,no_of_comments,no_of_upvotes});
+  newPost.user_id = userId;
+  newPost.report_id = reportId;
 
   //Save to database
   newPost.save()
