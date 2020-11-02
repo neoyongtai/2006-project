@@ -4,8 +4,7 @@ const Schema = mongoose.Schema
 
 const commentSchema = new Schema({
 
-  post_id: Number,
-  comment_id: Number,
+  post_id: {type:Schema.Types.ObjectId, ref:'post',required:true},
     username:{
         type:String,
         required: true,

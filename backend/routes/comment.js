@@ -2,14 +2,14 @@ const router = require('express').Router();
 let Comment = require('../models/comment.model');
 
 router.route('/add').post((req, res) => {
-  const post_id = Number(req.body.post_id);
+  const post_id = req.body.post_id;
   const username = req.body.username;
   const description = req.body.description;
-  const userId = req.body.userId;
+  const user_id = req.body.user_id;
 
 
-  const newComment = new Comment({post_id,username,description});
-  newComment.user_id = userId;
+  const newComment = new Comment({post_id,username,description,user_id});
+ // newComment.user_id = userId;
 
   //Save to database
   newComment.save()
@@ -19,6 +19,8 @@ router.route('/add').post((req, res) => {
 
 router.route('/get/:id').get((req, res) =>
 {
+    //console.log("From the node")
+    //console.log(req.params.id)
     Comment.find({post_id:req.params.id})
     .then(comment => res.json(comment))
     .catch(err => res.status(400).json('Error: '+ err));

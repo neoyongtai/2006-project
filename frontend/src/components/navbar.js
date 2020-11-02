@@ -60,9 +60,7 @@ function Navbar()  {
                   EstateWiz
             </Typography>
             <div>
-            <Button component={Link}
-            to={sessionToken === null
-            ? '/forum/create' : '/forum'} > {sessionToken === null ? 'Add Post' : 'Posts'} </Button>
+            <Button component={Link} to={'/forum'}> Forum </Button>
             <Button component={Link} to = {'/report/create'}> Analysis</Button>
             {sessionToken ? <Button component={Link} to = {'/user/' + userId}> Profile</Button> : ""}
             <Button component={Link} to ={'/login'}

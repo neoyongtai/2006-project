@@ -5,8 +5,9 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import { withRouter } from 'react-router-dom';
 
-export default class CreateComment extends Component
+ class CreateComment extends Component
 {
 
     constructor(props) {
@@ -18,19 +19,20 @@ export default class CreateComment extends Component
 
         //Create the same fields as the MongoDB Schema
         this.state = {
-          post_id: " ",
+          post_id: this.props.post_id,
           username: localStorage.getItem('USERNAME'),
+          user_id: localStorage.getItem('USERID'),
           description: " "
         }
     }
 
-    componentDidUpdate(prevProps, prevState){
+  /*  componentDidUpdate(prevProps, prevState){
    if(prevState.post_id !== this.props.id){
        this.setState({
             post_id: this.props.id
        })
    }
-}
+}*/
 
     onChangeDescription(e)
     {
@@ -41,15 +43,23 @@ export default class CreateComment extends Component
     onSubmit(e)
     {
         e.preventDefault();
-
-        const comment = {
-          post_id: this.state.post_id,
-          username: this.state.username,
-          description: this.state.description
+        if(localStorage.getItem("SESSIONTOKEN") === null)
+        {
+          this.props.history.push("/login")
         }
-
-        axios.post("http://localhost:5000/comment/add" , comment)
-        .then(res =>console.log(res.data))
+        else
+        {
+          const comment = {
+            post_id: this.state.post_id,
+            username: this.state.username,
+            user_id: this.state.user_id,
+            description: this.state.description
+          }
+  
+          axios.post("http://localhost:5000/comment/add" , comment)
+          .then(res =>console.log(res.data))
+        }
+        
     }
 
     render()
@@ -82,3 +92,4 @@ export default class CreateComment extends Component
         )
     }
 }
+export default withRouter(CreateComment)

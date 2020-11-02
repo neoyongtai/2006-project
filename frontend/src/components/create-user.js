@@ -1,8 +1,9 @@
 import React, {Component} from 'react';
 import axios from  'axios';
 import { TextField, Button, Grid, Container } from '@material-ui/core';
+import { withRouter } from 'react-router-dom';
 
-export default class CreateUser extends Component
+class CreateUser extends Component
 {
 
     constructor(props) {
@@ -88,6 +89,8 @@ export default class CreateUser extends Component
             lastname: "",
             email: ""
         })
+
+        this.props.history.push('/')
     }
 
     render()
@@ -154,3 +157,4 @@ export default class CreateUser extends Component
         )
     }
 }
+export default withRouter(CreateUser)

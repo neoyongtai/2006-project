@@ -32,7 +32,7 @@ export default class ViewPost extends Component {
            //Create the same fields as the MongoDB Schema
            this.state = {
                post_id: " ",
-               report_id: " ",
+               report_id: "Hello World",
                title: " ",
                description: " ",
                no_of_comments: " ",
@@ -56,53 +56,89 @@ export default class ViewPost extends Component {
 
     //Lifecycle React Method
    componentDidMount(){
+    console.log(this.props.match.params.id)
+   if(localStorage.getItem("SESSIONTOKEN") === null) {
+    axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
+    .then(response => {
+      this.setState({
+        post_id: response.data.post_id,
+        title: response.data.title,
+        username: response.data.username,
+        description: response.data.description,
+        no_of_comments: response.data.no_of_comments,
+        no_of_upvotes: response.data.no_of_upvotes,
+        createdAt: response.data.createdAt,
+        report_id: response.data.report_id
+      })
+      axios.get('http://localhost:5000/report/'+this.state.report_id)
+     .then(response => {
+        this.setState({
+          report_type:response.data.report_type,
+          hdb_type: response.data.hdb_type,
+          hdb_category:response.data.hdb_category,
+          region: response.data.region,
+          hdb_estate: response.data.hdb_estate,
+          date_generated: response.data.date_generated,
+          ammenties : response.data.ammenties,
+          estimated_price: response.data.estimated_price,
+          estimated_tax :response.data.estimated_tax
 
-     if(localStorage.getItem("SESSIONTOKEN") === null) {
-         this.props.history.push('/login')
-       }
-
-     axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
-     .then((res) => {
-       console.log(this.state.token)
-       console.log(this.state.userId)
-       console.log(this.state.username)
-       console.log(res.data)
-       axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
-       .then(response => {
-         this.setState({
-           post_id: response.data.post_id,
-           title: response.data.title,
-           username: response.data.username,
-           description: response.data.description,
-           no_of_comments: response.data.no_of_comments,
-           no_of_upvotes: response.data.no_of_upvotes,
-           createdAt: response.data.createdAt,
-           report_id: response.data.report_id
-         })
-         axios.get('http://localhost:5000/report/'+this.state.report_id)
-         .then(response => {
-            this.setState({
-              report_type:response.data.report_type,
-              hdb_type: response.data.hdb_type,
-              hdb_category:response.data.hdb_category,
-              region: response.data.region,
-              hdb_estate: response.data.hdb_estate,
-              date_generated: response.data.date_generated,
-              ammenties : response.data.ammenties,
-              estimated_price: response.data.estimated_price,
-              estimated_tax :response.data.estimated_tax
-
-            })
-
-         })
-       })
-       .catch(function (error) {
-         console.log(error);
-       })
+        })
      })
-     .catch((error) => {
-         console.log(error);
-     })
+    })
+   }
+     else
+     {
+      axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
+      .then((res) => {
+        console.log(this.state.token)
+        console.log(this.state.userId)
+        console.log(this.state.username)
+        console.log(res.data)
+        axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
+        .then(response => {
+          this.setState({
+            post_id: response.data.post_id,
+            title: response.data.title,
+            username: response.data.username,
+            description: response.data.description,
+            no_of_comments: response.data.no_of_comments,
+            no_of_upvotes: response.data.no_of_upvotes,
+            createdAt: response.data.createdAt,
+            report_id: response.data.report_id
+          
+          })
+          console.log("Get")
+          console.log(this.state.report_id)
+
+          axios.get('http://localhost:5000/report/'+this.state.report_id)
+          .then(response => {
+             this.setState({
+               report_type:response.data.report_type,
+               hdb_type: response.data.hdb_type,
+               hdb_category:response.data.hdb_category,
+               region: response.data.region,
+               hdb_estate: response.data.hdb_estate,
+               date_generated: response.data.date_generated,
+               ammenties : response.data.ammenties,
+               estimated_price: response.data.estimated_price,
+               estimated_tax :response.data.estimated_tax
+ 
+             })
+ 
+          })
+        })
+        .catch(function (error) {
+          console.log(error);
+        })
+      })
+      .catch((error) => {
+          console.log(error);
+      })
+
+     }
+
+    
     }
 
     updatePost() {
@@ -212,10 +248,9 @@ export default class ViewPost extends Component {
               </Grid>
             </Grid>
             <CreateComment
-            id={this.state.post_id}
-            object_id={this.props.match.params.id}
+            post_id={this.props.match.params.id}
             comment_count={this.state.no_of_comments}/>
-            <CommentList id={this.state.post_id}/>
+            <CommentList post_id={this.props.match.params.id}/>
           </div>
         )
     }

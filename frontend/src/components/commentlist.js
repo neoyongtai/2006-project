@@ -14,7 +14,6 @@ import DeleteIcon from '@material-ui/icons/Delete';
 
 const Comment = props => (
     <TableRow key={props.comment.comment_id}>
-      <TableCell>{props.comment.comment_id}</TableCell>
       <TableCell>{props.comment.username}</TableCell>
       <TableCell>{props.comment.description.substring(0,50)}</TableCell>
       <TableCell>
@@ -48,22 +47,25 @@ export default class CommentList extends Component
         super(props)
 
         this.deleteComment = this.deleteComment.bind(this);
-        this.state = { comment : [], post_id: " "}
+        this.state = { 
+          comment : [], 
+          post_id: this.props.post_id
+        }
     }
 
     componentDidUpdate(prevProps, prevState){
-   if(prevState.post_id !== this.props.id){
+   if(prevState.post_id !== this.props.post_id){
        this.setState({
-            post_id: this.props.id
+            post_id: this.props.post_id
        })
    }
 }
 
     componentDidUpdate(prevProps, prevState)
     {
-      if(prevState.post_id !== this.props.id){
+      if(prevState.post_id !== this.props.post_id){
         this.setState({
-          post_id: this.props.id
+          post_id: this.props.post_id
         })
       }
       else {
@@ -101,9 +103,8 @@ export default class CommentList extends Component
               <Table aria-label="all posts table">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Comment Id</TableCell>
                     <TableCell>Username</TableCell>
-                    <TableCell>Description</TableCell>
+                    <TableCell>Comment</TableCell>
                     <TableCell>Edit</TableCell>
                     <TableCell>Delete</TableCell>
                   </TableRow>

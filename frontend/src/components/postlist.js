@@ -19,7 +19,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 
 const Post = props => (
     <TableRow key={props.post.post_id} component={Link} to={"/forum/view/" + props.post._id}>
-      <TableCell>{props.post.post_id}</TableCell>
       <TableCell>{props.post.username}</TableCell>
       <TableCell>{props.post.title}</TableCell>
       <TableCell>{props.post.description.substring(0,50)}</TableCell>
@@ -70,9 +69,9 @@ class PostList extends Component
 
     componentDidMount()
     {
-      if(localStorage.getItem("SESSIONTOKEN") === null) {
-          this.props.history.push('/login')
-        }
+      //if(localStorage.getItem("SESSIONTOKEN") === null) {
+      //    this.props.history.push('/login')
+      //  }
 
         this.getAllPosts();
     }
@@ -166,7 +165,6 @@ class PostList extends Component
                   </TableCell>
                 </TableRow>
                 <TableRow>
-                  <TableCell>Post Id</TableCell>
                   <TableCell>Username</TableCell>
                   <TableCell>Title</TableCell>
                   <TableCell>Description</TableCell>
