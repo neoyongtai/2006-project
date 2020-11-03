@@ -8,10 +8,11 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { withRouter } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 
 
 
-export default class CreatePost extends Component
+class CreatePost extends Component
 {
     constructor(props) {
         super(props)
@@ -65,16 +66,15 @@ export default class CreatePost extends Component
         }
 
         axios.post('http://localhost:5000/post/add',post)
-        .then(res =>{
-            console.log(res.data)
-            this.props.history.push('/forum')
-
+        .then(res =>
+          {
+            if(res.data.success === true)
+              this.props.history.push('/forum')
+            this.props.enqueueSnackbar(res.data.message)
+            this.props.closeSnackbar()
         })
-        .catch((error) => {
-            console.log(error);
-        })
-
     }
+
     render()
     {
         return (
@@ -112,3 +112,5 @@ export default class CreatePost extends Component
         )
     }
 }
+
+export default withSnackbar(CreatePost);

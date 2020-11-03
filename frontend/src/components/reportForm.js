@@ -2,6 +2,8 @@ import { Grid, makeStyles, TextField, InputLabel, Select, MenuItem, FormHelperTe
 import React, {useState, useEffect} from 'react'
 import { withRouter } from 'react-router-dom';
 import axios from  'axios';
+import { useSnackbar } from 'notistack';
+
 
 
 const useStyles = makeStyles(theme => ({
@@ -25,7 +27,7 @@ const formvalues = {
     hdb_category: "",
     region: "",
     hdb_estate: "",
-    ammenties: {shop: false, mrt: false, school:false,food:false}, 
+    ammenties: {shop: false, mrt: false, school:false,food:false},
     expected_date: new Date(),
     date_generated: new Date()
 }
@@ -36,6 +38,7 @@ function ReportForm (props){
 
     const [values, setValues] = useState(formvalues);
     const classes = useStyles();
+    const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
     const handleInputChange = e => {
 
@@ -44,7 +47,7 @@ function ReportForm (props){
         setValues({
             ...values,
             [name]: e.target.value
-            
+
         })
         console.log(values)
     }
@@ -61,7 +64,7 @@ function ReportForm (props){
 
     }
 
-   const onSubmit = e => 
+   const onSubmit = e =>
     {
         e.preventDefault();
 
@@ -69,13 +72,18 @@ function ReportForm (props){
 
         axios.post('http://localhost:5000/report/add',values)
         .then(res => {
-          console.log("This is the response")
-          console.log(res.data) 
-          const report_id = res.data._id
-          console.log("Report Id : " + report_id) 
-          props.history.push('/report/sum/'+report_id)
-
-        }  )
+          console.log(res.data)
+          if(res.data.success === true)
+          {
+            console.log("This is the response")
+            console.log(res.data)
+            const report_id = res.data.report._id
+            console.log("Report Id : " + report_id)
+            props.history.push('/report/sum/'+report_id)
+          }
+          enqueueSnackbar(res.data.message)
+          closeSnackbar()
+        })
 
         //console.log(report_id)
         //Redirect after submit to report summary page.
@@ -89,9 +97,9 @@ function ReportForm (props){
             <h1  style={{textAlign: "center"}}>Generate Report</h1>
             </div>
             <Grid container spacing={3} justify="center">
-                
+
         <Grid item xs={12} md = {6}>
-            
+
         <InputLabel id="select-category-label" required={true} style={{marginBottom: "5px"}}>For</InputLabel>
         <Select
           labelId="select-category-label"
@@ -109,10 +117,10 @@ function ReportForm (props){
           <MenuItem value={`Buy`}>Buy</MenuItem>
           <MenuItem value={`Sell`}>Sell</MenuItem>
         </Select>
-            
+
             </Grid>
 
-            <Grid item xs={12} md = {6}> 
+            <Grid item xs={12} md = {6}>
         <InputLabel id="select-occupy-label" required={true} style={{marginBottom: "5px"}}>HDB Category</InputLabel>
         <Select
           labelId="select-occupy-label"
@@ -129,12 +137,12 @@ function ReportForm (props){
           <MenuItem value={`BTO`}>BTO</MenuItem>
           <MenuItem value={`Resale`}>Resale</MenuItem>
         </Select>
-          </Grid>    
+          </Grid>
 
 
 
 
-        <Grid item xs={12} md = {6}> 
+        <Grid item xs={12} md = {6}>
         <InputLabel id="select-hdb-label" required={true} style={{marginBottom: "5px"}}>HDB Type</InputLabel>
         <Select
           labelId="select-hdb-label"
@@ -160,7 +168,7 @@ function ReportForm (props){
 
 
 
-        <Grid item xs={12} md = {6}> 
+        <Grid item xs={12} md = {6}>
         <InputLabel id="select-region-label" required={true} style={{marginBottom: "5px"}}>Region</InputLabel>
         <Select
           labelId="select-region-label"
@@ -180,10 +188,10 @@ function ReportForm (props){
           <MenuItem value={`North-East Region`}>North-East Region</MenuItem>
           <MenuItem value={`West Region`}>West Region</MenuItem>
         </Select>
-            </Grid>    
+            </Grid>
 
-          
-            <Grid item xs={12} md = {6}> 
+
+            <Grid item xs={12} md = {6}>
       <InputLabel id="select-estate-label" required={true} style={{marginBottom: "5px", maxHeight: 10}}>HDB Estate</InputLabel>
         <Select
           labelId="select-estate-label"
@@ -224,17 +232,18 @@ function ReportForm (props){
         </Grid>
 
 
-            <Grid item xs={12} md = {6}> 
+            <Grid item xs={12} md = {6}>
             <TextField
                 label="Expected Date" variant="outlined"
                 fullWidth
+                required
                 name="expected_date"
                 type= 'date'
                 InputLabelProps={{shrink:true}}
                 value={values.expected_date}
                 onChange={handleInputChange}
                 />
-            </Grid>  
+            </Grid>
 
 
 

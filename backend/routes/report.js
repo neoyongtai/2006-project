@@ -51,13 +51,13 @@ router.route('/map/:id').get(async (req,res)=>
  try{
     estimated_price = await calculatePrice.getData(req.body.hdb_estate,req.body.hdb_category)
     estimated_tax = await calculatePrice.getTax(req.body.hdb_category)
-   
+
  }catch(err)
  {
      console.log(err)
  }
 
- 
+
   estimated_price = parseInt(estimated_price,10)
   const report_type = req.body.report_type;
   const hdb_type = req.body.hdb_type
@@ -73,8 +73,15 @@ router.route('/map/:id').get(async (req,res)=>
 
   //Save to database
   newReport.save()
-    .then(() => res.json(newReport))
-    .catch(err => res.status(400).json('Error: ' + err));
+    .then(() => {
+      res.json(
+        {
+          report: newReport,
+          success: true,
+          message: "Generated"
+        })
+    })
+    .catch(err => res.send({success: false, message: "Fill in required fields"}));
 });
 
 router.route('/:id').get((req, res) =>

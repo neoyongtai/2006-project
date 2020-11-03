@@ -15,7 +15,6 @@ class Profile extends Component
       super(props)
 
       //Bind the event handlers
-      this.onChangeUsername = this.onChangeUsername.bind(this)
       this.onChangePassword = this.onChangePassword.bind(this)
       this.onChangeFirstname = this.onChangeFirstname.bind(this)
       this.onChangeLastname = this.onChangeLastname.bind(this)
@@ -25,7 +24,7 @@ class Profile extends Component
 
       //Create the same fields as the MongoDB Schema
       this.state = {
-          username: "",
+          username: localStorage.getItem("USERNAME"),
           password: "",
           firstname: "",
           lastname: "",
@@ -46,7 +45,6 @@ class Profile extends Component
         axios.get('http://localhost:5000/users/get?userId=' + this.state.userId)
         .then(res => {
           this.setState({
-            username: res.data.user.username,
             firstname: res.data.user.firstname,
             lastname: res.data.user.lastname,
             email: res.data.user.email
@@ -58,13 +56,6 @@ class Profile extends Component
       })
       .catch((error) => {
           console.log(error);
-      })
-  }
-
-  onChangeUsername(e)
-  {
-      this.setState({
-          username: e.target.value
       })
   }
 
@@ -111,8 +102,11 @@ class Profile extends Component
       //Send user data to backend.
       axios.post('http://localhost:5000/users/update/' + this.props.match.params.id ,user)
       .then(res =>{
+        if(res.data.success === true)
+        {
+          this.props.history.push('/forum')
+        }
         this.props.enqueueSnackbar(res.data.message)
-        this.props.history.push('/forum')
       })
       .catch(function (error) {
         console.log(error);
@@ -129,18 +123,10 @@ class Profile extends Component
               <Grid container spacing={3}>
                   <Grid item xs={12}>
                       <TextField
-                      label='Username' variant='outlined'
-                      required
-                      fullWidth
-                      value={this.state.username}
-                      onChange={this.onChangeUsername}
-                      />
-                  </Grid>
-                  <Grid item xs={12}>
-                      <TextField
                       type="password"
                       label='Password' variant='outlined'
                       fullWidth
+                      minlength="6"
                       value={this.state.password}
                       onChange={this.onChangePassword}
                       />

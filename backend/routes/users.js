@@ -34,19 +34,27 @@ router.route('/update/:id').post((req, res, next) => {
     .then(user => {
 
     user.username = req.body.username
-    if(req.body.password != "")
-      user.password = user.generateHash(req.body.password)
-    else
-      user.password = user.password
     user.firstname = req.body.firstname
     user.lastname = req.body.lastname
     user.email = req.body.email
 
-    user.save()
-    .then(()=> res.send({success: true, message: 'User Updated!'}))
-    .catch(err => res.status(400).json('Error: ' +err));
+    if(req.body.password != "" && req.body.password.length >= 6)
+    {
+      user.password = user.generateHash(req.body.password)
+    }
+    else if(req.body.password === "")
+    {
+      user.password = user.password
+    }
+    else
+    {
+      res.send({success: false, message: 'Failed to update!'})
+    }
+      user.save()
+      .then(()=> res.send({success: true, message: 'User Updated!'}))
+      .catch(err => res.status(400).json('Error: '+ err));
 
-    })
+  })
     .catch(err => res.status(400).json('Error: '+ err));
 });
 

@@ -48,21 +48,29 @@ router.route('/postreport').get((req, res) => {
 });
 
 router.route('/add').post((req, res) => {
-  const title = req.body.title;
-  const username = req.body.username;
 
-  const user_id = req.body.user_id
-  const report_id = req.body.report_id
-  const date_posted = Date.now()
-  const description = req.body.description;
+  if(req.body.title == " " || req.body.description == " ")
+  {
+    res.send({success: false, message: 'Title and Description cannot be empty!'})
+  }
+  else
+  {
+    const title = req.body.title;
+    const username = req.body.username;
+
+    const user_id = req.body.user_id
+    const report_id = req.body.report_id
+    const date_posted = Date.now()
+    const description = req.body.description;
 
 
-  const newPost = new Post({title,username,description,user_id,report_id,date_posted});
+    const newPost = new Post({title,username,description,user_id,report_id,date_posted});
 
-  //Save to database
-  newPost.save()
-    .then(() => res.json('Post added!'))
-    .catch(err => res.status(400).json('Error: ' + err));
+    //Save to database
+    newPost.save()
+      .then(() => res.send({success: true, message: 'Post Added!'}))
+      .catch(err => res.status(400).json('Error: ' + err));
+  }
 });
 
 router.route('/:id').get((req, res) =>
