@@ -7,8 +7,9 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
+import { withSnackbar } from 'notistack';
 
-export default class Profile extends Component
+class Profile extends Component
 {
   constructor(props) {
       super(props)
@@ -109,7 +110,10 @@ export default class Profile extends Component
 
       //Send user data to backend.
       axios.post('http://localhost:5000/users/update/' + this.props.match.params.id ,user)
-      .then(res =>console.log(res.data))
+      .then(res =>{
+        this.props.enqueueSnackbar(res.data.message)
+        this.props.history.push('/forum')
+      })
       .catch(function (error) {
         console.log(error);
       })
@@ -144,7 +148,6 @@ export default class Profile extends Component
                   <Grid item xs={6}>
                       <TextField
                       label='First Name' variant='outlined'
-                      required
                       fullWidth
                       value={this.state.firstname}
                       onChange={this.onChangeFirstname}
@@ -153,7 +156,6 @@ export default class Profile extends Component
                   <Grid item xs={6}>
                       <TextField
                       label='Last Name' variant='outlined'
-                      required
                       fullWidth
                       value={this.state.lastname}
                       onChange={this.onChangeLastname}
@@ -162,7 +164,6 @@ export default class Profile extends Component
                   <Grid item xs={12}>
                       <TextField
                       label='Email' variant='outlined'
-                      required
                       fullWidth
                       value={this.state.email}
                       onChange={this.onChangeEmail}
@@ -179,3 +180,5 @@ export default class Profile extends Component
       )
   }
 }
+
+export default withSnackbar(Profile);

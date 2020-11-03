@@ -43,7 +43,7 @@ router.route('/update/:id').post((req, res, next) => {
     user.email = req.body.email
 
     user.save()
-    .then(()=> res.json('User Updated!'))
+    .then(()=> res.send({success: true, message: 'User Updated!'}))
     .catch(err => res.status(400).json('Error: ' +err));
 
     })
@@ -66,28 +66,26 @@ router.route('/add').post((req, res, next) => {
       message: 'Username cannot be blank.'
     });
   }
-  if (!firstname){
-    return res.send({
-      success: false,
-      message: 'First name cannot be blank.'
-    });
-  }
-  if (!lastname){
-    return res.send({
-      success: false,
-      message: 'Last name cannot be blank.'
-    });
-  }
   if (!password){
     return res.send({
       success: false,
       message: 'Password cannot be blank.'
     });
   }
-  if (!email){
+
+  if(username.length < 3)
+  {
     return res.send({
       success: false,
-      message: 'Email cannot be blank.'
+      message: 'Min length of username is 3'
+    });
+  }
+
+  if(password.length < 6)
+  {
+    return res.send({
+      success: false,
+      message: 'Min length of password is 6'
     });
   }
 
@@ -97,7 +95,7 @@ router.route('/add').post((req, res, next) => {
     if (err) {
       return res.send({
           success: false,
-          message: 'Server error'
+          message: 'Server Error'
       });
     } else if (previousUsers > 0) {
       return res.send({
@@ -117,7 +115,7 @@ router.route('/add').post((req, res, next) => {
       if (err) {
         return res.send({
             success: false,
-            message: 'Server error'
+            message: 'Username exists'
         });
       }
       return res.send({

@@ -12,7 +12,7 @@ router.route('/add').post((req, res) => {
 
   //Save to database
   newComment.save()
-    .then(() => res.json('Comment added!'))
+    .then(() => res.send({success: true, message: 'Comment Added!'}))
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
@@ -35,7 +35,12 @@ router.route('/:id').get((req, res) =>
 router.route('/:id').delete((req, res) =>
 {
     Comment.findByIdAndDelete(req.params.id)
-    .then(comment => res.json("Exercise Deleted"))
+    .then(comment => {
+      res.send({
+        success:true,
+        message: 'Comment Deleted!'
+      })
+    })
     .catch(err => res.status(400).json('Error: '+ err));
 });
 
@@ -47,7 +52,7 @@ router.route('/update/:id').post((req, res) =>
       comment.description = req.body.description
 
     comment.save()
-    .then(()=> res.json('Comment Updated!'))
+    .then(() => {res.send({success: true, message: 'Comment Updated!'})})
     .catch(err => res.status(400).json('Error: ' +err));
 
     })

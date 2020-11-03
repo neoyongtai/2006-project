@@ -37,17 +37,14 @@ const UserSchema = new Schema({
     },
     firstname: {
         type:String,
-        required: true,
         default: ''
     },
     lastname: {
         type:String,
-        required: true,
         default: ''
     },
     email: {
         type:String,
-        required: true,
         default: ''
     },
     isDeleted: {

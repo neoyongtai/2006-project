@@ -6,6 +6,7 @@ import Paper from '@material-ui/core/Paper';
 import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 import { withRouter } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 
  class CreateComment extends Component
 {
@@ -22,7 +23,7 @@ import { withRouter } from 'react-router-dom';
           post_id: this.props.post_id,
           username: localStorage.getItem('USERNAME'),
           user_id: localStorage.getItem('USERID'),
-          description: " ",
+          description: "",
           no_of_comments: this.props.no_of_comments
         }
     }
@@ -58,30 +59,35 @@ import { withRouter } from 'react-router-dom';
         if(localStorage.getItem("SESSIONTOKEN") === null)
         {
           this.props.history.push("/login")
+          this.props.enqueueSnackbar('Please login to comment!')
         }
         else
         {
-          const comment = {
-            post_id: this.state.post_id,
-            username: this.state.username,
-            user_id: this.state.user_id,
-            description: this.state.description
+          if(this.state.description === "") {
+            this.props.enqueueSnackbar('Comment cannot be empty!')
           }
+          else
+          {
+            const comment = {
+              post_id: this.state.post_id,
+              username: this.state.username,
+              user_id: this.state.user_id,
+              description: this.state.description
+            }
 
-          console.log("BEFORE POST")
-          console.log(this.state.no_of_comments)
+            console.log("BEFORE POST")
+            console.log(this.state.no_of_comments)
 
-          axios.post("http://localhost:5000/comment/add" , comment)
-          .then(res => {
-            this.setState((prevState) => ({
-              no_of_comments: prevState.no_of_comments + 1
-            }));
-            console.log("Inside COMMNET ADD")
-          })
-
-    
+            axios.post("http://localhost:5000/comment/add" , comment)
+            .then(res => {
+              this.setState((prevState) => ({
+                no_of_comments: prevState.no_of_comments + 1
+              }));
+              this.props.enqueueSnackbar(res.data.message)
+              this.props.closeSnackbar()
+            })
+          }
         }
-
     }
 
     render()
@@ -114,4 +120,4 @@ import { withRouter } from 'react-router-dom';
         )
     }
 }
-export default withRouter(CreateComment)
+export default withSnackbar(withRouter(CreateComment))

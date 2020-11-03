@@ -2,8 +2,9 @@ import React, {Component} from 'react';
 import axios from  'axios';
 import { TextField, Button, Grid, Container } from '@material-ui/core';
 import { Link } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 
-export default class Login extends Component
+class Login extends Component
 {
     constructor(props) {
         super(props)
@@ -48,16 +49,17 @@ export default class Login extends Component
 
     onSignIn(e)
     {
-        e.preventDefault();
-
-        const user = {
-            username: this.state.username,
-            password: this.state.password
-        }
+      e.preventDefault();
+      const user = {
+        username: this.state.username,
+        password: this.state.password
+      }
 
         //Send user data to backend.
         axios.post('http://localhost:5000/users/login', user)
         .then(res => {
+          if(res.data.success === true) //pass authentication
+          {
             localStorage.setItem('SESSIONTOKEN', res.data.token);
             localStorage.setItem('USERID', res.data.userId);
             this.setState (
@@ -68,19 +70,27 @@ export default class Login extends Component
             )
             axios.get('http://localhost:5000/users/get?userId=' + this.state.userId)
             .then(res => {
-              localStorage.setItem('USERNAME', res.data.user.username);
+              localStorage.setItem('USERNAME', res.data.user.username)
               this.setState ({user: localStorage.getItem('USERNAME')})
               console.log(this.state.token)
               console.log(this.state.userId)
               console.log(this.state.user)
               this.props.history.push('/forum')
+              this.props.enqueueSnackbar('Hello, ' + this.state.user)
             })
             .catch((error) => {
                 console.log(error);
             })
-          })
-          .catch((error) => {
-              console.log(error);
+          }
+          else // failed authentication
+          {
+            localStorage.setItem('USERNAME', 'PUBLIC USER')
+            console.log(localStorage.getItem('USERNAME'))
+            this.props.enqueueSnackbar('Please try again.')
+          }
+        })
+        .catch((error) => {
+          console.log(error);
           })
     }
 
@@ -105,6 +115,7 @@ export default class Login extends Component
                   <Grid item xs={12}>
                       <TextField
                       label='Password' variant='outlined'
+                      type="password"
                       required
                       fullWidth
                       value={this.state.password}
@@ -129,3 +140,5 @@ export default class Login extends Component
       )
     }
 }
+
+export default withSnackbar(Login);

@@ -2,9 +2,16 @@ import React, {Component} from 'react';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from  'axios';
+import TextField from '@material-ui/core/TextField';
+import Button from '@material-ui/core/Button';
+import Paper from '@material-ui/core/Paper';
+import Grid from '@material-ui/core/Grid';
+import Container from '@material-ui/core/Container';
+import { withRouter } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 
 
-export default class EditComment extends Component
+class EditComment extends Component
 {
 
 
@@ -60,35 +67,41 @@ export default class EditComment extends Component
         console.log(comment)
 
         axios.post('http://localhost:5000/comment/update/'+ this.props.match.params.id, comment)
-        .then(res =>console.log(res.data))
+        .then(res => {
+          this.props.enqueueSnackbar(res.data.message)
+          this.props.history.push('/forum')
+        })
+        .catch((error) => {
+            console.log(error);
+        })
 
-        //Take back to the home pages.
-       // window.location = '/';
     }
     render()
     {
         return (
-            <div>
+          <Container maxWidth="sm">
             <h3>Edit Comment</h3>
             <form onSubmit={this.onSubmit}>
-
-              <div className="form-group">
-                <label>Description: </label>
-                <div>
-                <input  type="text"
-                    required
-                    className="form-control"
-                    value={this.state.description}
-                    onChange={this.onChangeDescription}
-                    />
-                </div>
-              </div>
-
-              <div className="form-group">
-                <input type="submit" value="Edit Post" className="btn btn-primary" />
-              </div>
+            <Grid container spacing={3}>
+              <Grid item xs={12}>
+              <TextField
+              label="Description" variant="outlined"
+              required
+              fullWidth
+              value={this.state.description}
+              onChange={this.onChangeDescription}
+              />
+              </Grid>
+              <Grid item xs={12}>
+                <Button variant="contained" color="primary" type="submit" fullWidth>
+                  Edit Comment
+                </Button>
+              </Grid>
+              </Grid>
             </form>
-          </div>
+          </Container>
         )
     }
 }
+
+export default withSnackbar(EditComment);

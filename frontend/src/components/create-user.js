@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import axios from  'axios';
 import { TextField, Button, Grid, Container } from '@material-ui/core';
-import { withRouter } from 'react-router-dom';
+import { withSnackbar } from 'notistack';
 
 class CreateUser extends Component
 {
@@ -77,20 +77,17 @@ class CreateUser extends Component
 
         //Send user data to backend.
         axios.post('http://localhost:5000/users/add',user)
-        .then(res =>console.log(res.data))
-
-        console.log(user)
-
-        //Take back to the home pages.
-        this.setState({
-            username: "",
-            password: "",
-            firstname: "",
-            lastname: "",
-            email: ""
+        .then(res => {
+          if(res.data.success !== true)
+          {
+            this.props.enqueueSnackbar(res.data.message)
+          }
+          else
+          {
+            this.props.enqueueSnackbar('User Created! Please sign in!')
+            this.props.history.push('/login')
+          }
         })
-
-        this.props.history.push('/')
     }
 
     render()
@@ -104,6 +101,7 @@ class CreateUser extends Component
                     <Grid item xs={12}>
                         <TextField
                         label='Username' variant='outlined'
+                        minlength="3"
                         required
                         fullWidth
                         value={this.state.username}
@@ -113,6 +111,8 @@ class CreateUser extends Component
                     <Grid item xs={12}>
                         <TextField
                         label='Password' variant='outlined'
+                        type="password"
+                        minlength="6"
                         required
                         fullWidth
                         value={this.state.password}
@@ -140,7 +140,6 @@ class CreateUser extends Component
                     <Grid item xs={12}>
                         <TextField
                         label='Email' variant='outlined'
-                        required
                         fullWidth
                         value={this.state.email}
                         onChange={this.onChangeEmail}
@@ -157,4 +156,4 @@ class CreateUser extends Component
         )
     }
 }
-export default withRouter(CreateUser)
+export default withSnackbar(CreateUser)

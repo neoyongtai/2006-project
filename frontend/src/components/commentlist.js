@@ -11,6 +11,7 @@ import Paper from '@material-ui/core/Paper';
 import IconButton from '@material-ui/core/IconButton';
 import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
+import { withSnackbar } from 'notistack';
 
 const Comment = props => (
     <TableRow key={props.comment.comment_id}>
@@ -40,7 +41,7 @@ const Comment = props => (
   )
 
 
-export default class CommentList extends Component
+class CommentList extends Component
 {
 
     constructor(props) {
@@ -84,13 +85,13 @@ export default class CommentList extends Component
     {
         axios.delete('http://localhost:5000/comment/' + id)
         .then(res =>{
-          
-          axios.post('http://localhost:5000/post/update/downcomment/'+  this.state.post_id,)
+          this.props.enqueueSnackbar(res.data.message)
+          this.props.closeSnackbar()
+          axios.post('http://localhost:5000/post/update/downcomment/'+  this.state.post_id)
           .then(res =>console.log(res.data)
-          
           )});
-      
-  
+
+
         this.setState({
             //delete the post from the UI.
             comment: this.state.comment.filter(el => el._id !== id)
@@ -127,3 +128,5 @@ export default class CommentList extends Component
         )
     }
 }
+
+export default withSnackbar(CommentList);

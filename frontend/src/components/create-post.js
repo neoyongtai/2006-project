@@ -29,8 +29,6 @@ export default class CreatePost extends Component
             description: " ",
             user_id:localStorage.getItem('USERID'),
             report_id:props.match.params.id
-            //no_of_comments: 0,
-            //no_of_upvotes: 0
         }
     }
 
@@ -39,7 +37,7 @@ export default class CreatePost extends Component
           this.props.history.push('/login')
         }
     }
-    
+
     onChangeTitle(e)
     {
         this.setState({
@@ -57,15 +55,13 @@ export default class CreatePost extends Component
     onSubmit(e)
     {
         e.preventDefault();
-        
+
         const post = {
             title: this.state.title,
             username: this.state.username,
             description: this.state.description,
             user_id:this.state.user_id,
             report_id: this.state.report_id
-           // no_of_comments: this.state.no_of_comments,
-            //no_of_upvotes: this.state.no_of_upvotes
         }
 
         axios.post('http://localhost:5000/post/add',post)

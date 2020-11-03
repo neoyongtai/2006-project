@@ -1,6 +1,7 @@
 import React from 'react';
 import {BrowserRouter as Router, Route} from "react-router-dom";
 
+import { SnackbarProvider } from 'notistack';
 import Navbar from "./components/navbar";
 import ReportList from "./components/reportlist";
 import EditReport from "./components/edit-report";
@@ -21,7 +22,7 @@ import Profile from "./components/profile";
 function App() {
 
   return (
-    <div>
+    <SnackbarProvider>
       <Router>
         <Route exact component= {Navbar} />
         <Route path ="/" exact component= {HomePage}/>
@@ -43,7 +44,7 @@ function App() {
         <Route path ="/forum/comment/edit/:id" exact component = {EditComment} />
       </Router>
       <Footer />
-    </div>
+    </SnackbarProvider>
   );
 }
 
