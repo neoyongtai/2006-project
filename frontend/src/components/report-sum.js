@@ -71,13 +71,6 @@ function ReportSum(props) {
 
 
 
-  /*useEffect(()=>{
-    console.log("Update Estate")
-
-
-
-  },[report.hdb_estate])*/
-
   
   console.log("This is from summary")
   console.log(report)
@@ -92,6 +85,7 @@ function ReportSum(props) {
  const onpublish = (e) => 
  {
   if(localStorage.getItem("SESSIONTOKEN") === null) {
+    localStorage.setItem('REPORTID', report._id)
     props.history.push('/login')
   }
   else

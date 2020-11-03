@@ -2,29 +2,40 @@ import React, { useState, useEffect } from 'react'
 import {GoogleMap, withScriptjs, withGoogleMap, Polygon, InfoWindow,Marker} from "react-google-maps"
 import axios from  'axios';
 import * as ammenties from "./ammenties.json"
+import amen from "./amen.json"
+const fs = require("fs")
 
 const google = window.google;
 function Map(props)
 {
+    console.log("This is the cord INSIDE MAPS")
+
     const[selectAmen, setSelectedAmen]= useState(null)
+    //const data = fs.readFileSync(__dirname + '/amen.json',"utf8")     
+//console.log(data)
+   // const estate_id = JSON.parse(data)
+   // console.log(estate_id)
 
     console.log("This is the cord INSIDE MAPS")
-    console.log(props.cord)
+   // console.log(props.cord)
     console.log(props.estate)
-    let estate = props.estate.replace(/[""]+/g, '')
-    let amen = "School"
-    //estate = "ANG_MO_KIO"
+    let es = props.estate.replace(/[""]+/g, '')
+   // let amen = "School"
+  //let es = "ANG_MO_KIO"
+  console.log(amen)
+  console.log("HELLOO")
+  console.log(amen[es])
     //console.log(ammenties)
     if(!(props.estate === "\"\""))
 {
     console.log("INSIDE")
-    console.log(estate)
+    console.log(es)
     return <GoogleMap defaultZoom={11} defaultCenter= {{lat:1.352083, lng:103.819839}} >
-        {ammenties["ANG_MO_KIO"].map((point)=>
-            <Marker key={point[amen][0].Name} position={{lat:point[amen][0].LAT, lng:point[amen][0].LONG}}
+        {amen[es].map((point)=>
+            <Marker key={point.Name} position={{lat:point.LAT, lng:point.LONG}}
             onClick={()=>
             {
-                setSelectedAmen(point[amen][0])
+                setSelectedAmen(point)
             }}
             />
         )}
