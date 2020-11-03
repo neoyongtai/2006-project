@@ -8,15 +8,21 @@ function Map(props)
 {
     const[selectAmen, setSelectedAmen]= useState(null)
 
-    console.log("This is the cord")
+    console.log("This is the cord INSIDE MAPS")
     console.log(props.cord)
+    console.log(props.estate)
+    let estate = props.estate.replace(/[""]+/g, '')
+    console.log(props.estate)
 
+    console.log(estate)
+    if(!(props.estate === "\"\""))
+{
     return <GoogleMap defaultZoom={11} defaultCenter= {{lat:1.352083, lng:103.819839}} >
-        {ammenties.ANG_MO_KIO.map((point)=>
-            <Marker key={point.Food[0].Name} position={{lat:point.Food[0].LAT, lng:point.Food[0].LONG}}
+        {ammenties["BUKIT_TIMAH"].map((point)=>
+            <Marker key={point["Food"][0].Name} position={{lat:point["Food"][0].LAT, lng:point["Food"][0].LONG}}
             onClick={()=>
             {
-                setSelectedAmen(point)
+                setSelectedAmen(point["Food"][0])
             }}
             />
         )}
@@ -39,7 +45,7 @@ fillColor:'#000000',
 fillOpacity:0}}> 
         </Polygon>
          </GoogleMap>
-
+}
 }
 //In order to correct load Google Maps JavaScript API v3, need to wrap it with withScriptjs HOC
 
@@ -92,7 +98,6 @@ useEffect(()=> {
 
 
  
-console.log(cord)
 const WrappedMap = withScriptjs(withGoogleMap(Map))
 console.log(WrappedMap)
     return (
@@ -102,7 +107,8 @@ console.log(WrappedMap)
          loadingElement= {<div style = {{height: "100%"}}/>} 
          containerElement= {<div style = {{height: "100%"}}/>} 
          mapElement= {<div style = {{height: "100%"}}/>}
-         cord = {cord} />
+         cord = {cord}
+         estate = {props.estate} />
         </div>
     )
 }
