@@ -44,17 +44,14 @@ router.route('/map/:id').get(async (req,res)=>
  console.log("Awating Now")
  try{ 
     estimated_price = await calculatePrice.getData(req.body.hdb_estate,req.body.hdb_category)
-    estimated_tax = await calculatePrice.getTax(estimated_price)
-    //kml = await getKml.getKML(req.body.hdb_estate)
-   //console.log("This is from the await " + estimated_price)
+    estimated_tax = await calculatePrice.getTax(req.body.hdb_category)
+   
  }catch(err)
  {
      console.log(err)
  }
 
- //console.log("This is the estimated Price")
- //console.log(estimated_price)
-//console.log("Finsh Waiting")
+ 
   estimated_price = parseInt(estimated_price,10)
   const report_type = req.body.report_type;
   const hdb_type = req.body.hdb_type

@@ -33,7 +33,8 @@ const formvalues = {
   user_id : 0,
   estimated_price:"",
   estimated_tax:"",
-  date_generated: new Date()
+  date_generated: new Date(),
+  description:""
 }
 
 
@@ -137,7 +138,20 @@ if(isLoading)
                    </Grid>
 
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Method:  {JSON.stringify(report.ammenties)} </Typography> 
+                   <Typography variant ="h6"> Desired Ammenties: </Typography> 
+                     {report.ammenties.map((check)=>(
+                       <h1>{JSON.stringify(check.values)}</h1>
+                      //<div>
+                   //     {(check.values === true) &&(
+                   //     <FormControlLabel control={<Checkbox checked={check.mrt}  name="school"  color="primary"  />}
+                  //      label={check.keys}
+                  //   />
+                  //       ) }
+                  //   </div>
+                  )
+                  )}
+
+                   <Typography variant ="h6"> Desired Ammenties:  {JSON.stringify(report.ammenties)} </Typography> 
                    </Grid>
 
                    <Grid item xs={12}>
@@ -148,23 +162,29 @@ if(isLoading)
                    <Grid item xs={12}>
                    <Typography variant ="h6"> Estimated Tax: ${report.estimated_tax} </Typography> 
                    </Grid>
-                    
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Method of Calculation: {report.description} </Typography> 
+                   </Grid>
+                   
+                    <Grid item xs={12}>
+                    <ReportMaps estate = {JSON.stringify(report.hdb_estate)}></ReportMaps>
+                    </Grid>
+
                    <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth>
-                    Save Report
+                    Generate Report
                   </Button></Grid>
                    <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth onClick={onpublish}>
                     Publish Report </Button> 
-                    
-                    </Grid>
-                    <Grid item xs={12}>
-                    <ReportMaps estate = {JSON.stringify(report.hdb_estate)}></ReportMaps>
+                     </Grid>
+
                       {/* {(report.hdb_estate === "\"\"") ? 
                        (<ReportMaps estate = {JSON.stringify(report.hdb_estate)}></ReportMaps>):<Typography variant ="h6"> Cord: </Typography> 
                                                   } */}
   
                        
 
-                    </Grid>
+                    
 
                     </Grid>
                     </Container>

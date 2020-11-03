@@ -122,6 +122,7 @@ class PostList extends Component
 
     postList() {
         return this.state.post.map(currentpost => {
+
           return <Post post={currentpost}
           deletePost={this.deletePost}
           key={currentpost._id} />
