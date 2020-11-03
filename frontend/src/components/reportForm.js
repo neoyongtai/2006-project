@@ -25,7 +25,7 @@ const formvalues = {
     hdb_category: "",
     region: "",
     hdb_estate: "",
-    ammenties: [{shop: false} ,{mrt: false}, {school:false},{food:false}], 
+    ammenties: {shop: false, mrt: false, school:false,food:false}, 
     expected_date: new Date(),
     date_generated: new Date()
 }
@@ -53,7 +53,7 @@ function ReportForm (props){
         setValues((prevstate)=> {
           return ({
             ...prevstate,
-            ammenties : [{...prevstate.ammenties},{[e.target.name]: e.target.checked}]
+            ammenties : {...prevstate.ammenties,[e.target.name]: e.target.checked}
 
         })
 
@@ -240,7 +240,7 @@ function ReportForm (props){
 
 
         <Grid item xs={12} md = {6}>
-          <FormLabel component = "legend">Pick Desired Ammenties</FormLabel>
+          <FormLabel component = "legend">Pick Desired Amenties</FormLabel>
           <FormGroup>
           <FormControlLabel
             control={<Checkbox checked={values.ammenties.shop} onChange={handlecheckBox} name="shop" color="primary" />}

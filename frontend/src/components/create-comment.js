@@ -110,7 +110,7 @@ import { withSnackbar } from 'notistack';
 
                   <Grid item xs={4}>
                     <Button variant="contained" color="primary" type="submit" fullWidth>
-                      Create Comment
+                       Comment
                     </Button>
                   </Grid>
 
