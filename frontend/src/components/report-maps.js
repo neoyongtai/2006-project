@@ -1,14 +1,37 @@
 import React, { useState, useEffect } from 'react'
-import {GoogleMap, withScriptjs, withGoogleMap, Polygon} from "react-google-maps"
+import {GoogleMap, withScriptjs, withGoogleMap, Polygon, InfoWindow,Marker} from "react-google-maps"
 import axios from  'axios';
-const google = window.google;
+import * as ammenties from "./ammenties.json"
 
+const google = window.google;
 function Map(props)
 {
+    const[selectAmen, setSelectedAmen]= useState(null)
+
     console.log("This is the cord")
     console.log(props.cord)
 
     return <GoogleMap defaultZoom={11} defaultCenter= {{lat:1.352083, lng:103.819839}} >
+        {ammenties.ANG_MO_KIO.map((point)=>
+            <Marker key={point.Food[0].Name} position={{lat:point.Food[0].LAT, lng:point.Food[0].LONG}}
+            onClick={()=>
+            {
+                setSelectedAmen(point)
+            }}
+            />
+        )}
+        {selectAmen && (
+            <InfoWindow position={{lat:selectAmen.LAT, lng:selectAmen.LONG}}
+            onCloseClick={()=>{
+                    setSelectedAmen(null);
+
+            }}
+            >
+                <div><h3>{selectAmen.Name}</h3>
+                </div></InfoWindow>
+
+
+        )}
         <Polygon path ={props.cord[0]} key={1} options={{strokeColor:'#FF0000',
 strokeOpacity:0.8,
 strokeWeight:3,
@@ -68,40 +91,6 @@ useEffect(()=> {
 
 
 
-
-    /*useEffect(() => {
-        console.log("Inisde UseEffect")
-
-        if(!(props.estate === "\"\"") && count == 1)
-        {
-            console.log("Fire Away")
-            axios.get("http://localhost:5000/report/map/"+props.estate).then(response=> {
-                //setCord(response.data)
-                for(i =0;i<response.data.length;i++)
-                {
-                    lngv =  (response.data[i][0])
-                    latv =  (response.data[i][1])
-                    try{
-                        obj.push({
-                            lat: latv,
-                            lng: lngv
-                      })
-                    }catch(err)
-                    {
-                        console.log(err)
-                    }
-                   
-                }
-    
-                console.log("Inside ReportMaps")
-                console.log(obj)
-                setCord([obj])    
-    
-              })
-      }
-
-    }, []) //If enter [] then means run once.
-*/
  
 console.log(cord)
 const WrappedMap = withScriptjs(withGoogleMap(Map))

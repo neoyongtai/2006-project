@@ -19,13 +19,33 @@ function getData(estate,rooms)
         
 }
 
-function getTax(price)
+function getTax(cat)
 
 {    
-    let tempvalue = 0,totaltax = 0;
+    let tempvalue = 0,totaltax = 0, av = 0;
     const data = fs.readFileSync(__dirname + '/../data/TaxPrice.json',"utf8")
     const taxrate = JSON.parse(data)
-    const av = 100000
+
+    if(cat === "OneRoom" || cat === "TwoRoom")
+    {
+        av =5100*3
+    }
+    else if(cat === "ThreeRoom" ){
+
+        av= 7860*3
+    }
+    else if(cat === "FourRoom")
+    {
+        av = 9600*3
+    }
+    else if(cat === "FiveRoom")
+    {
+      av=10380*2
+    }
+    else{
+        av = 65052*2
+    }
+
     for( var k in taxrate)
     {
         console.log(taxrate[k].rate)

@@ -1,0 +1,16 @@
+{
+"ANG_MO_KIO":[
+
+    { 
+      "Food":[ {"Name": "Ang Mo Kio Primary School","LAT" :1.369386 , "LONG":103.839821},
+        {"Name": "Kam Jia Zhuang Seafood Steamboat",  "LAT": 1.368525, "LONG":103.844096 }]
+    },
+    
+    {
+    "School":[{"Name": "Ang Mo Kio Primary School","LAT" :1.369386 , "LONG":103.839821 }]
+      }, 
+    {"Mrt": [{ "Name":"Ang Mo Kio MRT Station", "LAT":1.370025, "LONG":103.849588 }]
+      }
+]
+
+}

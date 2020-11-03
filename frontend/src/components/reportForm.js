@@ -197,14 +197,12 @@ function ReportForm (props){
           <MenuItem value="">
             <em>None</em>
           </MenuItem>
-          <MenuItem value={`ANG_MOK_KIO`}>Ang Mo Kio</MenuItem>
+          <MenuItem value={`ANG_MO_KIO`}>Ang Mo Kio</MenuItem>
           <MenuItem value={`BUKIT_TIMAH`}>Bukit Timah</MenuItem>
           <MenuItem value={`BUKIT_PANJANG`}>Bukit Panjang</MenuItem>
           <MenuItem value={`BUKIT_MERAH`}>Bukit Merah</MenuItem>
           <MenuItem value={`BEDOK`}>Bedok</MenuItem>
           <MenuItem value={`BISHAN`}>Bishan</MenuItem>
-          <MenuItem value={`Clementi`}>Clementi</MenuItem>
-          <MenuItem value={`CENTRAL`}>Central Area</MenuItem>
           <MenuItem value={`CHOA_CHU_KANG`}>Choa Chu Kang</MenuItem>
           <MenuItem value={`GEYLANG`}>Geylang</MenuItem>
           <MenuItem value={`HOUGANG`}>Hougang</MenuItem>
