@@ -118,6 +118,9 @@ router.route('/update/upvote/:id').post((req, res) => {
   });
 });
 
+
+
+
 router.route('/update/upcomment/:id').post((req, res) => {
 
   console.log("NODE")
@@ -142,5 +145,25 @@ router.route('/update/upcomment/:id').post((req, res) => {
   });
 });
 
+
+router.route('/update/downcomment/:id').post((req, res) => {
+
+
+  Post.findOneAndUpdate({_id: req.params.id},
+    {
+      $inc: { no_of_comments: -1 }
+  }, (err, post) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Failed to up comment count'
+      });
+    }
+      return res.send({
+        success: true,
+        message: 'down comment count'
+    })
+  });
+});
 
 module.exports = router;

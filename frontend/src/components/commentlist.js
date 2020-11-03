@@ -61,6 +61,7 @@ export default class CommentList extends Component
    }
 }
 
+
     componentDidUpdate(prevProps, prevState)
     {
       if(prevState.post_id !== this.props.post_id){
@@ -82,11 +83,20 @@ export default class CommentList extends Component
     deleteComment(id)
     {
         axios.delete('http://localhost:5000/comment/' + id)
-        .then(res =>console.log(res.data));
+        .then(res =>{
+          
+          axios.post('http://localhost:5000/post/update/downcomment/'+  this.state.post_id,)
+          .then(res =>console.log(res.data)
+          
+          )});
+      
+  
         this.setState({
             //delete the post from the UI.
             comment: this.state.comment.filter(el => el._id !== id)
         })
+
+
     }
 
 

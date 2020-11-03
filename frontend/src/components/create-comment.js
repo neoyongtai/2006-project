@@ -27,6 +27,17 @@ import { withRouter } from 'react-router-dom';
         }
     }
 
+    componentDidUpdate(prevProps,prevState)
+    {
+
+      if(prevState.no_of_comments !== this.state.no_of_comments)
+      {
+        this.upCommentCount()
+      }
+    }
+
+
+
     onChangeDescription(e)
     {
       this.setState({description: e.target.value})
@@ -65,10 +76,10 @@ import { withRouter } from 'react-router-dom';
             this.setState((prevState) => ({
               no_of_comments: prevState.no_of_comments + 1
             }));
-            console.log(res.data)
+            console.log("Inside COMMNET ADD")
           })
 
-          this.upCommentCount()
+    
         }
 
     }

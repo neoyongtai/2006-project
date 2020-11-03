@@ -138,6 +138,18 @@ export default class ViewPost extends Component {
 
     }
 
+
+    /*componentDidUpdate(prevProps,prevState)
+    {
+
+      if(prevState.no_of_comments !== this.state.no_of_comments)
+      {
+        this.upCommentCount()
+      }
+    }*/
+
+
+
     upVote() {
       axios.post('http://localhost:5000/post/update/upvote/'+ this.props.match.params.id,
       {no_of_upvotes: this.state.no_of_upvotes + 1})
@@ -241,7 +253,7 @@ export default class ViewPost extends Component {
             <CreateComment
             post_id={this.props.match.params.id}
             no_of_comments={this.state.no_of_comments}/>
-            <CommentList post_id={this.props.match.params.id}/>
+            <CommentList  post_id={this.props.match.params.id}/>
           </div>
         )
     }
