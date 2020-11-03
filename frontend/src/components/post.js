@@ -6,6 +6,9 @@ import CardContent from '@material-ui/core/CardContent';
 import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Checkbox from '@material-ui/core/Checkbox';
 import PersonIcon from '@material-ui/icons/Person';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
@@ -18,6 +21,7 @@ import ReactTimeAgo from 'react-time-ago';
 import axios from  'axios';
 import CommentList from "../components/commentlist";
 import CreateComment from "../components/create-comment";
+
 
 
 TimeAgo.addDefaultLocale(en);
@@ -48,7 +52,7 @@ export default class ViewPost extends Component {
                region: " ",
                hdb_estate: " ",
                date_generated: new Date(),
-               ammenties : [],
+               ammenties :{shop: false, mrt: false, school:false,food:false},
                estimated_price: 0,
                estimated_tax : 0,
                setUpvote: true
@@ -189,22 +193,47 @@ export default class ViewPost extends Component {
             <Link to = "/forum">
               <KeyboardBackspaceIcon />
             </Link>
-              <Typography variant="h5" gutterBottom>
+              <Typography variant="h3" gutterBottom>
                 {this.state.title}
               </Typography>
-              <Typography variant="body2" component="h2">
-                {this.state.description}
+              <Typography variant="h5" component="h2">
+              {this.state.description}
               </Typography>
 
-                 <Typography variant ="h6">Report Type: {this.state.report_type} </Typography>
-                 <Typography variant ="h6"> HDB Type: {this.state.hdb_type} </Typography>
-                 <Typography variant ="h6"> HDB Category: {this.state.hdb_category}  </Typography>
-                 <Typography variant ="h6"> Region : {this.state.region} </Typography>
-                 <Typography variant ="h6"> HDB Estate: {this.state.hdb_estate} </Typography>
-                 <Typography variant ="h6"> Expected Date: {JSON.stringify(this.state.date_generated)}</Typography>
-                 <Typography variant ="h6"> Method:  {JSON.stringify(this.state.ammenties)} </Typography>
-                 <Typography variant ="h6">Estaimted Price: ${this.state.estimated_price} </Typography>
-                 <Typography variant ="h6"> Estimated Tax: ${this.state.estimated_tax} </Typography>
+              <br></br>
+              <Typography variant ="h4">Report </Typography>
+
+                 <Typography variant ="h5">Report Type: {this.state.report_type} </Typography>
+                 <Typography variant ="h5"> HDB Type: {this.state.hdb_type} </Typography>
+                 <Typography variant ="h5"> HDB Category: {this.state.hdb_category}  </Typography>
+                 <Typography variant ="h5"> Region : {this.state.region} </Typography>
+                 <Typography variant ="h5"> HDB Estate: {this.state.hdb_estate} </Typography>
+                 <Typography variant ="h5"> Expected Date: {new Date(this.state.date_generated).toLocaleDateString()}</Typography>
+                 <Typography variant ="h5"> Method:  {JSON.stringify(this.state.ammenties)} </Typography>
+
+
+     <FormGroup>
+          <FormControlLabel control={<Checkbox checked={this.state.ammenties[0]}  name="shop" color="primary" />}
+            label="Near Shopping Centre"
+          />
+
+          <FormControlLabel
+            control={<Checkbox checked={this.state.ammenties[0]} name="mrt"  color="primary" />}
+            label="Near Mrt"
+          />
+          <FormControlLabel
+            control={<Checkbox checked={this.state.ammenties[0]}  name="school"  color="primary" />}
+            label="Near School"
+          />
+
+          <FormControlLabel
+            control={<Checkbox checked={this.state.ammenties[0]}name="food"   color="primary"/>}
+            label="Great Food"
+          />
+      </FormGroup> 
+
+                 <Typography variant ="h5">Estaimted Price: ${this.state.estimated_price} </Typography>
+                 <Typography variant ="h5"> Estimated Tax: ${this.state.estimated_tax} </Typography>
                </CardContent>
                 <CardActions>
                   <PersonIcon />{this.state.username}

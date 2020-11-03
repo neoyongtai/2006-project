@@ -40,10 +40,10 @@ function getTax(cat)
     }
     else if(cat === "FiveRoom")
     {
-      av=10380*2
+      av=31080*2
     }
-    else{
-        av = 65052*2
+    else if(cat === "Executive"){
+        av = 65052
     }
 
     for( var k in taxrate)
@@ -57,7 +57,7 @@ function getTax(cat)
        else
        {
            tempvalue = av - parseInt((taxrate[k].lower_av))
-           totaltax = tempvalue*taxrate[k].rate
+           totaltax = totaltax + tempvalue*taxrate[k].rate
            break
        }
     }

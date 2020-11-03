@@ -163,7 +163,7 @@ class PostList extends Component
                     label="select-estate-label"
                     variant ="outlined"
                   >
-                  <MenuItem value={`ALL`}>All</MenuItem>
+                  <MenuItem value={`ALL`}>All (Estate)</MenuItem>
                   <MenuItem value={`ANG_MOK_KIO`}>Ang Mo Kio</MenuItem>
                   <MenuItem value={`BUKIT_TIMAH`}>Bukit Timah</MenuItem>
                   <MenuItem value={`BUKIT_PANJANG`}>Bukit Panjang</MenuItem>
@@ -201,7 +201,7 @@ class PostList extends Component
                     label="select-post-label"
                     variant ="outlined"
                   >
-                      <MenuItem value="ALL">All</MenuItem>
+                      <MenuItem value="ALL">All (User)</MenuItem>
                       <MenuItem value={this.state.username}>Own</MenuItem>
                     </Select>
                 </TableCell>
