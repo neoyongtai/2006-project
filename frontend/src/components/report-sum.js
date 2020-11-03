@@ -28,13 +28,13 @@ const formvalues = {
   hdb_category: "",
   region: "",
   hdb_estate: "",
-  ammenties: {shop: false , mrt: false, hospital: false, school:false, food:false}, 
+  ammenties: [{shop: false} , {mrt: false}, {school:false}, {food:false}], 
   expected_date: new Date(),
   user_id : 0,
   estimated_price:"",
   estimated_tax:"",
   date_generated: new Date(),
-  description:""
+  description:"",
 }
 
 
@@ -60,6 +60,11 @@ function ReportSum(props) {
 
   useEffect(()=>{
     console.log("Set Userrrr")
+    setReport({...report, user_id :localStorage.getItem('USERID')})
+  },[report.user_id])
+
+  useEffect(()=>{
+    console.log("Set Ammenties")
     setReport({...report, user_id :localStorage.getItem('USERID')})
   },[report.user_id])
 
@@ -140,14 +145,14 @@ if(isLoading)
                    <Grid item xs={12}>
                    <Typography variant ="h6"> Desired Ammenties: </Typography> 
                      {report.ammenties.map((check)=>(
-                       <h1>{JSON.stringify(check.values)}</h1>
-                      //<div>
-                   //     {(check.values === true) &&(
-                   //     <FormControlLabel control={<Checkbox checked={check.mrt}  name="school"  color="primary"  />}
-                  //      label={check.keys}
-                  //   />
-                  //       ) }
-                  //   </div>
+                      // <h1>{JSON.stringify(check.values)}</h1>
+                      <div>
+                      {
+                       <FormControlLabel control={<Checkbox checked={check.school}  name="school"  color="primary"  />}
+                      label="Near Mrt"
+                     />
+                          }
+                   </div>
                   )
                   )}
 
