@@ -13,7 +13,7 @@ import EditIcon from '@material-ui/icons/Edit';
 import DeleteIcon from '@material-ui/icons/Delete';
 import { withRouter } from 'react-router-dom';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import Menu from '@material-ui/core/Menu';
+import Select from '@material-ui/core/Select';
 import MenuItem from '@material-ui/core/MenuItem';
 
 
@@ -54,26 +54,22 @@ class PostList extends Component
     constructor(props) {
         super(props)
 
+        this.onChangeEstate = this.onChangeEstate.bind(this)
+        this.onChangePost = this.onChangePost.bind(this)
         this.deletePost = this.deletePost.bind(this);
         this.state = {
-          post : [],
+          post: [],
           token : localStorage.getItem('SESSIONTOKEN'),
           userId: localStorage.getItem('USERID'),
           username: localStorage.getItem('USERNAME'),
-          anchorEl: null
+          estateFilter: "ALL",
+          postFilter: "ALL"
         }
     }
 
-    openMenu = event => this.setState({ anchorEl: event.currentTarget })
-    closeMenu = () => this.setState({ anchorEl: null })
-
     componentDidMount()
     {
-      //if(localStorage.getItem("SESSIONTOKEN") === null) {
-      //    this.props.history.push('/login')
-      //  }
-
-        this.getAllPosts();
+      this.getAllPosts();
     }
 
     deletePost(id)
@@ -88,32 +84,9 @@ class PostList extends Component
 
     getAllPosts()
     {
-      axios.get('http://localhost:5000/users/verify?token=' + this.state.token)
-      .then((res) => {
-        console.log(this.state.token)
-        console.log(this.state.userId)
-        console.log(this.state.username)
-        console.log(res.data)
-        axios.get('http://localhost:5000/post')
-        .then(response => {
-            this.setState({post : response.data.posts})
-            console.log(response.data.posts)
-        })
-        .catch((error) => {
-            console.log(error);
-        })
-      })
-      .catch((error) => {
-          console.log(error);
-      })
-    }
-
-    getOwnPosts(username)
-    {
-      axios.get('http://localhost:5000/post?username=' + username)
+      axios.get('http://localhost:5000/post/postreport')
       .then(response => {
-          this.setState({post : response.data.posts})
-          console.log(response.data.posts)
+        this.setState({post: response.data})
       })
       .catch((error) => {
           console.log(error);
@@ -122,11 +95,55 @@ class PostList extends Component
 
     postList() {
         return this.state.post.map(currentpost => {
-          return <Post post={currentpost}
-          deletePost={this.deletePost}
-          key={currentpost._id} />
+          console.log(this.state.estateFilter)
+          console.log(this.state.postFilter)
+          if(currentpost.username === this.state.postFilter)
+          {
+            if(currentpost.report_id.hdb_estate === this.state.estateFilter)
+            {
+              return <Post post={currentpost}
+              deletePost={this.deletePost}
+              key={currentpost._id} />
+            }
+            if(this.state.estateFilter === "ALL")
+            {
+              return <Post post={currentpost}
+              deletePost={this.deletePost}
+              key={currentpost._id} />
+            }
+          }
+          if(this.state.postFilter === "ALL")
+          {
+            if(currentpost.report_id.hdb_estate === this.state.estateFilter)
+            {
+              return <Post post={currentpost}
+              deletePost={this.deletePost}
+              key={currentpost._id} />
+            }
+            if(this.state.estateFilter === "ALL")
+            {
+              return <Post post={currentpost}
+              deletePost={this.deletePost}
+              key={currentpost._id} />
+            }
+          }
         })
       }
+
+      onChangeEstate(e)
+      {
+          this.setState({
+              estateFilter: e.target.value
+          })
+      }
+
+      onChangePost(e)
+      {
+          this.setState({
+              postFilter: e.target.value
+          })
+      }
+
 
     render()
     {
@@ -135,34 +152,59 @@ class PostList extends Component
             <Table aria-label="all posts table">
               <TableHead>
                 <TableRow>
-                  <TableCell>Posts</TableCell>
+                  <TableCell>Filter Post By</TableCell>
                   <TableCell>
-                    <Link
-                    aria-controls="filter"
-                    aria-haspopup="true"
-                    onClick={this.openMenu}>
-                      <IconButton aria-label="Filter">
-                        <FilterListIcon />
-                      </IconButton>
-                    </Link>
-                    <Menu
-                    id="filter"
-                    anchorEl={this.state.anchorEl}
-                    keepMounted
-                    open={Boolean(this.state.anchorEl)}
-                    onClose={this.closeMenu}>
-                    <MenuItem
-                    onClick={() => {
-                      this.getAllPosts()
-                      this.closeMenu()
-                    }}>All</MenuItem>
-                    <MenuItem
-                    onClick={() => {
-                      this.getOwnPosts(this.state.username)
-                      this.closeMenu()
-                    }}>Own</MenuItem>
-                    </Menu>
+                  <Select
+                    labelId="select-estate-label"
+                    id="Estate" //Set
+                    value={this.state.estateFilter}
+                    onChange={this.onChangeEstate}
+                    fullWidth
+                    label="select-estate-label"
+                    variant ="outlined"
+                  >
+                  <MenuItem value={`ALL`}>All</MenuItem>
+                  <MenuItem value={`ANG_MOK_KIO`}>Ang Mo Kio</MenuItem>
+                  <MenuItem value={`BUKIT_TIMAH`}>Bukit Timah</MenuItem>
+                  <MenuItem value={`BUKIT_PANJANG`}>Bukit Panjang</MenuItem>
+                  <MenuItem value={`BUKIT_MERAH`}>Bukit Merah</MenuItem>
+                  <MenuItem value={`BEDOK`}>Bedok</MenuItem>
+                  <MenuItem value={`BISHAN`}>Bishan</MenuItem>
+                  <MenuItem value={`Clementi`}>Clementi</MenuItem>
+                  <MenuItem value={`CENTRAL`}>Central Area</MenuItem>
+                  <MenuItem value={`CHOA_CHU_KANG`}>Choa Chu Kang</MenuItem>
+                  <MenuItem value={`GEYLANG`}>Geylang</MenuItem>
+                  <MenuItem value={`HOUGANG`}>Hougang</MenuItem>
+                  <MenuItem value={`JURONG_EAST`}>Jurong East</MenuItem>
+                  <MenuItem value={`JURONG_WEST`}>Jurong West</MenuItem>
+                  <MenuItem value={`KALLANG`}>Kallang</MenuItem>
+                  <MenuItem value={`MARINE_PARADE`}>Marine Parade</MenuItem>
+                  <MenuItem value={`PASIR_RIS`}>Pasir Ris</MenuItem>
+                  <MenuItem value={`PUNGGOL`}>Punggol</MenuItem>
+                  <MenuItem value={`QUEENSTOWN`}>Queenstown</MenuItem>
+                  <MenuItem value={`SEMBAWANG`}>Sembawang</MenuItem>
+                  <MenuItem value={`SENGKANG`}>Sengkang</MenuItem>
+                  <MenuItem value={`SERANGOON`}>Serangoon</MenuItem>
+                  <MenuItem value={`TAMPINES`}>Tampines</MenuItem>
+                  <MenuItem value={`TOA_PAYOH`}>Toa Payoh</MenuItem>
+                  <MenuItem value={`WOODLANDS`}>Woodlands</MenuItem>
+                  <MenuItem value={`YISHUN`}>Yishun</MenuItem>
+                  </Select>
                   </TableCell>
+                  <TableCell>
+                  <Select
+                    labelId="select-post-label"
+                    id="Post" //Set
+                    value={this.state.postFilter}
+                    onChange={this.onChangePost}
+                    fullWidth
+                    label="select-post-label"
+                    variant ="outlined"
+                  >
+                      <MenuItem value="ALL">All</MenuItem>
+                      <MenuItem value={this.state.username}>Own</MenuItem>
+                    </Select>
+                </TableCell>
                 </TableRow>
                 <TableRow>
                   <TableCell>Username</TableCell>

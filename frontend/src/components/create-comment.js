@@ -22,24 +22,25 @@ import { withRouter } from 'react-router-dom';
           post_id: this.props.post_id,
           username: localStorage.getItem('USERNAME'),
           user_id: localStorage.getItem('USERID'),
-          description: " "
+          description: " ",
+          no_of_comments: this.props.no_of_comments
         }
     }
 
-  /*  componentDidUpdate(prevProps, prevState){
-   if(prevState.post_id !== this.props.id){
-       this.setState({
-            post_id: this.props.id
-       })
-   }
-}*/
-
     onChangeDescription(e)
     {
-        this.setState({
-            description: e.target.value
-        })
+      this.setState({description: e.target.value})
     }
+
+    upCommentCount() {
+      axios.post('http://localhost:5000/post/update/upcomment/'+ this.props.match.params.id,
+      {no_of_comments: this.state.no_of_comments})
+      .then(res =>console.log(res.data))
+
+      console.log("ON MOUNT")
+      console.log(this.state.no_of_comments)
+    }
+
     onSubmit(e)
     {
         e.preventDefault();
@@ -55,11 +56,21 @@ import { withRouter } from 'react-router-dom';
             user_id: this.state.user_id,
             description: this.state.description
           }
-  
+
+          console.log("BEFORE POST")
+          console.log(this.state.no_of_comments)
+
           axios.post("http://localhost:5000/comment/add" , comment)
-          .then(res =>console.log(res.data))
+          .then(res => {
+            this.setState((prevState) => ({
+              no_of_comments: prevState.no_of_comments + 1
+            }));
+            console.log(res.data)
+          })
+
+          this.upCommentCount()
         }
-        
+
     }
 
     render()

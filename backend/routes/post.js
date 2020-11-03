@@ -1,8 +1,6 @@
 const router = require('express').Router();
 let Post = require('../models/post.model');
-const UserSession = require('../models/usersession.model');
-const User = require('../models/user.model');
-
+let Report = require('../models/report.model');
 
 router.route('/').get((req, res) => {
     const { query } = req;
@@ -42,6 +40,13 @@ router.route('/').get((req, res) => {
         }
       });
 
+router.route('/postreport').get((req, res) => {
+  Post.find()
+  .populate({path: 'report_id'})
+  .then(results => {return res.send(results)})
+  .catch(err => res.status(400).json('Error: ' + err));
+});
+
 router.route('/add').post((req, res) => {
   const title = req.body.title;
   const username = req.body.username;
@@ -50,9 +55,6 @@ router.route('/add').post((req, res) => {
   const report_id = req.body.report_id
   const date_posted = Date.now()
   const description = req.body.description;
-
-  //const no_of_comments = req.body.no_of_comments;
-  //const no_of_upvotes = req.body.no_of_upvotes;
 
 
   const newPost = new Post({title,username,description,user_id,report_id,date_posted});
@@ -83,7 +85,6 @@ router.route('/update/:id').post((req, res) =>
     Post.findById(req.params.id)
     .then(post => {
 
-    post.post_id = Number(req.body.post_id)
     post.title = req.body.title
     post.username = req.body.username
     post.description = req.body.description
@@ -96,6 +97,49 @@ router.route('/update/:id').post((req, res) =>
 
     })
     .catch(err => res.status(400).json('Error: '+ err));
+});
+
+router.route('/update/upvote/:id').post((req, res) => {
+
+  Post.findOneAndUpdate({_id: req.params.id},
+    {
+    $set: {no_of_upvotes: req.body.no_of_upvotes}
+  }, (err, post) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Failed to upvote'
+      });
+    }
+      return res.send({
+        success: true,
+        message: 'Upvoted'
+    })
+  });
+});
+
+router.route('/update/upcomment/:id').post((req, res) => {
+
+  console.log("NODE")
+  console.log(req.body.no_of_comments)
+  console.log("POST ID")
+  console.log(req.params.id)
+
+  Post.findOneAndUpdate({_id: req.params.id},
+    {
+    $set: {no_of_comments: req.body.no_of_comments}
+  }, (err, post) => {
+    if (err) {
+      return res.send({
+        success: false,
+        message: 'Failed to up comment count'
+      });
+    }
+      return res.send({
+        success: true,
+        message: 'Up comment count'
+    })
+  });
 });
 
 

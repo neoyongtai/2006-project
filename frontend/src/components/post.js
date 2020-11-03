@@ -31,12 +31,11 @@ export default class ViewPost extends Component {
 
            //Create the same fields as the MongoDB Schema
            this.state = {
-               post_id: " ",
-               report_id: "Hello World",
+               report_id: " ",
                title: " ",
                description: " ",
-               no_of_comments: " ",
-               no_of_upvotes: " ",
+               no_of_comments: 0,
+               no_of_upvotes: 0,
                createdAt: new Date(),
                token : localStorage.getItem('SESSIONTOKEN'),
                userId: localStorage.getItem('USERID'),
@@ -61,7 +60,6 @@ export default class ViewPost extends Component {
     axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
     .then(response => {
       this.setState({
-        post_id: response.data.post_id,
         title: response.data.title,
         username: response.data.username,
         description: response.data.description,
@@ -98,7 +96,6 @@ export default class ViewPost extends Component {
         axios.get('http://localhost:5000/post/'+ this.props.match.params.id)
         .then(response => {
           this.setState({
-            post_id: response.data.post_id,
             title: response.data.title,
             username: response.data.username,
             description: response.data.description,
@@ -106,7 +103,7 @@ export default class ViewPost extends Component {
             no_of_upvotes: response.data.no_of_upvotes,
             createdAt: response.data.createdAt,
             report_id: response.data.report_id
-          
+
           })
           console.log("Get")
           console.log(this.state.report_id)
@@ -123,9 +120,9 @@ export default class ViewPost extends Component {
                ammenties : response.data.ammenties,
                estimated_price: response.data.estimated_price,
                estimated_tax :response.data.estimated_tax
- 
+
              })
- 
+
           })
         })
         .catch(function (error) {
@@ -138,30 +135,24 @@ export default class ViewPost extends Component {
 
      }
 
-    
+
     }
 
-    updatePost() {
-      const post = {
-          post_id: this.state.post_id,
-          title: this.state.title,
-          username: this.state.username,
-          description: this.state.description,
-          no_of_comments: this.state.no_of_comments,
-          no_of_upvotes: this.state.no_of_upvotes + 1
-      }
-
-      console.log(post)
-
-      axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
-      .then(res =>console.log(res.data))
+    upVote() {
+      axios.post('http://localhost:5000/post/update/upvote/'+ this.props.match.params.id,
+      {no_of_upvotes: this.state.no_of_upvotes + 1})
+      .then(res =>
+        {
+          console.log(res.data)
+          localStorage.setItem('POSTID', this.props.match.params.id)
+        })
     }
 
     onClickUpvoteHandler() {
       this.setState({
         no_of_upvotes: this.state.no_of_upvotes + 1
       })
-      this.updatePost();
+      this.upVote();
     }
 
     render()
@@ -181,45 +172,45 @@ export default class ViewPost extends Component {
                     </Typography>
 
                     <Grid item xs={12}>
-                   <Typography variant ="h6">Report Type: {this.state.report_type} </Typography> 
-                   </Grid>
-
-                   
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> HDB Type: {this.state.hdb_type} </Typography> 
-                   </Grid>
-
-                  
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> HDB Category: {this.state.hdb_category}  </Typography> 
+                   <Typography variant ="h6">Report Type: {this.state.report_type} </Typography>
                    </Grid>
 
 
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Region : {this.state.region} </Typography> 
+                   <Typography variant ="h6"> HDB Type: {this.state.hdb_type} </Typography>
                    </Grid>
 
 
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> HDB Estate: {this.state.hdb_estate} </Typography> 
+                   <Typography variant ="h6"> HDB Category: {this.state.hdb_category}  </Typography>
                    </Grid>
-                    
-                    
+
+
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Expected Date: {JSON.stringify(this.state.date_generated)}  </Typography> 
+                   <Typography variant ="h6"> Region : {this.state.region} </Typography>
+                   </Grid>
+
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> HDB Estate: {this.state.hdb_estate} </Typography>
+                   </Grid>
+
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Expected Date: {JSON.stringify(this.state.date_generated)}  </Typography>
                    </Grid>
 
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Method:  {JSON.stringify(this.state.ammenties)} </Typography> 
+                   <Typography variant ="h6"> Method:  {JSON.stringify(this.state.ammenties)} </Typography>
                    </Grid>
 
                    <Grid item xs={12}>
-                   <Typography variant ="h6">Estaimted Price: ${this.state.estimated_price} </Typography> 
+                   <Typography variant ="h6">Estaimted Price: ${this.state.estimated_price} </Typography>
                    </Grid>
 
-                    
+
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Estimated Tax: ${this.state.estimated_tax} </Typography> 
+                   <Typography variant ="h6"> Estimated Tax: ${this.state.estimated_tax} </Typography>
                        </Grid>
 
 
@@ -236,7 +227,7 @@ export default class ViewPost extends Component {
                 <Grid item xs={12}>
                   <IconButton size="small"
                   onClick={this.onClickUpvoteHandler}
-                  disabled={this.state.upVoted ? "disabled" : ""}>
+                  disabled={localStorage.getItem('POSTID') === this.props.match.params.id ? "disabled" : ""}>
                   <ArrowUpwardIcon />
                    </IconButton><span>{this.state.no_of_upvotes}</span>
                 </Grid>
@@ -249,7 +240,7 @@ export default class ViewPost extends Component {
             </Grid>
             <CreateComment
             post_id={this.props.match.params.id}
-            comment_count={this.state.no_of_comments}/>
+            no_of_comments={this.state.no_of_comments}/>
             <CommentList post_id={this.props.match.params.id}/>
           </div>
         )

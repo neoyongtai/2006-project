@@ -18,6 +18,10 @@ const commentSchema = new Schema({
     {
         type:Number
     },
+    no_of_comments:
+    {
+      type: Number
+    },
      user_id:
      {type: Schema.Types.ObjectId, ref:'user', required:true},
      replies:

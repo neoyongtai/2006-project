@@ -18,10 +18,10 @@ const Comment = props => (
       <TableCell>{props.comment.description.substring(0,50)}</TableCell>
       <TableCell>
       <Link to={props.comment.username !== localStorage.getItem('USERNAME')
-    ? "#" : "/forum/comment/edit/" + props.comment._id}>
+      ? "#" : "/forum/comment/edit/" + props.comment._id}>
         <IconButton aria-label="Edit Comment" disabled=
         {props.comment.username !== localStorage.getItem('USERNAME')
-      ? "disabled" : ""}>
+        ? "disabled" : ""}>
           <EditIcon />
         </IconButton>
       </Link>
@@ -47,8 +47,8 @@ export default class CommentList extends Component
         super(props)
 
         this.deleteComment = this.deleteComment.bind(this);
-        this.state = { 
-          comment : [], 
+        this.state = {
+          comment : [],
           post_id: this.props.post_id
         }
     }

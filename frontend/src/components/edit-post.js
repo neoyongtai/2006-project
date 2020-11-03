@@ -9,7 +9,8 @@ import Grid from '@material-ui/core/Grid';
 import Container from '@material-ui/core/Container';
 
 
-export default class EditPost extends Component
+
+class EditPost extends Component
 {
     constructor(props) {
         super(props)
@@ -95,7 +96,10 @@ export default class EditPost extends Component
         console.log(post)
 
         axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
-        .then(res =>console.log(res.data))
+        .then(res => {
+          console.log(res.data)
+          this.props.history.push('/forum')
+        })
     }
     render()
     {
@@ -136,3 +140,5 @@ export default class EditPost extends Component
         )
     }
 }
+
+export default EditPost

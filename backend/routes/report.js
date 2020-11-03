@@ -19,11 +19,17 @@ router.route('/').get((req, res) => {
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
+router.route('/estates').get((req, res) => {
+    Report.find({}) //Mongoose method
+    .then(report => res.json(report))//Return the report
+    .catch(err => res.status(400).json('Error: ' + err));
+});
 
-router.route('/map/:id').get(async (req,res)=> 
+
+router.route('/map/:id').get(async (req,res)=>
 {
 
-    
+
         try{
             console.log("Backend Node JS Server")
             console.log(req.params)
@@ -34,15 +40,15 @@ router.route('/map/:id').get(async (req,res)=>
         }catch(err)
         {
             console.log(err)
-    
-    
+
+
     }
 })
 
 
  router.route('/add').post(async (req, res,next) => {
  console.log("Awating Now")
- try{ 
+ try{
     estimated_price = await calculatePrice.getData(req.body.hdb_estate,req.body.hdb_category)
     estimated_tax = await calculatePrice.getTax(estimated_price)
     //kml = await getKml.getKML(req.body.hdb_estate)
@@ -74,14 +80,14 @@ router.route('/map/:id').get(async (req,res)=>
     .catch(err => res.status(400).json('Error: ' + err));
 });
 
-router.route('/:id').get((req, res) => 
+router.route('/:id').get((req, res) =>
 {
     Report.findById(req.params.id)
     .then(report => res.json(report))
     .catch(err => res.status(400).json('Error: '+ err));
 });
 
-router.route('/:id').delete((req, res) => 
+router.route('/:id').delete((req, res) =>
 {
     Report.findByIdAndDelete(req.params.id)
     .then(report => res.json("Exercise Deleted"))
@@ -89,7 +95,7 @@ router.route('/:id').delete((req, res) =>
 });
 
 
-router.route('/update/:id').post((req, res) => 
+router.route('/update/:id').post((req, res) =>
 {
     Report.findById(req.params.id)
     .then(report => {
@@ -110,7 +116,7 @@ router.route('/update/:id').post((req, res) =>
 
 
 // Save or publish post
-router.route('/save').post((req, res) => 
+router.route('/save').post((req, res) =>
 {
     console.log("ID is")
     console.log(req.body._id)
@@ -119,7 +125,7 @@ router.route('/save').post((req, res) =>
     .then(report => {
     console.log(report)
     report.user_id = req.body.user_id
-   
+
     report.save()
     .then(()=> res.json(report))
     .catch(err => res.status(400).json('Error: ' +err));
