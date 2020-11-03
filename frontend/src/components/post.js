@@ -3,11 +3,13 @@ import Grid from '@material-ui/core/Grid';
 import Card from '@material-ui/core/Card';
 import CardActions from '@material-ui/core/CardActions';
 import CardContent from '@material-ui/core/CardContent';
+import { Link } from 'react-router-dom';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import PersonIcon from '@material-ui/icons/Person';
 import ArrowUpwardIcon from '@material-ui/icons/ArrowUpward';
 import ChatBubbleRoundedIcon from '@material-ui/icons/ChatBubbleRounded';
+import KeyboardBackspaceIcon from '@material-ui/icons/KeyboardBackspace';
 import IconButton from '@material-ui/core/IconButton';
 import Container from '@material-ui/core/Container';
 import TimeAgo from 'javascript-time-ago';
@@ -138,18 +140,6 @@ export default class ViewPost extends Component {
 
     }
 
-
-    /*componentDidUpdate(prevProps,prevState)
-    {
-
-      if(prevState.no_of_comments !== this.state.no_of_comments)
-      {
-        this.upCommentCount()
-      }
-    }*/
-
-
-
     upVote() {
       axios.post('http://localhost:5000/post/update/upvote/'+ this.props.match.params.id,
       {no_of_upvotes: this.state.no_of_upvotes + 1})
@@ -170,91 +160,53 @@ export default class ViewPost extends Component {
     render()
     {
         return (
-          <div>
-            <Grid container spacing={3}>
-            <Grid item xs={1} />
-              <Grid item xs={9}>
-                <Card >
-                  <CardContent>
-                    <Typography variant="h5" gutterBottom>
-                      {this.state.title}
-                    </Typography>
-                    <Typography variant="body2" component="h2">
-                      {this.state.description}
-                    </Typography>
+          <Container maxWidth="xl">
+          <Grid
+          container
+          direction="column">
+          <Grid item xs="12">
+            <Card>
+            <CardContent>
+            <Link to = "/forum">
+              <KeyboardBackspaceIcon />
+            </Link>
+              <Typography variant="h5" gutterBottom>
+                {this.state.title}
+              </Typography>
+              <Typography variant="body2" component="h2">
+                {this.state.description}
+              </Typography>
 
-                    <Grid item xs={12}>
-                   <Typography variant ="h6">Report Type: {this.state.report_type} </Typography>
-                   </Grid>
-
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> HDB Type: {this.state.hdb_type} </Typography>
-                   </Grid>
-
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> HDB Category: {this.state.hdb_category}  </Typography>
-                   </Grid>
-
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> Region : {this.state.region} </Typography>
-                   </Grid>
-
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> HDB Estate: {this.state.hdb_estate} </Typography>
-                   </Grid>
-
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> Expected Date: {JSON.stringify(this.state.date_generated)}  </Typography>
-                   </Grid>
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> Method:  {JSON.stringify(this.state.ammenties)} </Typography>
-                   </Grid>
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6">Estaimted Price: ${this.state.estimated_price} </Typography>
-                   </Grid>
-
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6"> Estimated Tax: ${this.state.estimated_tax} </Typography>
-                       </Grid>
-
-
-
-
-                  </CardContent>
-                  <CardActions>
-                    <PersonIcon />{this.state.username}
-                    <p style={{ fontSize: 12 }}>(posted <ReactTimeAgo date={this.state.createdAt} locale="en-US" timeStyle="round-minute"/> )</p>
-                  </CardActions>
-                </Card>
-              </Grid>
-              <Grid item xs={2}>
-                <Grid item xs={12}>
+                 <Typography variant ="h6">Report Type: {this.state.report_type} </Typography>
+                 <Typography variant ="h6"> HDB Type: {this.state.hdb_type} </Typography>
+                 <Typography variant ="h6"> HDB Category: {this.state.hdb_category}  </Typography>
+                 <Typography variant ="h6"> Region : {this.state.region} </Typography>
+                 <Typography variant ="h6"> HDB Estate: {this.state.hdb_estate} </Typography>
+                 <Typography variant ="h6"> Expected Date: {JSON.stringify(this.state.date_generated)}</Typography>
+                 <Typography variant ="h6"> Method:  {JSON.stringify(this.state.ammenties)} </Typography>
+                 <Typography variant ="h6">Estaimted Price: ${this.state.estimated_price} </Typography>
+                 <Typography variant ="h6"> Estimated Tax: ${this.state.estimated_tax} </Typography>
+               </CardContent>
+                <CardActions>
+                  <PersonIcon />{this.state.username}
+                  <p style={{ fontSize: 12 }}>(posted <ReactTimeAgo date={this.state.createdAt} locale="en-US" timeStyle="round-minute"/> )</p>
                   <IconButton size="small"
                   onClick={this.onClickUpvoteHandler}
                   disabled={localStorage.getItem('POSTID') === this.props.match.params.id ? "disabled" : ""}>
-                  <ArrowUpwardIcon />
-                   </IconButton><span>{this.state.no_of_upvotes}</span>
-                </Grid>
-                <Grid item xs={12}>
-                <IconButton disabled size="small">
-                  <ChatBubbleRoundedIcon />
-                  </IconButton><span>{this.state.no_of_comments}</span>
-                </Grid>
+                    <ArrowUpwardIcon />
+                  </IconButton><span>{this.state.no_of_upvotes}</span>
+                  <IconButton disabled size="small">
+                    <ChatBubbleRoundedIcon />
+                    </IconButton><span>{this.state.no_of_comments}</span>
+                </CardActions>
+              </Card>
               </Grid>
             </Grid>
             <CreateComment
             post_id={this.props.match.params.id}
             no_of_comments={this.state.no_of_comments}/>
             <CommentList  post_id={this.props.match.params.id}/>
-          </div>
+          </Container>
         )
     }
 }
