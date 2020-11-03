@@ -130,7 +130,7 @@ router.route('/update/upcomment/:id').post((req, res) => {
 
   Post.findOneAndUpdate({_id: req.params.id},
     {
-    $set: {no_of_comments: req.body.no_of_comments}
+      $inc: { no_of_comments: 1 }
   }, (err, post) => {
     if (err) {
       return res.send({

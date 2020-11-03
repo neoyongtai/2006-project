@@ -48,7 +48,8 @@ export default class ViewPost extends Component {
                date_generated: new Date(),
                ammenties : [],
                estimated_price: 0,
-               estimated_tax : 0
+               estimated_tax : 0,
+               setUpvote: true
 
            }
     }
@@ -139,31 +140,37 @@ export default class ViewPost extends Component {
     }
 
 
-    /*componentDidUpdate(prevProps,prevState)
+    componentDidUpdate(prevProps,prevState)
     {
 
-      if(prevState.no_of_comments !== this.state.no_of_comments)
+      if(prevState.setUpvote !== this.state.setUpvote)
       {
-        this.upCommentCount()
+        console.log("Fire inside COmponent Did Update")
+        //localStorage.setItem('POSTID', this.props.match.params.id)
       }
-    }*/
+    }
 
 
 
-    upVote() {
+     upVote() {
       axios.post('http://localhost:5000/post/update/upvote/'+ this.props.match.params.id,
       {no_of_upvotes: this.state.no_of_upvotes + 1})
       .then(res =>
         {
+          console.log("Just Upvote the Post")
           console.log(res.data)
-          localStorage.setItem('POSTID', this.props.match.params.id)
+         localStorage.setItem('POSTID', this.props.match.params.id)
+          this.setState({
+            setUpvote: false
+          })
         })
-    }
 
+    }
+ 
     onClickUpvoteHandler() {
-      this.setState({
-        no_of_upvotes: this.state.no_of_upvotes + 1
-      })
+      this.setState((prevState) => ({
+        no_of_upvotes: prevState.no_of_upvotes + 1
+      }))
       this.upVote();
     }
 
@@ -239,7 +246,7 @@ export default class ViewPost extends Component {
                 <Grid item xs={12}>
                   <IconButton size="small"
                   onClick={this.onClickUpvoteHandler}
-                  disabled={localStorage.getItem('POSTID') === this.props.match.params.id ? "disabled" : ""}>
+                  disabled={localStorage.getItem('POSTID') === this.props.match.params.id || localStorage.getItem('SESSIONTOKEN') === null? "disabled" : ""}>
                   <ArrowUpwardIcon />
                    </IconButton><span>{this.state.no_of_upvotes}</span>
                 </Grid>

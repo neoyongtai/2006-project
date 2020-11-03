@@ -12,17 +12,19 @@ function Map(props)
     console.log(props.cord)
     console.log(props.estate)
     let estate = props.estate.replace(/[""]+/g, '')
-    console.log(props.estate)
-
-    console.log(estate)
+    let amen = "School"
+    //estate = "ANG_MO_KIO"
+    //console.log(ammenties)
     if(!(props.estate === "\"\""))
 {
+    console.log("INSIDE")
+    console.log(estate)
     return <GoogleMap defaultZoom={11} defaultCenter= {{lat:1.352083, lng:103.819839}} >
-        {ammenties["BUKIT_TIMAH"].map((point)=>
-            <Marker key={point["Food"][0].Name} position={{lat:point["Food"][0].LAT, lng:point["Food"][0].LONG}}
+        {ammenties["ANG_MO_KIO"].map((point)=>
+            <Marker key={point[amen][0].Name} position={{lat:point[amen][0].LAT, lng:point[amen][0].LONG}}
             onClick={()=>
             {
-                setSelectedAmen(point["Food"][0])
+                setSelectedAmen(point[amen][0])
             }}
             />
         )}

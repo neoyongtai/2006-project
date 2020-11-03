@@ -28,7 +28,7 @@ const formvalues = {
   hdb_category: "",
   region: "",
   hdb_estate: "",
-  ammenties: [{shop: false} , {mrt: false}, {school:false}, {food:false}], 
+  ammenties: {shop: false, mrt: false, school:false,food:false}, 
   expected_date: new Date(),
   user_id : 0,
   estimated_price:"",
@@ -81,6 +81,12 @@ function ReportSum(props) {
   
   console.log("This is from summary")
   console.log(report)
+
+  const onGoBack = (e) => 
+  {
+    props.history.push('/report/create')
+  }
+
 
 
  const onpublish = (e) => 
@@ -139,28 +145,38 @@ if(isLoading)
                     
                     
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Expected Date: {JSON.stringify(report.date_generated)}  </Typography> 
+                   <Typography variant ="h6"> Expected Date: {new Date(report.date_generated).toLocaleDateString()}  </Typography> 
+                   </Grid>
+
+
+
+                   <Grid item xs={12}>
+                   <Typography variant ="h6"> Desired Amenties: </Typography> 
+          <FormGroup>
+          <FormControlLabel control={<Checkbox checked={report.ammenties[0].shop}  name="shop" color="primary" />}
+            label="Near Shopping Centre"
+          />
+
+          <FormControlLabel
+            control={<Checkbox checked={report.ammenties[0].mrt} name="mrt"  color="primary" />}
+            label="Near Mrt"
+          />
+          <FormControlLabel
+            control={<Checkbox checked={report.ammenties[0].school}  name="school"  color="primary" />}
+            label="Near School"
+          />
+
+          <FormControlLabel
+            control={<Checkbox checked={report.ammenties[0].food}name="food"   color="primary"/>}
+            label="Great Food"
+          />
+      </FormGroup>
+
+
                    </Grid>
 
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Desired Ammenties: </Typography> 
-                     {report.ammenties.map((check)=>(
-                      // <h1>{JSON.stringify(check.values)}</h1>
-                      <div>
-                      {
-                       <FormControlLabel control={<Checkbox checked={check.school}  name="school"  color="primary"  />}
-                      label="Near Mrt"
-                     />
-                          }
-                   </div>
-                  )
-                  )}
-
-                   <Typography variant ="h6"> Desired Ammenties:  {JSON.stringify(report.ammenties)} </Typography> 
-                   </Grid>
-
-                   <Grid item xs={12}>
-                   <Typography variant ="h6">Estaimted Price: ${report.estimated_price} </Typography> 
+                   <Typography variant ="h6">Estimated Price: ${report.estimated_price} </Typography> 
                    </Grid>
 
                     
@@ -176,7 +192,7 @@ if(isLoading)
                     <ReportMaps estate = {JSON.stringify(report.hdb_estate)}></ReportMaps>
                     </Grid>
 
-                   <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth>
+                   <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth onClick={onGoBack}>
                     Generate Report
                   </Button></Grid>
                    <Grid item xs={6}> <Button variant="contained" color="primary" type="submit" fullWidth onClick={onpublish}>
