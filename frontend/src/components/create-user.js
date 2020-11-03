@@ -84,6 +84,9 @@ class CreateUser extends Component
           }
           else
           {
+              //Add post if exists
+             
+            
             this.props.enqueueSnackbar('User Created! Please sign in!')
             this.props.history.push('/login')
           }

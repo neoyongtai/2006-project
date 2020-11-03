@@ -81,6 +81,16 @@ class Login extends Component
             .catch((error) => {
                 console.log(error);
             })
+            if(localStorage.getItem('REPORTID') !== null)
+            {
+              let user_id = {user_id:  localStorage.getItem('USERID')}
+              axios.post('http://localhost:5000/report/save/public/'+localStorage.getItem('REPORTID'),user_id)
+            .then(res => {
+             const report_id = res.data._id
+                this.props.history.push('/forum/create/'+report_id)
+
+    }  )
+            }
           }
           else // failed authentication
           {

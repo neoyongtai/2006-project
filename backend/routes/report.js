@@ -67,7 +67,7 @@ router.route('/map/:id').get(async (req,res)=>
   const ammenties = req.body.ammenties
   const date_generated = Date.now()
   const expected_date = Date.parse(req.body.expected_date)
-  const description = "this is the description"
+  const description = "The report is generated based on the parameters filled up. The tax calculation is based on Estimated Annual Value of the HDB Flat. The Estimated Price is based on the estate, type of Room, Amenties and the HDB Price Index."
   const newReport = new Report({report_type,hdb_type,hdb_category,region,hdb_estate,ammenties,description,expected_date,estimated_price,estimated_tax,date_generated});
   console.log(newReport)
 
@@ -117,6 +117,27 @@ router.route('/update/:id').post((req, res) =>
     })
     .catch(err => res.status(400).json('Error: '+ err));
 });
+
+router.route('/save/public/:id').post((req, res) =>
+{
+    console.log("Login Report is")
+    console.log(req.params.id)
+    console.log(req.body)
+    console.log(req.body.user_id)
+    Report.findById(req.params.id)
+    .then(report => {
+    console.log(report)
+    report.user_id = req.body.user_id
+
+    report.save()
+    .then(()=> res.json(report))
+    .catch(err => res.status(400).json('Error: ' +err));
+
+    })
+    .catch(err => res.status(400).json('Error: '+ err));
+});
+
+
 
 
 // Save or publish post
