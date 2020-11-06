@@ -1,8 +1,8 @@
 const menu = [
     {
-        title: 'Free Anlaysis',
+        title: 'Free Analysis',
         description:
-        "Generate a Free Anlaysis to make smart decision in your properties dealings.",
+        "Generate a Free Analysis to make smart decision in your properties dealings.",
         imageURL: process.env.PUBLIC_URL + '/assets/report.jpg',
         link: '/report/create',
         time: 1500,

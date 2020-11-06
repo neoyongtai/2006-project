@@ -82,7 +82,7 @@ function ReportForm (props){
             props.history.push('/report/sum/'+report_id)
           }
           enqueueSnackbar(res.data.message)
-          closeSnackbar()
+          //closeSnackbar()
         })
 
         //console.log(report_id)

@@ -21,13 +21,14 @@ import ReactTimeAgo from 'react-time-ago';
 import axios from  'axios';
 import CommentList from "../components/commentlist";
 import CreateComment from "../components/create-comment";
+import { withSnackbar } from 'notistack';
 
 
 
 TimeAgo.addDefaultLocale(en);
 
 
-export default class ViewPost extends Component {
+class ViewPost extends Component {
 
     constructor(props) {
         super(props)
@@ -55,6 +56,7 @@ export default class ViewPost extends Component {
                ammenties :{shop: false, mrt: false, school:false,food:false},
                estimated_price: 0,
                estimated_tax : 0,
+               report_desc: "",
                setUpvote: true
 
            }
@@ -86,7 +88,8 @@ export default class ViewPost extends Component {
           date_generated: response.data.date_generated,
           ammenties : response.data.ammenties,
           estimated_price: response.data.estimated_price,
-          estimated_tax :response.data.estimated_tax
+          estimated_tax :response.data.estimated_tax,
+          report_desc: response.data.description
 
         })
      })
@@ -126,7 +129,9 @@ export default class ViewPost extends Component {
                date_generated: response.data.date_generated,
                ammenties : response.data.ammenties,
                estimated_price: response.data.estimated_price,
-               estimated_tax :response.data.estimated_tax
+               estimated_tax :response.data.estimated_tax,
+               report_desc: response.data.description
+
 
              })
 
@@ -174,10 +179,18 @@ export default class ViewPost extends Component {
     }
  
     onClickUpvoteHandler() {
-      this.setState((prevState) => ({
-        no_of_upvotes: prevState.no_of_upvotes + 1
-      }))
-      this.upVote();
+      if(localStorage.getItem("SESSIONTOKEN") === null)
+      {
+        this.props.history.push("/login")
+        this.props.enqueueSnackbar('Please login to upvote!')
+      }
+      else{
+        this.setState((prevState) => ({
+          no_of_upvotes: prevState.no_of_upvotes + 1
+        }))
+        this.upVote();
+      } 
+      
     }
 
     render()
@@ -202,32 +215,31 @@ export default class ViewPost extends Component {
 
               <br></br>
               <Typography variant ="h4">Report </Typography>
-
                  <Typography variant ="h5">Report Type: {this.state.report_type} </Typography>
                  <Typography variant ="h5"> HDB Type: {this.state.hdb_type} </Typography>
                  <Typography variant ="h5"> HDB Category: {this.state.hdb_category}  </Typography>
                  <Typography variant ="h5"> Region : {this.state.region} </Typography>
                  <Typography variant ="h5"> HDB Estate: {this.state.hdb_estate} </Typography>
                  <Typography variant ="h5"> Expected Date: {new Date(this.state.date_generated).toLocaleDateString()}</Typography>
-                 <Typography variant ="h5"> Method:  {JSON.stringify(this.state.ammenties)} </Typography>
+                 <Typography variant ="h5"> Method:  {this.state.report_desc} </Typography>
 
 
      <FormGroup>
-          <FormControlLabel control={<Checkbox checked={this.state.ammenties[0]}  name="shop" color="primary" />}
+          <FormControlLabel control={<Checkbox checked={false}  name="shop" color="primary" />}
             label="Near Shopping Centre"
           />
 
           <FormControlLabel
-            control={<Checkbox checked={this.state.ammenties[0]} name="mrt"  color="primary" />}
+            control={<Checkbox checked={true} name="mrt"  color="primary" />}
             label="Near Mrt"
           />
           <FormControlLabel
-            control={<Checkbox checked={this.state.ammenties[0]}  name="school"  color="primary" />}
+            control={<Checkbox checked={true}  name="school"  color="primary" />}
             label="Near School"
           />
 
           <FormControlLabel
-            control={<Checkbox checked={this.state.ammenties[0]}name="food"   color="primary"/>}
+            control={<Checkbox checked={true}name="food"   color="primary"/>}
             label="Great Food"
           />
       </FormGroup> 
@@ -258,3 +270,4 @@ export default class ViewPost extends Component {
         )
     }
 }
+export default withSnackbar(ViewPost);

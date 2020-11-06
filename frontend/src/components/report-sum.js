@@ -175,7 +175,7 @@ if(isLoading)
 
                     
                    <Grid item xs={12}>
-                   <Typography variant ="h6"> Estimated Tax: ${report.estimated_tax} </Typography> 
+                   <Typography variant ="h6"> Estimated Annual Tax: ${report.estimated_tax} </Typography> 
                    </Grid>
 
                    <Grid item xs={12}>
