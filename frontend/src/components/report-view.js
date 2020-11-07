@@ -4,23 +4,22 @@ import ReportSum from './report-sum'
 
 
 const useStyles = makeStyles(theme => ({
-
-    pageContent:{
-          margin: theme.spacing(5),
-          padding: theme.spacing(3)
-        }
+  pageContent:{
+    margin: theme.spacing(5),
+    padding: theme.spacing(3)
+  }
 }))
 
 function ReportView() {
-    const classes = useStyles();
+  const classes = useStyles();
 
-    return (
-        <div>
-            <Paper className = {classes.pageContent} elevation={3}>
-            <ReportSum></ReportSum>
-            </Paper>
-        </div>
-    )
+  return (
+    <div>
+        <Paper className = {classes.pageContent} elevation={3}>
+          <ReportSum></ReportSum>
+        </Paper>
+    </div>
+  )
 }
 
-export default ReportView
+export default ReportView;

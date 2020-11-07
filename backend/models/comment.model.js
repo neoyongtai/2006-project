@@ -6,17 +6,17 @@ const commentSchema = new Schema({
 
   post_id: {type:Schema.Types.ObjectId, ref:'post',required:true},
     username:{
-        type:String,
-        required: true,
-        trim: true,
-        minlength : 3
+      type:String,
+      required: true,
+      trim: true,
+      minlength : 3
     },
     description: {
-        type:String, required: true
+      type:String, required: true
     },
     no_of_upvotes:
     {
-        type:Number
+      type:Number
     },
     no_of_comments:
     {
@@ -27,11 +27,12 @@ const commentSchema = new Schema({
      replies:
      [{type:Schema.Types.ObjectId, ref:'comment'}],
      date_posted : {
-         type:Date
-     }
-}, {
-        timestamps: true,
-});
+       type:Date
+   }},
+   {
+     timestamps: true,
+   }
+);
 
 const Comment = mongoose.model('comment', commentSchema);
 
