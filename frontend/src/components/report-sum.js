@@ -1,21 +1,9 @@
 import React, { useState, useEffect } from 'react'
 import axios from  'axios';
 import { withRouter } from 'react-router-dom';
-import {Grid, makeStyles, Container,Typography, TextField, InputLabel, Select, MenuItem, FormHelperText, FormLabel, FormGroup,FormControlLabel, Checkbox, Button } from '@material-ui/core';
+import {Grid, Container,Typography,  FormGroup,FormControlLabel, Checkbox, Button } from '@material-ui/core';
 import ReportMaps from "./report-maps"
 
-const useStyles = makeStyles(theme => ({
-  root: {
-    //Select the class that enclosed the everything within the form.
-    '& .MuiGrid-root': {
-      width: '100%',
-      margin: theme.spacing(1)},
-     title:{
-       display: 'flex',
-       justifyContent: 'center'
-     }
-   }
-}))
 
 const formvalues = {
   _id:0,
@@ -39,7 +27,8 @@ function ReportSum(props) {
   const [isLoading, setLoading] = useState(true);
 
   useEffect(() => {
-     axios.get('http://localhost:5000/report/'+props.match.params.id)
+    let id = props.match.params.id
+     axios.get('http://localhost:5000/report/'+id)
     .then(response => {
       setReport(response.data);
       setLoading(false)
@@ -50,10 +39,7 @@ function ReportSum(props) {
   },[])
 
 
-  useEffect(()=> {
-    setReport({...report, user_id :localStorage.getItem('USERID')})
-  },[report.user_id])
-
+  
   useEffect(()=> {
     setReport({...report, user_id :localStorage.getItem('USERID')})
   },[report.user_id])

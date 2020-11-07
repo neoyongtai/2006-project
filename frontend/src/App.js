@@ -14,6 +14,7 @@ import ReportMaps from "./components/report-maps"
 import ReportPage from "./components/reportpage";
 import SignIn from "./components/login";
 import Profile from "./components/profile";
+import EditPost from "./components/edit-post"
 
 function App() {
 
@@ -34,6 +35,7 @@ function App() {
         <Route path ="/forum" exact component = {PostList} />
         <Route path ="/forum/create/:id" exact component = {CreatePost} />
         <Route path ="/forum/view/:id" exact component = {ViewPost} />
+        <Route path= "/forum/edit/:id" exact component ={EditPost}/>
         <Route path ="/forum/comment/edit/:id" exact component = {EditComment} />
       </Router>
     </SnackbarProvider>

@@ -1,6 +1,6 @@
-import React, { Component , useEffect, useState} from 'react';
+import React from 'react';
 import {makeStyles} from '@material-ui/core/styles'
-import { Collapse, CssBaseline, IconButton } from '@material-ui/core';
+import {IconButton } from '@material-ui/core';
 import MenuSelection from './menu-selection'
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 
@@ -39,12 +39,7 @@ const useStyles = makeStyles((theme) => ({
 function HomePage()
 {
     const classes = useStyles();
-    const [checked, setChecked] = useState(false)
-
-    useEffect(() => {
-        setChecked(true)
-    },[])
-
+   
   return (
     <div className = {classes.root}>
       <div className={classes.titlestyle}>

@@ -1,5 +1,4 @@
 const router = require('express').Router();
-let Post = require('../models/post.model');
 const User = require('../models/user.model');
 const UserSession = require('../models/usersession.model');
 

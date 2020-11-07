@@ -1,5 +1,4 @@
 
-const { Console } = require("console")
 const fs = require("fs")
 
 
@@ -8,8 +7,6 @@ const fs = require("fs")
 function getData(estate,rooms)
 {
 
-    console.log("This is the estate")
-    console.log(estate)
 
     const data = fs.readFileSync(__dirname + '/../data/EstatePrice.json',"utf8")       
     const estate_prices = JSON.parse(data)
@@ -28,19 +25,19 @@ function getTax(cat)
 
     if(cat === "OneRoom" || cat === "TwoRoom")
     {
-        av =5100*3
+        av =5100*2
     }
     else if(cat === "ThreeRoom" ){
 
-        av= 7860*3
+        av= 7860*2
     }
     else if(cat === "FourRoom")
     {
-        av = 9600*3
+        av = 9600
     }
     else if(cat === "FiveRoom")
     {
-      av=31080*2
+      av= 31080
     }
     else if(cat === "Executive"){
         av = 65052

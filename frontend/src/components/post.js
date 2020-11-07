@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from  'axios';
-import {Grid,Card,CardActions,CardContent,Button,Typography,FormGroup,FormControlLabel,Checkbox,IconButton,Container} from '@material-ui/core/';
+import {Grid,Card,CardActions,CardContent,Typography,FormGroup,FormControlLabel,Checkbox,IconButton,Container} from '@material-ui/core/';
 import CommentList from "../components/commentlist";
 import CreateComment from "../components/create-comment";
 import { Link } from 'react-router-dom';
@@ -34,17 +34,18 @@ class ViewPost extends Component {
       token : localStorage.getItem('SESSIONTOKEN'),
       userId: localStorage.getItem('USERID'),
       username: localStorage.getItem('USERNAME'),
+      ammenties :[{shop: false, mrt: false, school:false,food:false}],
       report_type:" ",
       hdb_type: " ",
       hdb_category: " ",
       region: " ",
       hdb_estate: " ",
       date_generated: new Date(),
-      ammenties :{shop: false, mrt: false, school:false,food:false},
       estimated_price: 0,
       estimated_tax : 0,
       report_desc: "",
-      setUpvote: true
+      setUpvote: true,
+      test: [{hello: true}]
     }
   }
 
@@ -76,6 +77,9 @@ class ViewPost extends Component {
           estimated_tax :response.data.estimated_tax,
           report_desc: response.data.description
         })
+
+        console.log("Component")
+        console.log(response.data.ammenties)
       })
     })
   }
@@ -108,6 +112,8 @@ class ViewPost extends Component {
              estimated_tax :response.data.estimated_tax,
              report_desc: response.data.description
            })
+           console.log("Component2")
+        console.log(response.data.ammenties)
          })
       })
       .catch(function (error) {
@@ -146,7 +152,7 @@ class ViewPost extends Component {
     return (
       <Container maxWidth="xl">
         <Grid container direction="column">
-          <Grid item xs="12">
+          <Grid item xs={12}>
             <Card>
               <CardContent>
               <Link to = "/forum">
@@ -168,28 +174,29 @@ class ViewPost extends Component {
                 <Typography variant ="h5"> HDB Estate: {this.state.hdb_estate} </Typography>
                 <Typography variant ="h5"> Expected Date: {new Date(this.state.date_generated).toLocaleDateString()}</Typography>
                 <Typography variant ="h5"> Method:  {this.state.report_desc} </Typography>
+
                 <FormGroup>
-                  <FormControlLabel control={<Checkbox checked={false}  name="shop" color="primary" />}
+                  <FormControlLabel control={<Checkbox checked={this.state.ammenties[0].shop}  name="shop" color="primary" />}
                     label="Near Shopping Centre"/>
                   <FormControlLabel
-                    control={<Checkbox checked={true} name="mrt"  color="primary" />}
+                    control={<Checkbox checked={this.state.ammenties[0].mrt} name="mrt"  color="primary" />}
                     label="Near Mrt"/>
                   <FormControlLabel
-                    control={<Checkbox checked={true}  name="school"  color="primary" />}
+                    control={<Checkbox checked={this.state.ammenties[0].school}  name="school"  color="primary" />}
                     label="Near School"/>
                   <FormControlLabel
-                    control={<Checkbox checked={true}name="food"   color="primary"/>}
+                    control={<Checkbox checked={this.state.ammenties[0].food}name="food"   color="primary"/>}
                     label="Great Food"/>
                 </FormGroup>
-                <Typography variant ="h5">Estaimted Price: ${this.state.estimated_price} </Typography>
+                <Typography variant ="h5">Estimated Price: ${this.state.estimated_price} </Typography>
                 <Typography variant ="h5"> Estimated Tax: ${this.state.estimated_tax} </Typography>
               </CardContent>
               <CardActions>
                 <PersonIcon />{this.state.username}
-                <p style={{ fontSize: 12 }}>(posted <ReactTimeAgo date={this.state.createdAt} locale="en-US" timeStyle="round-minute"/> )</p>
+                <p style={{ fontSize: 12 }}>(posted <ReactTimeAgo date={new Date(this.state.createdAt)} locale="en-US" timeStyle="round-minute"/> )</p>
                 <IconButton size="small"
                 onClick={this.onClickUpvoteHandler}
-                disabled={localStorage.getItem('POSTID') === this.props.match.params.id ? "disabled" : ""}>
+                disabled={localStorage.getItem('POSTID') === this.props.match.params.id ? true : false}>
                   <ArrowUpwardIcon />
                 </IconButton><span>{this.state.no_of_upvotes}</span>
                 <IconButton disabled size="small">

@@ -1,6 +1,6 @@
 import React, {Component} from 'react';
 import axios from  'axios';
-import {TextField,Button,Paper,Grid,Container} from '@material-ui/core/';
+import {TextField,Button,Grid,Container} from '@material-ui/core/';
 import { withSnackbar } from 'notistack';
 
 class Profile extends Component {

@@ -1,11 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import {GoogleMap, withScriptjs, withGoogleMap, Polygon, InfoWindow,Marker} from "react-google-maps"
 import axios from  'axios';
-import * as ammenties from "./ammenties.json"
 import amen from "./amen.json"
-const fs = require("fs")
 
-const google = window.google;
 function Map(props) {
   const[selectAmen, setSelectedAmen]= useState(null);
 
@@ -43,10 +40,11 @@ function Map(props) {
 function ReportMaps(props) {
   const [cord, setCord] = useState([]);
   const [estate, setEstate] = useState("")
-  let obj = [];
-  let i, latv,lngv
 
   useEffect(() => {
+    let obj = [];
+  let i, latv,lngv
+
     setEstate(props.estate)
     if(!(props.estate === "\"\"")) {
       axios.get("http://localhost:5000/report/map/" + props.estate)

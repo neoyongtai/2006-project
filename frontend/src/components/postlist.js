@@ -14,11 +14,13 @@ const Post = props => (
     <TableCell>{props.post.no_of_comments}</TableCell>
     <TableCell>{props.post.no_of_upvotes}</TableCell>
     <TableCell>
+
+      
       <Link to={props.post.username !== localStorage.getItem('USERNAME')
       ? "#" : '/forum/edit/'+props.post._id}>
         <IconButton aria-label="Edit Post" disabled=
         {props.post.username !== localStorage.getItem('USERNAME')
-        ? "disabled" : ""}>
+        ? true : false}>
           <EditIcon />
         </IconButton>
       </Link>
@@ -28,7 +30,7 @@ const Post = props => (
       ? console.log("NO") : props.deletePost(props.post._id) }}>
         <IconButton aria-label="Delete Post" disabled=
         {props.post.username !== localStorage.getItem('USERNAME')
-        ? "disabled" : ""}>
+        ? true : false}>
           <DeleteIcon />
         </IconButton>
       </Link>
@@ -132,7 +134,7 @@ class PostList extends Component
                 label="select-estate-label"
                 variant ="outlined">
               <MenuItem value={`ALL`}>All (Estate)</MenuItem>
-              <MenuItem value={`ANG_MOK_KIO`}>Ang Mo Kio</MenuItem>
+              <MenuItem value={`ANG_MO_KIO`}>Ang Mo Kio</MenuItem>
               <MenuItem value={`BUKIT_TIMAH`}>Bukit Timah</MenuItem>
               <MenuItem value={`BUKIT_PANJANG`}>Bukit Panjang</MenuItem>
               <MenuItem value={`BUKIT_MERAH`}>Bukit Merah</MenuItem>

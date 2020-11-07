@@ -1,5 +1,5 @@
-import { Grid, makeStyles, TextField, InputLabel, Select, MenuItem, FormHelperText, FormLabel, FormGroup,FormControlLabel, Checkbox, Button } from '@material-ui/core';
-import React, {useState, useEffect} from 'react'
+import { Grid, makeStyles, TextField, InputLabel, Select, MenuItem,  FormLabel, FormGroup,FormControlLabel, Checkbox, Button } from '@material-ui/core';
+import React, {useState} from 'react'
 import { withRouter } from 'react-router-dom';
 import axios from  'axios';
 import { useSnackbar } from 'notistack';
@@ -32,7 +32,7 @@ function ReportForm (props) {
 
   const [values, setValues] = useState(formvalues);
   const classes = useStyles();
-  const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { enqueueSnackbar} = useSnackbar();
 
   const handleInputChange = e => {
 

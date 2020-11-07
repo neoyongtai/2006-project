@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import axios from  'axios';
 import { Link } from 'react-router-dom';
 import { AppBar, Toolbar, Typography, Button } from '@material-ui/core';
@@ -57,9 +57,9 @@ function Navbar()  {
             <Button component={Link} to = {'/report/create'}> Analysis</Button>
             {sessionToken ? <Button component={Link} to = {'/user/' + userId}> Profile</Button> : ""}
             <Button component={Link} to ={'/login'}
-            disabled={sessionToken ? "disabled" : ""}>Login</Button>
+            disabled={sessionToken ? true : false}>Login</Button>
             <Button onClick={handleInputChange}
-            disabled={sessionToken === null ? "disabled" : ""}>Logout</Button>
+            disabled={sessionToken === null ? true : false}>Logout</Button>
           </div>
         </Toolbar>
       </AppBar>
