@@ -175,8 +175,8 @@ class ViewPost extends Component {
                 <Typography variant ="h5"> HDB Category: {this.state.hdb_category}  </Typography>
                 <Typography variant ="h5"> Region : {this.state.region} </Typography>
                 <Typography variant ="h5"> HDB Estate: {this.state.hdb_estate} </Typography>
-                <Typography variant ="h5"> Expected Date: {new Date(this.state.expected_date).toLocaleDateString()}</Typography>
-                <Typography variant ="h5"> Report Generated On: {new Date(this.state.date_generated).toLocaleDateString()}</Typography>
+                <Typography variant ="h5"> Expected Date: {new Date(this.state.expected_date).toLocaleDateString("en-GB")}</Typography>
+                <Typography variant ="h5"> Report Generated On: {new Date(this.state.date_generated).toLocaleDateString("en-GB")}</Typography>
                 <Typography variant ="h5"> Method:  {this.state.report_desc} </Typography>
 
                 <FormGroup>

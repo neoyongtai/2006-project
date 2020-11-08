@@ -23,7 +23,6 @@ router.route('/map/:id').get(async (req,res)=>
 
         try{
             kml = await getKml.getKML(req.params.id)
-            console.log(kml)
             res.json(kml)
         }catch(err)
         {

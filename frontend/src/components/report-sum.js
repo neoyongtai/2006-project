@@ -105,7 +105,7 @@ function ReportSum(props) {
             <Typography variant ="h6"> HDB Estate: {report.hdb_estate}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant ="h6"> Expected Date: {new Date(report.expected_date).toLocaleDateString()}</Typography>
+            <Typography variant ="h6"> Expected Date: {new Date(report.expected_date,).toLocaleDateString("en-GB")}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant ="h6"> Check Date: {JSON.stringify(report.amentiesSel)}</Typography>
