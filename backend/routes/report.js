@@ -51,7 +51,7 @@ router.route('/map/:id').get(async (req,res)=>
   const ammenties = req.body.ammenties
   const date_generated = Date.now()
   const expected_date = Date.parse(req.body.expected_date)
-  const description = "The report is generated based on the parameters filled up. The tax calculation is based on Estimated Annual Value of the HDB Flat. The Estimated Price is based on the estate, type of Room, Amenties and the HDB Price Index."
+  const description = "The report is generated based on the parameters filled up. The tax calculation is based on Estimated Annual Value of the HDB Flat. The Estimated Price is based on the estate, type of Room, Amenities and the HDB Price Index."
   const newReport = new Report({report_type,hdb_type,hdb_category,region,hdb_estate,ammenties,description,expected_date,estimated_price,estimated_tax,date_generated});
   //Save to database
   newReport.save()
