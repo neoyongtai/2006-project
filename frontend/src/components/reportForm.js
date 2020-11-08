@@ -218,7 +218,7 @@ function ReportForm (props) {
         </Grid>
 
         <Grid item xs={12} md = {6}>
-          <FormLabel component = "legend">Pick Desired Amenties</FormLabel>
+          <FormLabel component = "legend">Pick Desired Amenities</FormLabel>
           <FormGroup>
             <FormControlLabel
               control={<Checkbox checked={values.ammenties.shop} onChange={handlecheckBox} name="shop" color="primary" />}
