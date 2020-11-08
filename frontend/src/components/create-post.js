@@ -51,7 +51,7 @@ class CreatePost extends Component {
           this.props.history.push('/forum')
         }
         this.props.enqueueSnackbar(res.data.message)
-        this.props.closeSnackbar()
+        //this.props.closeSnackbar()
       })
   }
 

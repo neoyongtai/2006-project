@@ -25,7 +25,8 @@ const formvalues = {
   hdb_estate: "",
   ammenties: {shop: false, mrt: false, school:false,food:false},
   expected_date: new Date(),
-  date_generated: new Date()
+  date_generated: new Date(),
+  amenSel : false
 }
 
 function ReportForm (props) {
@@ -47,6 +48,7 @@ function ReportForm (props) {
     setValues((prevstate) => {
           return ({
             ...prevstate,
+            amenSel : true,
             ammenties : {...prevstate.ammenties,[e.target.name]: e.target.checked}
         })
       })
@@ -63,8 +65,12 @@ function ReportForm (props) {
           if(res.data.success === true)
           {
             const report_id = res.data.report._id
-            props.history.push('/report/sum/'+report_id)
-          }
+            props.history.push({
+              pathname: '/report/sum',
+              state: {report_id : report_id,
+                amenSel : values.amenSel }
+                })
+            }
           enqueueSnackbar(res.data.message)
         })
     }

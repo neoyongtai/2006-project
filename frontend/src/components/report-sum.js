@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from  'axios';
-import { withRouter } from 'react-router-dom';
+import { withRouter, useLocation } from 'react-router-dom';
 import {Grid, Container,Typography,  FormGroup,FormControlLabel, Checkbox, Button } from '@material-ui/core';
 import ReportMaps from "./report-maps"
 
@@ -19,22 +19,28 @@ const formvalues = {
   estimated_tax:"",
   date_generated: new Date(),
   description:"",
+  amentiesSel: false
 }
 
 
 function ReportSum(props) {
   const [report, setReport] = useState(formvalues);
   const [isLoading, setLoading] = useState(true);
+  const location = useLocation()
 
   useEffect(() => {
-    let id = props.match.params.id
+    let id = location.state.report_id
+    console.log(location.state.report_id)
+
      axios.get('http://localhost:5000/report/'+id)
     .then(response => {
       setReport(response.data);
       setLoading(false)
+     
     }).catch(function (error) {
       console.log(error);
     })
+   
 
   },[])
 
@@ -44,6 +50,14 @@ function ReportSum(props) {
     setReport({...report, user_id :localStorage.getItem('USERID')})
   },[report.user_id])
 
+
+  useEffect(()=> {
+    console.log(report)
+    setReport({...report, amentiesSel: location.state.amenSel})
+  },[report.amentiesSel])
+
+
+  
   const onGoBack = (e) => {
     props.history.push('/report/create')
   }
@@ -65,13 +79,13 @@ function ReportSum(props) {
   }
 
   if(isLoading) {
-    return <div><Typography variant ="h6"> Cord: </Typography></div>
+    return <div><Typography variant ="h6"> Loading </Typography></div>
   }
 
   return (
     <div>
       <div >
-        <h1  style={{textAlign: "center"}}>Report Analaysis </h1>
+        <h1  style={{textAlign: "center"}}>Report Analysis </h1>
       </div>
       <Container maxWidth="sm">
         <Grid container spacing={3}>
@@ -92,6 +106,9 @@ function ReportSum(props) {
           </Grid>
           <Grid item xs={12}>
             <Typography variant ="h6"> Expected Date: {new Date(report.date_generated).toLocaleDateString()}</Typography>
+          </Grid>
+          <Grid item xs={12}>
+            <Typography variant ="h6"> Check Date: {JSON.stringify(report.amentiesSel)}</Typography>
           </Grid>
           <Grid item xs={12}>
             <Typography variant ="h6"> Desired Amenties:</Typography>
@@ -119,7 +136,7 @@ function ReportSum(props) {
             <Typography variant ="h6"> Method of Calculation: {report.description} </Typography>
           </Grid>
           <Grid item xs={12}>
-            <ReportMaps estate = {JSON.stringify(report.hdb_estate)}></ReportMaps>
+            <ReportMaps estate = {JSON.stringify(report.hdb_estate)} amen = {report.amentiesSel}></ReportMaps>
           </Grid>
           <Grid item xs={6}>
             <Button variant="contained" color="primary" type="submit" fullWidth onClick={onGoBack}>

@@ -36,8 +36,30 @@ router.route('/update/:id').post((req, res, next) => {
     user.firstname = req.body.firstname
     user.lastname = req.body.lastname
     user.email = req.body.email
+    if(!user.firstname)
+    {
+      return res.send({
+        success: false,
+        message: 'First Name cannot be blank.'
+      });
+    }
 
-    if(req.body.password != "" && req.body.password.length >= 6)
+    if(!user.lastname)
+    {
+      return res.send({
+        success: false,
+        message: 'Last Name cannot be blank.'
+      });
+    }
+
+    if(!user.email)
+    {
+      return res.send({
+        success: false,
+        message: 'Email cannot be blank.'
+      });
+    }
+    if(req.body.password != "" && req.body.password.length >= 8)
     {
       user.password = user.generateHash(req.body.password)
     }
@@ -62,6 +84,7 @@ router.route('/add').post((req, res, next) => {
   const {
     username,
     password,
+    repassword,
     firstname,
     lastname,
     email
@@ -73,6 +96,8 @@ router.route('/add').post((req, res, next) => {
       message: 'Username cannot be blank.'
     });
   }
+
+  
   if (!password){
     return res.send({
       success: false,
@@ -80,19 +105,34 @@ router.route('/add').post((req, res, next) => {
     });
   }
 
-  if(username.length < 3)
+  if(!repassword)
   {
     return res.send({
       success: false,
-      message: 'Min length of username is 3'
+      message: 'Re-type password cannot be blank.'
+    });
+  }
+  if(repassword !== password)
+  {
+    return res.send({
+      success: false,
+      message: 'Password and Re-type Password does not match.'
     });
   }
 
-  if(password.length < 6)
+  if(username.length < 3 || username.length >20)
   {
     return res.send({
       success: false,
-      message: 'Min length of password is 6'
+      message: 'Min length of 3 and max length of 20'
+    });
+  }
+
+  if(password.length < 8)
+  {
+    return res.send({
+      success: false,
+      message: 'Min length of password is 8'
     });
   }
 

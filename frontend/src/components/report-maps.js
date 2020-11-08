@@ -8,8 +8,16 @@ function Map(props) {
 
   let es = props.estate.replace(/[""]+/g, '');
   if(!(props.estate === "\"\"")) {
-    return <GoogleMap defaultZoom={11} defaultCenter= {{lat:1.352083, lng:103.819839}}>
 
+    console.log("MAPS")
+
+    console.log(props)
+    if(props.amen == true)
+    {
+
+    
+    return <GoogleMap defaultZoom={11} defaultCenter= {{lat:1.352083, lng:103.819839}}>
+  
     {amen[es].map((point) =>
         <Marker key={point.Name} position={{lat:point.LAT, lng:point.LONG}}
         onClick={() => setSelectedAmen(point)} />
@@ -31,6 +39,22 @@ function Map(props) {
       fillOpacity:0}}>
       </Polygon>
     </GoogleMap>
+    }
+    else{
+
+      return <GoogleMap defaultZoom={11} defaultCenter= {{lat:1.352083, lng:103.819839}}>
+  
+        <Polygon path={props.cord[0]} key={1}
+        options=
+        {{strokeColor:'#FF0000',
+        strokeOpacity:0.8,
+        strokeWeight:3,
+        fillColor:'#000000',
+        fillOpacity:0}}>
+        </Polygon>
+      </GoogleMap>
+
+    }
   }
 }
 //In order to correct load Google Maps JavaScript API v3, need to wrap it with withScriptjs HOC
@@ -76,7 +100,8 @@ function ReportMaps(props) {
        containerElement= {<div style = {{height: "100%"}}/>}
        mapElement= {<div style = {{height: "100%"}}/>}
        cord = {cord}
-       estate = {props.estate} />
+       estate = {props.estate}
+       amen = {props.amen} />
     </div>
   )
 }

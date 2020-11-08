@@ -24,7 +24,7 @@ function App() {
         <Route exact component= {Navbar} />
         <Route path ="/" exact component= {HomePage}/>
 
-        <Route path = "/report/sum/:id" exact component = {ReportView}/>
+        <Route path = "/report/sum" exact component = {ReportView}/>
         <Route path ="/report/create" exact component = {ReportPage} />
         <Route path ="/report/map" exact component = {ReportMaps} />
         <Route path ="/user" exact component = {CreateUser} />

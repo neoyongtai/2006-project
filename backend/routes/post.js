@@ -55,14 +55,29 @@ router.route('/add').post((req, res) => {
   }
   else
   {
+
+
     const title = req.body.title;
     const username = req.body.username;
-
     const user_id = req.body.user_id
     const report_id = req.body.report_id
     const date_posted = Date.now()
     const description = req.body.description;
+    if(title.length > 100)
+    {
+      return res.send({
+        success: false,
+        message: 'Title must be less than 100 characters.'
+      });
+    }
 
+    if(description.length > 5000)
+    {
+      return res.send({
+        success: false,
+        message: 'Post Description must be less than 5000 characters.'
+      });
+    }
 
     const newPost = new Post({title,username,description,user_id,report_id,date_posted});
 

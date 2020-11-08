@@ -11,6 +11,7 @@ class CreateUser extends Component
     //Bind the event handlers
     this.onChangeUsername = this.onChangeUsername.bind(this)
     this.onChangePassword = this.onChangePassword.bind(this)
+    this.onChangeRePassword = this.onChangeRePassword.bind(this)
     this.onChangeFirstname = this.onChangeFirstname.bind(this)
     this.onChangeLastname = this.onChangeLastname.bind(this)
     this.onChangeEmail = this.onChangeEmail.bind(this)
@@ -20,12 +21,24 @@ class CreateUser extends Component
     this.state = {
       username: "",
       password: "",
+      repassword:"",
       firstname: "",
       lastname: "",
       email: "",
     }
   }
 
+  componentDidMount()
+  {
+    if(localStorage.getItem("SESSIONTOKEN") !== null)
+    {
+
+      this.props.history.push('/')
+
+    }
+
+
+  }
   onChangeUsername(e) {
     this.setState({username: e.target.value})
   }
@@ -45,6 +58,10 @@ class CreateUser extends Component
   onChangeEmail(e) {
     this.setState({email: e.target.value})
   }
+  onChangeRePassword(e) {
+    this.setState({repassword: e.target.value})
+  }
+
 
   onSubmit(e) {
     e.preventDefault();
@@ -52,11 +69,11 @@ class CreateUser extends Component
     const user = {
       username: this.state.username,
       password: this.state.password,
+      repassword: this.state.repassword,
       firstname: this.state.firstname,
       lastname: this.state.lastname,
       email: this.state.email
     }
-
     //Send user data to backend.
     axios.post('http://localhost:5000/users/add',user)
     .then(res => {
@@ -91,11 +108,23 @@ class CreateUser extends Component
                 <TextField
                 label='Password' variant='outlined'
                 type="password"
-                minlength="6"
+                minlength="8"
                 required
                 fullWidth
                 value={this.state.password}
                 onChange={this.onChangePassword}
+                />
+            </Grid>
+
+            <Grid item xs={12}>
+                <TextField
+                label='Re-type Password' variant='outlined'
+                type="password"
+                minlength="8"
+                required
+                fullWidth
+                value={this.state.repassword}
+                onChange={this.onChangeRePassword}
                 />
             </Grid>
             <Grid item xs={6}>

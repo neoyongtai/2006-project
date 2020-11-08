@@ -189,7 +189,7 @@ class ViewPost extends Component {
                     label="Great Food"/>
                 </FormGroup>
                 <Typography variant ="h5">Estimated Price: ${this.state.estimated_price} </Typography>
-                <Typography variant ="h5"> Estimated Tax: ${this.state.estimated_tax} </Typography>
+                <Typography variant ="h5"> Estimated Annual Tax: ${this.state.estimated_tax} </Typography>
               </CardContent>
               <CardActions>
                 <PersonIcon />{this.state.username}
