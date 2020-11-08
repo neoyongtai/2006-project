@@ -108,9 +108,6 @@ function ReportSum(props) {
             <Typography variant ="h6"> Expected Date: {new Date(report.expected_date).toLocaleDateString()}</Typography>
           </Grid>
           <Grid item xs={12}>
-            <Typography variant ="h6"> Check Date: {JSON.stringify(report.amentiesSel)}</Typography>
-          </Grid>
-          <Grid item xs={12}>
             <Typography variant ="h6"> Desired Amenties:</Typography>
             <FormGroup>
               <FormControlLabel control={<Checkbox checked={report.ammenties[0].shop}  name="shop" color="primary" />}
