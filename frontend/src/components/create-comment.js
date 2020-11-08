@@ -60,10 +60,10 @@ import { withSnackbar } from 'notistack';
         axios.post("http://localhost:5000/comment/add" , comment)
         .then(res => {
           this.setState((prevState) => ({
-            no_of_comments: prevState.no_of_comments + 1
+            no_of_comments: prevState.no_of_comments + 1,
+            description: ""
           }));
           this.props.enqueueSnackbar(res.data.message)
-          this.props.closeSnackbar()
         })
       }
     }

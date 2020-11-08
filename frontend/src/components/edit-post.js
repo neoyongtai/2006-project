@@ -3,6 +3,8 @@ import React, {Component} from 'react';
 import "react-datepicker/dist/react-datepicker.css";
 import axios from  'axios';
 import {TextField,Button,Grid,Container} from '@material-ui/core';
+import { withSnackbar } from 'notistack';
+import { withRouter } from 'react-router-dom';
 
 
 
@@ -94,6 +96,7 @@ class EditPost extends Component
         axios.post('http://localhost:5000/post/update/'+ this.props.match.params.id, post)
         .then(res => {
           console.log(res.data)
+          this.props.enqueueSnackbar('Post Edited!')
           this.props.history.push('/forum')
         })
     }
@@ -136,5 +139,4 @@ class EditPost extends Component
         )
     }
 }
-
-export default EditPost
+export default withSnackbar(withRouter(EditPost))
